@@ -95,4 +95,4 @@ Happy coding!
 ### PYTHON MODULES INSTALLED
 - pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
 - google-auth : To link Google drive and SpreadSheets to the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/). Type in the terminal:  
-       pip install --upgrade google-auth
+     pip install --upgrade google-auth
