@@ -33,16 +33,17 @@ Happy coding!
 
 ### CREATE GOOGLE PLATFORM PROJECT
 1. Go to [Google Cloud platform](https://console.cloud.google.com/)
-2. Create 'new project'
+2. Create 'new project'  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/94b2cd1a-3f96-4497-84d4-bed666b95d86)
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/f5cea9c7-4338-4536-b5d9-a477d50395a9)
 
-3. Enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then type 'Google Drive API' on the search bar, and enable it.
-![image](https://github.com/Ethra8/music-festival/assets/80659091/31e13239-6065-43b9-b700-49729c7c84d4)
+3. Enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
+![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
+
 
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/1a841a3a-6075-42c3-8aad-5801c7c6766c)
 
-4. Go to 'Credentials' and 'Create Credentials':
+4. Go to 'Credentials' and 'Create Credentials':  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/999e5073-cfce-42b2-933b-bbebbf7400b0)
 
 
