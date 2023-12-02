@@ -37,13 +37,19 @@ Happy coding!
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/94b2cd1a-3f96-4497-84d4-bed666b95d86)
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/f5cea9c7-4338-4536-b5d9-a477d50395a9)
 
-3. Enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
-![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
+3. We need to enable the following APIs for this project:
+   + Google Drive API
+   + Google Sheets API
 
+4. Enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
+![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
 
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/1a841a3a-6075-42c3-8aad-5801c7c6766c)
 
-4. Go to 'Credentials' and 'Create Credentials':  
+![image](https://github.com/Ethra8/music-festival/assets/80659091/f9f49842-e82a-4056-847a-04141078a282)
+
+
+5. Go to 'Credentials' and 'Create Credentials':  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/999e5073-cfce-42b2-933b-bbebbf7400b0)
 
 
