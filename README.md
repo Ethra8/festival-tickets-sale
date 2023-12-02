@@ -100,3 +100,8 @@ Happy coding!
    + To upgrade pip in future for newer versions, type in terminal:  
      python.exe -m pip install --upgrade pip
 
+
+## ACKNOWLEDGEMENTS
+- [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
+- 
+
