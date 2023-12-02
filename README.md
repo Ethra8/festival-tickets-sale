@@ -32,25 +32,52 @@ The deployment terminal is set to 80 columns by 24 rows. That means that each li
 Happy coding!
 
 ### CREATE GOOGLE PLATFORM PROJECT
-1. Go to [Google Cloud platform](https://console.cloud.google.com/)
-2. Create 'new project'  
+- Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/94b2cd1a-3f96-4497-84d4-bed666b95d86)
-![image](https://github.com/Ethra8/music-festival/assets/80659091/f5cea9c7-4338-4536-b5d9-a477d50395a9)
+![image](https://github.com/Ethra8/music-festival/assets/80659091/f5cea9c7-4338-4536-b5d9-a477d50395a9)  
 
-3. We need to enable the following APIs for this project:
+- We need to enable the following APIs for this project:
    + Google Drive API
    + Google Sheets API
 
-4. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
+- **ENABLE GOOGLE DRIVE API**:  
+   1. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
 
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/1a841a3a-6075-42c3-8aad-5801c7c6766c)
 
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/f9f49842-e82a-4056-847a-04141078a282)
 
+   2. ***Create 'Credentials'***: After clicking on 'Enable' in the previous step, you are taken to the API Overview page, where we click on 'Create Credentials':
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/6a8cd2a2-6547-4152-912c-2cdaff25d77b)
 
-5. Go to 'Credentials' and 'Create Credentials':  
-![image](https://github.com/Ethra8/music-festival/assets/80659091/999e5073-cfce-42b2-933b-bbebbf7400b0)
+   3. On the credentials form, select 'Application Data' for the question 'What data will you be accessing?', then click 'Next':  
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/2182605f-aab0-4daa-bd07-f0e402d1925e)
+   
+   4. Then, on the next stage of the form, include a 'Service account name'. An account email will be automatically generated following your input. Then, click 'Create and Continue'  :
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/338b3a2f-6615-4c99-8d05-32859f2db285)
+
+
+   5. In the 'Role' Dropdown box choose Basic > Editor then press Continue:
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/a669bd00-2f0c-4ef4-9906-da0e663f8e0b)
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/557794cf-288d-4fb4-875f-122ef097a209)
+
+   6. Other settings are optional, so click on 'Done':
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/f92a2415-7ae6-4a02-8a0e-c8af2c806471)
+
+   7. On the 'Credentials' page, the account generated will appear at the bottom of the page. Click on it to open account page:
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/c9fae63b-2af5-4c2a-8bbf-d21035cfadbc)
+
+   8. Once in the account page, click on 'Keys':
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/5bfe5109-afa2-446a-a8e6-7f19e7cf7916)
+
+   9. Click on the 'Add Key' dropdown and select 'Create New Key'.
+   10. Select JSON option. Once you click on 'Create', a file will automatically download to your 'downsloaded' folder on your device:  
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/692d119c-ccde-474d-b14a-6307f3ee2310)
+
+- **ENABLE GOOGLE SHEETS API** :
+   1. Go to 'APIs and Services' > 'Library' and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
+      ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
 
 
