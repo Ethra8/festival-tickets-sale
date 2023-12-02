@@ -35,9 +35,7 @@ Happy coding!
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/9d5010e7-7697-49a4-96df-16a862efe005)
 
-![image](https://github.com/Ethra8/music-festival/assets/80659091/f5cea9c7-4338-4536-b5d9-a477d50395a9)  
-
-- We need to enable the following APIs for this project:
+- Enable the following APIs for this project:
    + Google Drive API
    + Google Sheets API
 
