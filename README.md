@@ -96,7 +96,7 @@ Happy coding!
 - pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
 - google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for our project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
 - gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
-      + To install google-auth & gspread, type in terminal:
+   + To install google-auth & gspread, type in terminal:  
      pip3 install gspread google-auth
-      + To upgrade in future, type in terminal:
+   + To upgrade in future, type in terminal:  
      python.exe -m pip install --upgrade pip
