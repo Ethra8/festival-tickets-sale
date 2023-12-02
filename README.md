@@ -30,3 +30,10 @@ The deployment terminal is set to 80 columns by 24 rows. That means that each li
 ---
 
 Happy coding!
+
+
+### TECHNOLOGIES USED
+
+
+### PYTHON MODULES INSTALLED
+- pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
