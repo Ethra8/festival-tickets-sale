@@ -85,7 +85,7 @@ Happy coding!
 3. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.jason file, so our project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
 4. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
-5. On the terminal, type 'git add.', then 'git status' and make sure the creds.json file is not in the list, before committing to GitHub.
+5. On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list, before committing to GitHub.
 
     
 
