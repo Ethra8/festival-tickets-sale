@@ -18,24 +18,18 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 
-NEW_ORDER = {
-        'invoice_num' : ' ',
-        'invoice_date' : ' ',
-        'user_name' : ' ',
-        'user_email' : ' ',
-        'adult_one_day' : 0,
-        'adult_full_event' : 0,
-        'child_one_day' : 0,
-        'child_full_event' : 0,
-        'fest_pack' : 0,
-        'backstage_day_bonus' : 0,
-        'backstage_full_bonus' : 0
-    }
-
 festival_settings = SHEET.worksheet('festival_settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 extra_info_worksheet = SHEET.worksheet('extra_info')
 sales_worksheet = SHEET.worksheet('sales')
+
+
+item_sales_new_order = sales_worksheet.row_values(1) #gets key values to create NEW_ORDER dict
+values_sales_new_order = sales_worksheet.row_values(2) #gets mock values for each key to create NEW_ORDER dict
+
+# dict NEW_ORDER takes user inputs all along the app to create final invoice, also including total amount 
+NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
+
 
 def logo_festival_name():
     """
@@ -378,28 +372,69 @@ def order_inputs():
 
 
 def process_order(order):
+    """
+    Generates value list (order_values) from NEW_ORDER dict, calculates final amount to print to user,
+    by multiplying each item cost taken fro pricing worksheet, per number of items in order_values,
+    and exports full data list to sales worksheet.
+    """
 
     invoice = order.get('invoice_num')   
     print(f"\nYour order {invoice} is being generated...")
 
-    order_values = []
+    user_email = input("\nPlease, include your email so we can send your pending invoice as pdf, including the payment link\n").strip() # strip() method erases extra spaces before/after input data
+    NEW_ORDER['user_email'] = user_email #includes user_email input value to user_email key in dict NEW_ORDER
 
-    user_email = input("\nPlease, include your email so we can send your receipt in pdf and the payment link\n").strip()
-    NEW_ORDER['user_email'] = user_email
-
-    user_name = input("\nPlease, include a user name to be able to address you\n").strip().capitalize()
+    user_name = input("\nPlease, type in a user name to be able to address you\n").strip().title() # title() method capitalizes every word in input string
     NEW_ORDER['user_name'] = user_name
 
+    order_items = list(NEW_ORDER.keys()) #creates list of items out of NEW_ORDER dict
+    print(order_items)
+
+    order_values = [] #creates list from values out of NEW_ORDER dict
+
+    #takes only values from dict NEW_ORDER, and appends to new list order_values
     for x in order.values():
         order_values.append(x)
-    
-    sales_worksheet.append_row(order_values)
+        
     print(f"Hold on {user_name}, the total amount is being calculated...")
 
-    item_prices = pricing_worksheet.col_values(3)[1:]
-    order_items = order_values[4:]
-    print(item_prices)
-    print(order_items)
+    item_prices = pricing_worksheet.col_values(3)[1:] #list of strings of each item price from pricing worksheet
+    
+    item_prices_float_list = [] #new list of floats made from list of strings item_prices
+
+    # converts item_prices to list of floats item_prices_float_list
+    for i in item_prices:
+        item_prices_float_list.append(float(i))
+
+    number_of_items_in_order_float = [] #new list of floats made from list of strings number_of_items_in_order
+    
+    number_of_items_in_order = order_values[4:] # takes number of items selected in the order
+    
+    # loop iterates through number_of_items_in_order and converts values in strings to floats, include each float to  new list number_of_items_in_order_float
+    for i in number_of_items_in_order:
+        number_of_items_in_order_float.append(float(i))
+
+    print(number_of_items_in_order_float)
+
+    #multiplies number of items in order with price of item
+    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]
+    print(res_list) #gives result of multiplying item prices by number of items in order
+
+    # sums all sums of items ordered, calculates final amount to be paid
+    final_amount= sum(res_list)
+    print(final_amount)
+
+    order_values.append(final_amount)
+    print(order_values)
+
+    print(f"Dear {user_name},\nPlease review your present order before it is processed and sent to your email for due payment:\n\n")
+    print(f"Invoice number : {invoice}\n")
+    print(f"User name : {user_name}")
+    print(f"Email : {user_email}")
+    print(f"{number_of_items_in_order_float[0]}")
+
+    sales_worksheet.append_row(order_values)
+
 
     
 def list_keyword_item():
