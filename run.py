@@ -311,9 +311,28 @@ def order_inputs():
 def process_order(order):
 
     invoice = order.get('invoice_num')   
-    print(f"Your order {invoice} is being generated...")
+    print(f"\nYour order {invoice} is being generated...")
+
+    order_values = []
+
+    user_email = input("\nPlease, include your email so we can send your receipt in pdf and the payment link\n").strip().capitalize()
+    NEW_ORDER['user_email'] = user_email
+
+    user_name = input("\nPlease, include a user name to be able to address you\n").strip()
+    NEW_ORDER['user_name'] = user_name
+
+    for x in order.values():
+        order_values.append(x)
     
-    return True
+    sales_worksheet.append_row(order_values)
+    print(f"Hold on {user_name}, the total amount is being calculated...")
+
+    item_prices = pricing_worksheet.col_values(3)[1:]
+    order_items = order_values[4:]
+    print(item_prices)
+    print(order_items)
+
+    
 
 
 def order():
@@ -361,6 +380,6 @@ def main():
     display_pricing_list()   
     extra_info()
     order()
-    # process_order()
+    
 
 main()
