@@ -18,11 +18,24 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 
+NEW_ORDER = {
+        'invoice_num' : ' ',
+        'invoice_date' : ' ',
+        'user_name' : ' ',
+        'user_email' : ' ',
+        'adult_one_day' : 0,
+        'adult_full_event' : 0,
+        'child_one_day' : 0,
+        'child_full_event' : 0,
+        'fest_pack' : 0,
+        'backstage_day_bonus' : 0,
+        'backstage_full_bonus' : 0
+    }
+
 festival_settings = SHEET.worksheet('festival_settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 extra_info_worksheet = SHEET.worksheet('extra_info')
 sales_worksheet = SHEET.worksheet('sales')
-
 
 def logo_festival_name():
     """
@@ -58,17 +71,17 @@ logo = pyfiglet.figlet_format(festival_name, logo_font) # pyfiglet method to cre
 
 def print_inventory(dct):
     """
-    Returns printed dictionary (dct) formated as 1 row for each entry,
-    removes '[]' and ',' as such: {item} {amount} €, aligning amounts
+    Returns printed PRICING LIST (dct) formated as 1 row for each entry,
+    removes '[]' and ',' by: {item} {amount} €, also aligning amounts
     e.g.: Adult 1 Day Access  75 €
+          Child Full Access   90 €
     """
     print("\nPRICING:\n")
     for item, amount in dct.items(): 
         print(f'{item:25}{amount} €')
-        
-    # print("\n")    
-
-
+    
+    extra_info()
+    
 
 def pricing():
     """
@@ -86,23 +99,38 @@ def pricing():
 pricing = pricing() # dict of ticket_types & ticket_prices, returned by pricing()
 
 
+def exit_app():
+    """
+    Brings user to final question before exit point and goodbye message, giving last chance to continue before order is lost.
+    If user decides to continue, Pricing list is printed, and sale continues.
+    """
+    exit_confirmation = input("\nAre you sure you want to exit program? In case you have a pending order, it will get lost.\n\nType E (EXIT) to close program, or any other key to continue with your order:\n").lower()
+    
+    if exit_confirmation == "e":
+        print(f"\nMaybe see you some other time, have a lovely day!\n\n{logo}\n\n(c) {festival_name} 2023\n\n\n")
+    if exit_confirmation != "e":
+        print_inventory(pricing)
+
+
 def display_pricing_list():
     """
-    Asks user by input if s/he wants to see the Pricing List,
-    in which case calls print_inventory(pricing), passing 'pricing' dict as argument
+    Prompts user input to see the Pricing List, to exit, or return. if user types P in input.
+    then function calls print_inventory(pricing), passing 'pricing' dict as argument,
+    to print Pricing list. If user types E exit_app() is triggered, and if user types any other key,
+    program restarts.
     """
-    p = input("Press Y if you want to see the Pricing List:\n").lower()
+    p = input("Press any key to view PRICING LIST, or E (EXIT):\n").lower()
     
-    if p == "y":       
+    if p != "e":       
         print_inventory(pricing)
-    elif p != "y":
-        print("Maybe see you next time...")
-        main()
+    if p == "e":
+        exit_app()
         
 
 def extra_info():
     """
-    Returns list of extra info in 'extra_info' worksheet per item
+    Returns printed list of extra info per item taken from 'extra_info' worksheet,
+    formated to be human-friendly.
     """
     print("\nDETAILED INFO:\n")
     full_info = extra_info_worksheet.get_all_values()[1:] #creates list of lists, starting at row 2 (one list per row)
@@ -110,49 +138,54 @@ def extra_info():
     for i in full_info: # prints each row formated as follows
         print(f"{i[1]} --> Includes: {i[2]}, {i[3]}, {i[4]}")
     print("\n")
+    order()
 
-
-NEW_ORDER = {
-        'invoice_num' : ' ',
-        'invoice_date' : ' ',
-        'user_name' : ' ',
-        'user_email' : ' ',
-        'adult_one_day' : 0,
-        'adult_full_event' : 0,
-        'child_one_day' : 0,
-        'child_full_event' : 0,
-        'fest_pack' : 0,
-        'backstage_day_bonus' : 0,
-        'backstage_full_bonus' : 0
-    }
 
 
 def order_inputs():
-    ORDER_ITEM = input("\nType the KEY next to the ticket you want to include in your order:\n").lower()
+    """
+    Prompts user to type KEYWORD printed (ORDER_ITEM), and number of tickets to be included in order (NEW_ORDER).
+    Gives ValueError if user introduces a number>30 or other than an integer.
+    User can also return to welcome message, or exit app at any stage.
+    Returns NEW_ORDER
+    """
+    ORDER_ITEM = input("\nType the KEYWORD (e.g.: AF) to the left of the ticket you want to include in your order next, P to view (PRICING LIST), or E (EXIT):\n").lower()
     try:
+        if ORDER_ITEM == "e":
+            exit_app()
+            return False
+        if ORDER_ITEM == "p":
+            print_inventory(pricing)
+            return False
         if ORDER_ITEM == "a1": # ADULT 1 DAY ACCESS
             try:
                 adult_one_day = int(input("\nHow many 'Adult 1 Day Access' do you want to order? - Type a number from 1 - 30\n"))
                 
-                if adult_one_day < 0 or adult_one_day > 30 :
+                if adult_one_day < 0 or adult_one_day > 30:
                     raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
                     f"You must type a number from 1 to 30"
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['adult_one_day'] = adult_one_day
 
             print(f"\nSuccessfully added to your cart: {adult_one_day} ticket(s) of 'Adult 1 Day Access'")
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "af": # ADULT FULL ACCESS
             try:
@@ -164,18 +197,24 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['adult_full_event'] = adult_full_event
             print(f"\nSuccessfully added to your cart: {adult_full_event} ticket(s) of 'Adult Full Event Access'")
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "c1": # CHILD 1 DAY ACCESS
             try:
@@ -187,19 +226,24 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['child_one_day'] = child_one_day
             print(f"\nSuccessfully added to your cart: {child_one_day} ticket(s) of 'Child 1 Day Access'")
             
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "cf": # CHILD FULL ACCESS
             try:
@@ -211,19 +255,24 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['child_full_event'] = child_full_event
             print(f"\nSuccessfully added to your cart: {child_full_event} ticket(s) of 'Child Full Event Access'")
 
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "fp": # FULL PACK
             try:
@@ -235,18 +284,23 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['fest_pack'] = fest_pack
             print(f"\nSuccessfully added to your cart: {fest_pack} ticket(s) of 'Fest Pack'")
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "b1": # BACKSTAGE 1 DAY ACCESS
             try:
@@ -258,18 +312,23 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['backstage_day_bonus'] = backstage_day_bonus
             print(f"\nSuccessfully added to your cart: {backstage_day_bonus} ticket(s) of 'Fest Pack'")
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-            return True
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
 
         if ORDER_ITEM == "bf": # BACKSTAGE FULL ACCESS
             try:
@@ -281,25 +340,35 @@ def order_inputs():
                     )
             except ValueError as e:
                 print(f"Invalid data: {e}, please try again.")
-                return False
+                order_inputs()
             
             NEW_ORDER['backstage_full_bonus'] = backstage_full_bonus
             print(f"\nSuccessfully added to your cart: {backstage_full_bonus} ticket(s) of 'Fest Pack'")
             print(NEW_ORDER)
-            continue_ordering = input("\nDo you want to order more tickets? - Type Y (YES), or F (FINISH ORDER):\n").lower()
-            if continue_ordering == "y":
-                order_inputs()
+            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+
             if continue_ordering == "f":
                 print("Your order is being processed...")
-                process_order(NEW_ORDER)       
-            return True
+                process_order(NEW_ORDER)
+                return False
+            if continue_ordering == "p":
+                print_inventory(pricing)
+                return False
+            if continue_ordering != "p" or continue_ordering != "f":
+                list_keyword_item()
+                # return True
         
-        if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or continue_ordering != "y" or continue_ordering != "f":
+        if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or ORDER_ITEM != "p" or ORDER_ITEM != "f":
             raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
-                f"You must type a correct KEY"
+                f"You must type a correct KEYWORD"
             )
 
-
+        if ORDER_ITEM == "e":
+            exit_app()
+        
+        if ORDER_ITEM == "p":
+            print_inventory(pricing)
+    
     except ValueError as e:
         print(f"\nInvalid data: {e}, please try again.")
         order_inputs()
@@ -315,10 +384,10 @@ def process_order(order):
 
     order_values = []
 
-    user_email = input("\nPlease, include your email so we can send your receipt in pdf and the payment link\n").strip().capitalize()
+    user_email = input("\nPlease, include your email so we can send your receipt in pdf and the payment link\n").strip()
     NEW_ORDER['user_email'] = user_email
 
-    user_name = input("\nPlease, include a user name to be able to address you\n").strip()
+    user_name = input("\nPlease, include a user name to be able to address you\n").strip().capitalize()
     NEW_ORDER['user_name'] = user_name
 
     for x in order.values():
@@ -333,16 +402,36 @@ def process_order(order):
     print(order_items)
 
     
+def list_keyword_item():
+
+    print("\nEach ticket has a KEYWORD associated in the system:\n")
+    items = pricing_worksheet.col_values(2)[0:]
+    item_keys = pricing_worksheet.col_values(4)[0:]
+
+    dict_item_keys = dict(zip(item_keys, items)) #creates dict merging each i from both lists
+    
+    for key, item in dict_item_keys.items(): #formats output of dict of KEY and ITEMS
+        print(f'{key:8} : {item}')
+        print('-' * 30) #adds ------- after each KEY : ITEM of the dict
+            
+    order_inputs()
 
 
 def order():
-    order = input("Press Y if you want to order some tickets, or C to cancel:\n").lower()
-    items = pricing_worksheet.col_values(2)[0:]
-    item_keys = pricing_worksheet.col_values(4)[0:]
-    
-    
-    if order == "y":
-        print("\nProceeding ...\n")
+    """
+    Prompts user to start ordering, to return to welcome message, or to exit.
+    """
+    order = input("Press any key if you want to continue with your order, type R (RETURN), or type E (EXIT):\n").lower()
+
+    if order == "e":
+        exit_app()
+        return False
+    if order == "r":
+        main()
+        return False
+   
+    if order != "e" or order != "r":
+        print("\nProceeding ...")
 
         invoice = sales_worksheet.col_values(1)[-1] #takes last invoice_num from sales_worksheet e.g.: INV-1000
         invoice_letters = invoice.split("-")[0] #takes innitial letter of last invoice_num before the '-' e.g: INV
@@ -355,21 +444,10 @@ def order():
         date = datetime.today().strftime('%Y-%m-%d')
         NEW_ORDER['invoice_date'] = date
 
-        dict_item_keys = dict(zip(item_keys, items)) #creates dict merging each i from both lists
-        
-        for key, item in dict_item_keys.items(): #formats output of dict of KEY and ITEMS
-            print(f'{key:4} : {item}')
-            print('-' * 30) #adds ------- after each KEY : ITEM of the dict
-        
-        
-    elif order != "y":
-        main()
-    
-    order_inputs()
-    return NEW_ORDER
+        list_keyword_item()
+        return NEW_ORDER
     
     
-
 def main():
     """
     Run all program functions
@@ -378,8 +456,6 @@ def main():
     print(logo)
     print('\n{:^50}'.format('BUY YOUR TICKETS!\n'))
     display_pricing_list()   
-    extra_info()
-    order()
     
 
 main()
