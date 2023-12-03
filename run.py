@@ -152,6 +152,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "af": # ADULT FULL ACCESS
             try:
@@ -174,6 +175,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "c1": # CHILD 1 DAY ACCESS
             try:
@@ -197,6 +199,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "cf": # CHILD FULL ACCESS
             try:
@@ -220,6 +223,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "fp": # FULL PACK
             try:
@@ -242,6 +246,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "b1": # BACKSTAGE 1 DAY ACCESS
             try:
@@ -264,6 +269,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
+            return True
 
         if ORDER_ITEM == "bf": # BACKSTAGE FULL ACCESS
             try:
@@ -285,13 +291,9 @@ def order_inputs():
                 order_inputs()
             if continue_ordering == "f":
                 print("Your order is being processed...")
-                process_order(NEW_ORDER)
-       
-        # if ORDER_ITEM == "e":
-        #     main()
-        # if ORDER_ITEM == "p":
-        #     process_order()
+                process_order(NEW_ORDER)       
             return True
+        
         if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or continue_ordering != "y" or continue_ordering != "f":
             raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
                 f"You must type a correct KEY"
