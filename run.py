@@ -373,7 +373,6 @@ def order_inputs():
 
 def confirm_order():
     print("\nYour order has successfully been processed!\n\nYou will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\nWARNING: If you fail to pay your invoice in due date, your order will be cancelled, and the tickets will be available again for other users to purchase.\n\n\n Thank you!")
-    sales_worksheet.append_row(order_values)
 
 
 def process_order(order):
