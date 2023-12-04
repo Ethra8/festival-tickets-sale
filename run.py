@@ -29,6 +29,7 @@ values_sales_new_order = sales_worksheet.row_values(2) #gets mock values for eac
 
 # dict NEW_ORDER takes user inputs all along the app to create final invoice, also including total amount 
 NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
+DATE = datetime.today().strftime('%Y-%m-%d')
 
 
 def logo_festival_name():
@@ -173,7 +174,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -202,7 +203,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -231,7 +232,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -260,7 +261,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -288,7 +289,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -316,7 +317,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -344,7 +345,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                return False
+                # return True
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -352,7 +353,7 @@ def order_inputs():
                 list_keyword_item()
                 # return True
         
-        if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or ORDER_ITEM != "p" or ORDER_ITEM != "f":
+        if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or ORDER_ITEM != "p" or ORDER_ITEM != "f" or continue_ordering != "f" or continue_ordering != "p":
             raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
                 f"You must type a correct KEYWORD"
             )
@@ -367,14 +368,18 @@ def order_inputs():
         print(f"\nInvalid data: {e}, please try again.")
         order_inputs()
             
-    return NEW_ORDER
+    # return NEW_ORDER
 
+
+def confirm_order():
+    print("\nYour order has successfully been processed!\n\nYou will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\nWARNING: If you fail to pay your invoice in due date, your order will be cancelled, and the tickets will be available again for other users to purchase.\n\n\n Thank you!")
+    sales_worksheet.append_row(order_values)
 
 
 def process_order(order):
     """
     Generates value list (order_values) from NEW_ORDER dict, calculates final amount to print to user,
-    by multiplying each item cost taken fro pricing worksheet, per number of items in order_values,
+    by multiplying each item cost taken from pricing worksheet, per number of items in order_values,
     and exports full data list to sales worksheet.
     """
 
@@ -387,7 +392,8 @@ def process_order(order):
     user_name = input("\nPlease, type in a user name to be able to address you\n").strip().title() # title() method capitalizes every word in input string
     NEW_ORDER['user_name'] = user_name
 
-    order_items = list(NEW_ORDER.keys()) #creates list of items out of NEW_ORDER dict
+    #creates list of items out of NEW_ORDER dict
+    order_items = sales_worksheet.row_values(1)
     print(order_items)
 
     order_values = [] #creates list from values out of NEW_ORDER dict
@@ -395,46 +401,53 @@ def process_order(order):
     #takes only values from dict NEW_ORDER, and appends to new list order_values
     for x in order.values():
         order_values.append(x)
-        
+    print(order_values)
+    
     print(f"Hold on {user_name}, the total amount is being calculated...")
 
     item_prices = pricing_worksheet.col_values(3)[1:] #list of strings of each item price from pricing worksheet
-    
-    item_prices_float_list = [] #new list of floats made from list of strings item_prices
+    print(item_prices)
+    item_prices_int_list = [] #new list of floats made from list of strings item_prices
 
     # converts item_prices to list of floats item_prices_float_list
     for i in item_prices:
-        item_prices_float_list.append(float(i))
+        item_prices_int_list.append(int(i))
 
-    number_of_items_in_order_float = [] #new list of floats made from list of strings number_of_items_in_order
+    number_of_items_in_order_int = [] #new list of floats made from list of strings number_of_items_in_order
     
     number_of_items_in_order = order_values[4:] # takes number of items selected in the order
     
     # loop iterates through number_of_items_in_order and converts values in strings to floats, include each float to  new list number_of_items_in_order_float
     for i in number_of_items_in_order:
-        number_of_items_in_order_float.append(float(i))
+        number_of_items_in_order_int.append(int(i))
 
-    print(number_of_items_in_order_float)
+    print(number_of_items_in_order_int)
 
-    #multiplies number of items in order with price of item
-    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]
+    #multiplies number of items in the order with price of item
+    res_list = [item_prices_int_list[i] * number_of_items_in_order_int[i] for i in range(len(item_prices_int_list))]
     print(res_list) #gives result of multiplying item prices by number of items in order
 
     # sums all sums of items ordered, calculates final amount to be paid
     final_amount= sum(res_list)
-    print(final_amount)
+    print(str(final_amount))
+    # final_amount = int(final_amount)
 
-    order_values.append(final_amount)
+    order_values.pop()
+    order_values.append(str(final_amount))
+    
     print(order_values)
 
-    print(f"Dear {user_name},\nPlease review your present order before it is processed and sent to your email for due payment:\n\n")
-    print(f"Invoice number : {invoice}\n")
-    print(f"User name : {user_name}")
-    print(f"Email : {user_email}")
-    print(f"{number_of_items_in_order_float[0]}")
+    final_order = dict(zip(order_items,order_values))
 
+    print(f"Dear {user_name},\n\nPlease review your present order before it is processed and sent to your email for due payment:\n\n")
+    
+    for item, value in final_order.items(): 
+        print(f'{item:10} : {value}')
+    
     sales_worksheet.append_row(order_values)
-
+    # print(order_values)
+    # confirm_order()
+    # return True
 
     
 def list_keyword_item():
@@ -468,16 +481,14 @@ def order():
     if order != "e" or order != "r":
         print("\nProceeding ...")
 
-        invoice = sales_worksheet.col_values(1)[-1] #takes last invoice_num from sales_worksheet e.g.: INV-1000
+        invoice = sales_worksheet.col_values(1)[-1] #takes last invoice_num from sales_worksheet e.g.: INV-10000
         invoice_letters = invoice.split("-")[0] #takes innitial letter of last invoice_num before the '-' e.g: INV
         invoice_num = invoice.split("-")[1] #takes numbers of last invoice_num after the '-' and returns string e.g.: '1000'
         invoice_num = int(invoice_num) + 1 #turns num string int integer, and adds 1 to invoice_num e.g.: 1001
         invoice_num = f"{invoice_letters}-{invoice_num}" #creates new invoice_num with same format (letters-nums) e.g. INV-1001
         #print(invoice_num)
         NEW_ORDER['invoice_num'] = invoice_num
-
-        date = datetime.today().strftime('%Y-%m-%d')
-        NEW_ORDER['invoice_date'] = date
+        NEW_ORDER['invoice_date'] = DATE
 
         list_keyword_item()
         return NEW_ORDER
