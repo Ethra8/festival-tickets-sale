@@ -27,41 +27,36 @@ sales_worksheet = SHEET.worksheet('sales')
 item_sales_new_order = sales_worksheet.row_values(1) #gets key values to create NEW_ORDER dict
 values_sales_new_order = sales_worksheet.row_values(2) #gets mock values for each key to create NEW_ORDER dict
 
+ticket_type = pricing_worksheet.col_values(1)[0]
+code = pricing_worksheet.col_values(4)[0]
+code_example = pricing_worksheet.col_values(4)[1]
+
+
 # dict NEW_ORDER takes user inputs all along the app to create final invoice, also including total amount 
 NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
 DATE = datetime.today().strftime('%Y-%m-%d')
+TIME = datetime.today().strftime('%H:%M')
+print(TIME)
 
+festival_name = festival_settings.col_values(1)[1]
+logo_font = festival_settings.col_values(2)[1]
 
-def logo_festival_name():
+welcome_msg_before_logo = festival_settings.col_values(3)[1]
+welcome_msg_after_logo = festival_settings.col_values(4)[1]
+
+def logo():
     """
-    Returns Festival Name (fest_name) introduced by organizer
+    Prints Festival Name (fest_name) introduced by organizer
     in festival_settings worksheet, to be set as the logo
     in the console welcome message
     """
-    fest_name = festival_settings.col_values(1)[-1:]
-    #pprint(fest_name)
-    return fest_name
+    logo = pyfiglet.figlet_format(festival_name, logo_font) # pyfiglet method to create Festival Name as Logo, then printed in welcome message in main()
 
+    print(logo)
+    return logo
 
-fes_name = logo_festival_name()
-festival_name = fes_name[0]
+# logo = logo()
 
-
-def logo_font():
-    """
-    Returns Font selected by organizer in
-    festival_settings worksheet, to design the logo
-    in the console welcome message
-    """
-    font = festival_settings.col_values(2)[-1:]
-    #pprint(font)
-    return font
-
-
-font_selection = logo_font() #returns string with last item in logo_font column from festival_settings worksheet
-logo_font = font_selection[0] #removes '[]'
-
-logo = pyfiglet.figlet_format(festival_name, logo_font) # pyfiglet method to create Festival Name as Logo, then printed in welcome message in main()
 
 
 def print_inventory(dct):
@@ -102,34 +97,21 @@ def exit_app():
     exit_confirmation = input("\nAre you sure you want to exit program? In case you have a pending order, it will get lost.\n\nType E (EXIT) to close program, or any other key to continue with your order:\n").lower()
     
     if exit_confirmation == "e":
-        print(f"\nMaybe see you some other time, have a lovely day!\n\n{logo}\n\n(c) {festival_name} 2023\n\n\n")
+        print(f"\n Maybe see you some other time, have a lovely day!\n\n{logo()}\n\n(c) {festival_name} 2023\n\n\n")
     if exit_confirmation != "e":
         print_inventory(pricing)
 
 
-def display_pricing_list():
-    """
-    Prompts user input to see the Pricing List, to exit, or return. if user types P in input.
-    then function calls print_inventory(pricing), passing 'pricing' dict as argument,
-    to print Pricing list. If user types E exit_app() is triggered, and if user types any other key,
-    program restarts.
-    """
-    p = input("Press any key to view PRICING LIST, or E (EXIT):\n").lower()
-    
-    if p != "e":       
-        print_inventory(pricing)
-    if p == "e":
-        exit_app()
-        
 
 def extra_info():
     """
     Returns printed list of extra info per item taken from 'extra_info' worksheet,
     formated to be human-friendly.
     """
-    print("\nDETAILED INFO:\n")
+    extra_info_message = festival_settings.col_values(5)[1]
+    print(f"\n{extra_info_message}\n")
+    
     full_info = extra_info_worksheet.get_all_values()[1:] #creates list of lists, starting at row 2 (one list per row)
-
     for i in full_info: # prints each row formated as follows
         print(f"{i[1]} --> Includes: {i[2]}, {i[3]}, {i[4]}")
     print("\n")
@@ -139,12 +121,12 @@ def extra_info():
 
 def order_inputs():
     """
-    Prompts user to type KEYWORD printed (ORDER_ITEM), and number of tickets to be included in order (NEW_ORDER).
+    User inputs items (ORDER_ITEM), and number of tickets to be included in order (NEW_ORDER).
     Gives ValueError if user introduces a number>30 or other than an integer.
-    User can also return to welcome message, or exit app at any stage.
+    User can also return to welcome message, or exit app at any stage to cancel order.
     Returns NEW_ORDER
     """
-    ORDER_ITEM = input("\nType the KEYWORD (e.g.: AF) to the left of the ticket you want to include in your order next, P to view (PRICING LIST), or E (EXIT):\n").lower()
+    ORDER_ITEM = input(f"\n Type {code} (e.g.:{code_example}) of {ticket_type} you want to include to your order,\n Type P to view (PRICING LIST), or E to (EXIT):\n").lower()
     try:
         if ORDER_ITEM == "e":
             exit_app()
@@ -174,7 +156,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -203,7 +185,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -232,7 +214,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -261,7 +243,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -289,7 +271,7 @@ def order_inputs():
             if continue_ordering == "f":
                 print("Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -310,14 +292,14 @@ def order_inputs():
                 order_inputs()
             
             NEW_ORDER['backstage_day_bonus'] = backstage_day_bonus
-            print(f"\nSuccessfully added to your cart: {backstage_day_bonus} ticket(s) of 'Fest Pack'")
+            print(f"\n Successfully added to your cart: {backstage_day_bonus} ticket(s) of 'Fest Pack'")
             print(NEW_ORDER)
-            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+            continue_ordering = input("\n Type any key to order more items, P to view (PRICING LIST), or F to (FINALIZE ORDER):\n").lower()
 
             if continue_ordering == "f":
-                print("Your order is being processed...")
+                print(" Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -327,25 +309,25 @@ def order_inputs():
 
         if ORDER_ITEM == "bf": # BACKSTAGE FULL ACCESS
             try:
-                backstage_full_bonus = int(input("\nHow many 'Backstage Full Bonus' do you want to order? - Type a number from 1 - 30\n"))
+                backstage_full_bonus = int(input("\n How many 'Backstage Full Bonus' do you want to order? - Type a number from 1 - 30\n"))
                 
                 if backstage_full_bonus < 0 or backstage_full_bonus > 30 :
                     raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
                     f"You must type a number from 1 to 30"
                     )
             except ValueError as e:
-                print(f"Invalid data: {e}, please try again.")
+                print(f" Invalid data: {e}, please try again.")
                 order_inputs()
             
             NEW_ORDER['backstage_full_bonus'] = backstage_full_bonus
-            print(f"\nSuccessfully added to your cart: {backstage_full_bonus} ticket(s) of 'Fest Pack'")
+            print(f"\n Successfully added to your cart: {backstage_full_bonus} ticket(s) of 'Fest Pack'")
             print(NEW_ORDER)
-            continue_ordering = input("\nType any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+            continue_ordering = input("\n Type any key to order more tickets, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
 
             if continue_ordering == "f":
-                print("Your order is being processed...")
+                print(" Your order is being processed...")
                 process_order(NEW_ORDER)
-                # return True
+                return False
             if continue_ordering == "p":
                 print_inventory(pricing)
                 return False
@@ -355,7 +337,7 @@ def order_inputs():
         
         if ORDER_ITEM != "a1" or ORDER_ITEM !="af" or ORDER_ITEM !="c1" or ORDER_ITEM !="cf" or ORDER_ITEM !="fp" or ORDER_ITEM !="b1" or ORDER_ITEM !="bf" or ORDER_ITEM != "p" or ORDER_ITEM != "f" or continue_ordering != "f" or continue_ordering != "p":
             raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
-                f"You must type a correct KEYWORD"
+                f" You must type a correct KEYWORD"
             )
 
         if ORDER_ITEM == "e":
@@ -365,35 +347,35 @@ def order_inputs():
             print_inventory(pricing)
     
     except ValueError as e:
-        print(f"\nInvalid data: {e}, please try again.")
+        print(f"\n Invalid data: {e}, please try again.")
         order_inputs()
             
     # return NEW_ORDER
 
 
 def confirm_order():
-    print("\nYour order has successfully been processed!\n\nYou will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\nWARNING: If you fail to pay your invoice in due date, your order will be cancelled, and the tickets will be available again for other users to purchase.\n\n\n Thank you!")
+    print("\n Your order has successfully been processed!\n\n You will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\n WARNING: Your order will be cancelled if your fail to proceed to payment after 24 hours.\n\n\n Thank you!")
 
 
 def process_order(order):
     """
-    Generates value list (order_values) from NEW_ORDER dict, calculates final amount to print to user,
+    Generates value list (order_values) from NEW_ORDER dict, calculates final amount
     by multiplying each item cost taken from pricing worksheet, per number of items in order_values,
-    and exports full data list to sales worksheet.
+    appends final amount to NEW_ORDER, exports full data list to sales worksheet, and print invoice to user.
     """
 
     invoice = order.get('invoice_num')   
-    print(f"\nYour order {invoice} is being generated...")
+    print(f"\n Your order {invoice} is being generated...")
 
-    user_email = input("\nPlease, include your email so we can send your pending invoice as pdf, including the payment link\n").strip() # strip() method erases extra spaces before/after input data
+    user_email = input("\n Please, include your email so we can send your pending invoice as pdf, including the payment link\n").strip() # strip() method erases extra spaces before/after input data
     NEW_ORDER['user_email'] = user_email #includes user_email input value to user_email key in dict NEW_ORDER
 
-    user_name = input("\nPlease, type in a user name to be able to address you\n").strip().title() # title() method capitalizes every word in input string
+    user_name = input("\n Please, type in a user name to be able to address you\n").strip().title() # title() method capitalizes every word in input string
     NEW_ORDER['user_name'] = user_name
 
     #creates list of items out of NEW_ORDER dict
     order_items = sales_worksheet.row_values(1)
-    print(order_items)
+    # print(order_items)
 
     order_values = [] #creates list from values out of NEW_ORDER dict
 
@@ -402,10 +384,11 @@ def process_order(order):
         order_values.append(x)
     print(order_values)
     
-    print(f"Hold on {user_name}, the total amount is being calculated...")
+    print(f"\ Hold on {user_name}, the total amount is being calculated...")
 
     item_prices = pricing_worksheet.col_values(3)[1:] #list of strings of each item price from pricing worksheet
-    print(item_prices)
+    # print(item_prices)
+    
     item_prices_int_list = [] #new list of floats made from list of strings item_prices
 
     # converts item_prices to list of floats item_prices_float_list
@@ -420,45 +403,42 @@ def process_order(order):
     for i in number_of_items_in_order:
         number_of_items_in_order_int.append(int(i))
 
-    print(number_of_items_in_order_int)
+    # print(number_of_items_in_order_int)
 
     #multiplies number of items in the order with price of item
     res_list = [item_prices_int_list[i] * number_of_items_in_order_int[i] for i in range(len(item_prices_int_list))]
-    print(res_list) #gives result of multiplying item prices by number of items in order
+    # print(res_list) #gives result of multiplying item prices by number of items in order
 
     # sums all sums of items ordered, calculates final amount to be paid
     final_amount= sum(res_list)
-    print(str(final_amount))
+    # print(str(final_amount))
     # final_amount = int(final_amount)
 
     order_values.pop()
     order_values.append(str(final_amount))
-    
-    print(order_values)
+    # print(order_values)
 
     final_order = dict(zip(order_items,order_values))
 
-    print(f"Dear {user_name},\n\nPlease review your present order before it is processed and sent to your email for due payment:\n\n")
+    print(f" Dear {user_name},\n\nPlease review your present order before it is processed and sent to your email for due payment:\n\n")
     
     for item, value in final_order.items(): 
-        print(f'{item:10} : {value}')
+        print(f' {item:10} : {value}')
     
     sales_worksheet.append_row(order_values)
-    # print(order_values)
-    # confirm_order()
-    # return True
+
 
     
 def list_keyword_item():
 
-    print("\nEach ticket has a KEYWORD associated in the system:\n")
+    print(f"\n Each {ticket_type} has a {code} associated in the system:\n")
     items = pricing_worksheet.col_values(2)[0:]
     item_keys = pricing_worksheet.col_values(4)[0:]
 
     dict_item_keys = dict(zip(item_keys, items)) #creates dict merging each i from both lists
     
     for key, item in dict_item_keys.items(): #formats output of dict of KEY and ITEMS
-        print(f'{key:8} : {item}')
+        print(f' {key:8} : {item}')
         print('-' * 30) #adds ------- after each KEY : ITEM of the dict
             
     order_inputs()
@@ -468,7 +448,7 @@ def order():
     """
     Prompts user to start ordering, to return to welcome message, or to exit.
     """
-    order = input("Press any key if you want to continue with your order, type R (RETURN), or type E (EXIT):\n").lower()
+    order = input(" Press any key to order, type R (RETURN), or type E (EXIT):\n").lower()
 
     if order == "e":
         exit_app()
@@ -478,7 +458,7 @@ def order():
         return False
    
     if order != "e" or order != "r":
-        print("\nProceeding ...")
+        print("\n Proceeding ...")
 
         invoice = sales_worksheet.col_values(1)[-1] #takes last invoice_num from sales_worksheet e.g.: INV-10000
         invoice_letters = invoice.split("-")[0] #takes innitial letter of last invoice_num before the '-' e.g: INV
@@ -497,10 +477,11 @@ def main():
     """
     Run all program functions
     """
-    print("\n\n WELCOME TO\n")
-    print(logo)
-    print('\n{:^50}'.format('BUY YOUR TICKETS!\n'))
-    display_pricing_list()   
+    print(f"\n\n {welcome_msg_before_logo}\n")
+    logo()
+    print('\n{:^50}'.format(f'{welcome_msg_after_logo}'))
+    print_inventory(pricing)
+  
     
 
 main()
