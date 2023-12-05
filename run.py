@@ -18,7 +18,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 
-festival_settings = SHEET.worksheet('festival_settings')
+settings_worksheet = SHEET.worksheet('settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 extra_info_worksheet = SHEET.worksheet('extra_info')
 sales_worksheet = SHEET.worksheet('sales')
@@ -38,24 +38,23 @@ DATE = datetime.today().strftime('%Y-%m-%d')
 TIME = datetime.today().strftime('%H:%M')
 print(TIME)
 
-festival_name = festival_settings.col_values(1)[1]
-logo_font = festival_settings.col_values(2)[1]
+festival_name = settings_worksheet.col_values(1)[1]
+logo_font = settings_worksheet.col_values(2)[1]
 
-welcome_msg_before_logo = festival_settings.col_values(3)[1]
-welcome_msg_after_logo = festival_settings.col_values(4)[1]
+welcome_msg_before_logo = settings_worksheet.col_values(3)[1]
+welcome_msg_after_logo = settings_worksheet.col_values(4)[1]
+
+
 
 def logo():
     """
-    Prints Festival Name (fest_name) introduced by organizer
-    in festival_settings worksheet, to be set as the logo
+    Prints brand name (logo_name) introduced by organizer
+    in settings_worksheet worksheet, to be set as the logo
     in the console welcome message
     """
     logo = pyfiglet.figlet_format(festival_name, logo_font) # pyfiglet method to create Festival Name as Logo, then printed in welcome message in main()
 
     print(logo)
-    return logo
-
-# logo = logo()
 
 
 
@@ -108,7 +107,7 @@ def extra_info():
     Returns printed list of extra info per item taken from 'extra_info' worksheet,
     formated to be human-friendly.
     """
-    extra_info_message = festival_settings.col_values(5)[1]
+    extra_info_message = settings_worksheet.col_values(5)[1]
     print(f"\n{extra_info_message}\n")
     
     full_info = extra_info_worksheet.get_all_values()[1:] #creates list of lists, starting at row 2 (one list per row)
