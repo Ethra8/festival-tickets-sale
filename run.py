@@ -94,7 +94,7 @@ def exit_app():
     Brings user to final question before exit point and goodbye message, giving last chance to continue before order is lost.
     If user decides to continue, Pricing list is printed, and sale continues.
     """
-    exit_confirmation = input("\nAre you sure you want to exit program? In case you have a pending order, it will get lost.\n\nType E (EXIT) to close program, or any other key to continue with your order:\n").lower()
+    exit_confirmation = input("\n Are you sure you want to exit program? In case you have a pending order, it will get lost.\n\nType E (EXIT) to close program, or any other key to continue with your order:\n").lower()
     
     if exit_confirmation == "e":
         print(f"\n Maybe see you some other time, have a lovely day!\n\n{logo()}\n\n(c) {festival_name} 2023\n\n\n")
