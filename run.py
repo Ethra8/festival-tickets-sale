@@ -5,6 +5,7 @@ from pprint import pprint # --> must not be deployed. but very handy when coding
 from datetime import datetime
 import math
 
+import smtplib
 
 #SCOPE in a constant, in Python, constant variables are written in CAPITALS
 SCOPE = [
@@ -28,7 +29,7 @@ sales_worksheet = SHEET.worksheet('sales')
 item_sales_new_order = sales_worksheet.row_values(1) #gets key values to create NEW_ORDER dict
 values_sales_new_order = sales_worksheet.row_values(3) #gets mock values for each key to create NEW_ORDER dict
 
-ticket_type = pricing_worksheet.col_values(1)[0]
+item_type = pricing_worksheet.col_values(1)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
 
@@ -124,23 +125,22 @@ def print_inventory(dct):
     for item, amount in dct.items(): 
         print(f'{item:30}{amount} €')
     
-    extra_info()
     
 
 def pricing():
     """
-    Returns dict of ticket_types and ticket_prices
+    Returns dict of item_names and ticket_prices
     taken from 'pricing' worksheet
     """
-    ticket_types = pricing_worksheet.col_values(2)[1:] #retrieves 1st column, from 2nd row onwards (eludes 1st row) and creates list of strings
+    item_names = pricing_worksheet.col_values(2)[1:] #retrieves 1st column, from 2nd row onwards (eludes 1st row) and creates list of strings
     ticket_prices = pricing_worksheet.col_values(3)[1:] #retrieves 3rd column, from 2nd row onwards (eludes 1st row) and creates list of strings
     
-    price_per_ticket = dict(zip(ticket_types, ticket_prices))
+    price_per_ticket = dict(zip(item_names, ticket_prices))
 
     return price_per_ticket
 
 
-pricing = pricing() # dict of ticket_types & ticket_prices, returned by pricing()
+pricing = pricing() # dict of item_names & ticket_prices, returned by pricing()
 
 
 def exit_app():
@@ -169,12 +169,12 @@ def extra_info():
     for i in full_info: # prints each row formated as follows
         print(f"{i[1]} --> Includes: {i[2]}, {i[3]}, {i[4]}")
     print("\n")
-    order()
+    
 
 
 def continue_ordering():
 
-    continue_ordering = input("\n Type any key to continue ordering, P to view PRICING LIST, or F to FINISH ORDER:\n").lower()
+    continue_ordering = input("\n Type any key to continue ordering, P to view PRICING LIST, or F to FINALIZE ORDER:\n").lower()
 
     if continue_ordering == "f":
         print(" Your order is being processed...")
@@ -185,7 +185,7 @@ def continue_ordering():
         return False
     if continue_ordering != "p" or continue_ordering != "f":
         list_keyword_item()
-
+        return True
 
 def order_inputs():
     """
@@ -194,7 +194,7 @@ def order_inputs():
     User can also return to welcome message, or exit app at any stage to cancel order.
     Returns NEW_ORDER
     """
-    ORDER_ITEM = input(f"\n Type {code} (e.g.:{code_example}) of {ticket_type} you want to include to your order,\n Type P to view (PRICING LIST), or E to (EXIT):\n").lower()  
+    ORDER_ITEM = input(f"\n Type {code} (e.g.:{code_example}) of {item_type} you want to include to your order,\n Type P to view (PRICING LIST), or E to (EXIT):\n").lower()  
    
     try:
         if ORDER_ITEM == "e":
@@ -285,7 +285,7 @@ def order_inputs():
                 print(f" Invalid data: {e}, please try again.")
                 order_inputs()
             
-            NEW_ORDER['fest_pack'] = item5_qty
+            NEW_ORDER['item5'] = item5_qty
             print(f"\n Successfully added to your cart: {item5_qty} '{item5_human}'")
             continue_ordering()
             return False
@@ -326,7 +326,7 @@ def order_inputs():
 
         if ORDER_ITEM == item8_code or ORDER_ITEM == item8_code.lower(): # 8th item in pricing worksheet
             try:
-                item8_qty = int(input(f"\nHow many '{item8_human}' do you want to order? - Type a number from 1 - 30\n"))
+                item8_qty = int(input(f"\n How many '{item8_human}' do you want to order? - Type a number from 1 - 30\n"))
                 
                 if item8_qty < 1 or item8_qty > 30:
                     raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
@@ -344,7 +344,7 @@ def order_inputs():
 
         if ORDER_ITEM == item9_code or ORDER_ITEM == item9_code.lower(): # 9th item in pricing worksheet
             try:
-                item9_qty = int(input(f"\nHow many '{item9_human}' do you want to order? - Type a number from 1 - 30\n"))
+                item9_qty = int(input(f"\n How many '{item9_human}' do you want to order? - Type a number from 1 - 30\n"))
                 
                 if item9_qty < 1 or item9_qty > 30:
                     raise ValueError( # ValueError is renamed as e in except, and goes in the {e} in final message
@@ -362,7 +362,7 @@ def order_inputs():
 
         if ORDER_ITEM == item10_code or ORDER_ITEM == item10_code.lower(): # 10th item in pricing worksheet
             try:
-                item10_qty = int(input(f"\nHow many '{item10_human}' do you want to order? - Type a number from 1 - 30\n"))
+                item10_qty = int(input(f"\n How many '{item10_human}' do you want to order? - Type a number from 1 - 30\n"))
                 
                 if item10_qty < 1 or item10_qty > 30:
                     raise ValueError( # ValueError is renamed as e in except, and goes in the {e} in final message
@@ -440,51 +440,86 @@ def order_inputs():
 
         if ORDER_ITEM == "e":
             exit_app()
+            return False
         
         if ORDER_ITEM == "p":
             print_inventory(pricing)
+            return False
     
     except ValueError as e:
         print(f"\n Invalid data: {e}, please try again.")
         order_inputs()
             
-    # return NEW_ORDER
+    return True
 
 
-def confirm_order():
-    print(f"\n Your order has successfully been processed!\n\n You will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\n WARNING: Your order will be cancelled if your fail to proceed to payment after 24 hours.\n\n Thank you!\n\n{logo()}\n\n(c) {logo_name} 2023\n\n\n")
-    logo()
 
+def send_email_to_user():
+    """
+    Connects to smtp to send user an email
+    """
+    sender = "sell.tickets.app@gmail.com"
+    user_name = NEW_ORDER.get('user_name')
+    user_email = NEW_ORDER.get('user_email')
+    
+    message = f""" 
+    Subject: SMTP test email
+        
+    Hi {user_name}
+    This is a test email message!
+    """
+
+    sender = "sell.tickets.app@gmail.com"
+    gmail_app_password = "hjamkshirdxecddq"
+    receiver = user_email
+    
+
+    try:
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server.ehlo()
+        server.login(sender, gmail_app_password)
+        server.ehlo()
+        server.sendmail(sender, receiver, message)
+        server.close()
+
+        print("\n Email sent.\n")
+        logo()
+        print(f'\n(c) {logo_name} 2023\n\n\n')
+
+
+    except Exception as exception:
+        print("Error: %s!\n\n % Exception")
+    
 
 
 def process_order(order):
     """
-    Generates value list (order_values) from NEW_ORDER dict, prompt user to inout name & email,
+    Generates value list (order_values) from NEW_ORDER dict,
     calculates the order's final amount
     by multiplying each item cost taken from pricing worksheet, per number of items in order_values.
-    It appends final amount to NEW_ORDER and print invoice to user.
+    It appends final amount to NEW_ORDER and prints invoice to user.
     Then user is given the option to confirm order, return to ordering, or exit app.
-    If user confirms order it exports full data list to sales worksheet.
+    If user confirms order, invoice full data is exported to sales worksheet.
     """
 
     invoice = order.get('invoice_no')   
     print(f"\n Your order {invoice} is being generated...")
 
-    user_email = input("\n Please, include your email so we can send your pending invoice as pdf, including the payment link\n").strip() # strip() method erases extra spaces before/after input data
-    NEW_ORDER['user_email'] = user_email # includes user_email input value to user_email key in dict NEW_ORDER
+    order_item_names = sales_worksheet.row_values(2) # takes list of items out of sales worksheet, in a user-friendly version
 
-    user_name = input("\n Please, type in a user name to be able to address you\n").strip().title() # title() method capitalizes every word in input string
+    user_email = input("\n Please, include your email so we can send your pending invoice as a pdf file, together with the payment link\n").strip() # strip() method erases extra spaces before/after input data
+    NEW_ORDER['user_email'] = user_email # includes user_email input value to user_email key in dict NEW_ORDER
+    
+    user_name = input("\n Please, type in a user name to create your invoice\n").strip().title() # title() method capitalizes every word in input string
     NEW_ORDER['user_name'] = user_name
 
-    order_items = sales_worksheet.row_values(2) # takes list of items out of sales worksheet, in a user-friendly version
+    print(f"\n Hold on {user_name}, the total amount is being calculated...\n")
 
     order_values = [] # creates list from values out of NEW_ORDER dict
     
     for x in order.values(): # takes only values from dict NEW_ORDER, and appends to new list order_values
         order_values.append(x)
-    print(order_values)
-    
-    print(f"\n Hold on {user_name}, the total amount is being calculated...")
+    # print(order_values)
 
     item_prices = pricing_worksheet.col_values(3)[1:] #list of strings of each item price from pricing worksheet
     
@@ -495,14 +530,14 @@ def process_order(order):
 
     number_of_items_in_order_float = [] #new list of floats made from list of strings number_of_items_in_order
     
-    number_of_items_in_order = order_values[4:] # takes number of items selected in the order
+    number_of_items_in_order = order_values[4:] # takes number of items selected in the order, eluding user and invoice data until col4
     
     for i in number_of_items_in_order:   # loop iterates through number_of_items_in_order and converts values in strings to floats, include each float to  new list number_of_items_in_order_float
         number_of_items_in_order_float.append(float(i))
 
     res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))] # multiplies number of items in the order with price of item
 
-    total_amount= sum(res_list) # sums all sums of items ordered, calculates final amount to be paid
+    total_amount= sum(res_list) # sums all subtotals of items ordered, calculates total_amount to be paid
     
     total_amount = round(total_amount, 2) # rounds total_amount to floor, and only 2 decimals
 
@@ -510,7 +545,7 @@ def process_order(order):
     
     order_values.append(str(total_amount)) # appends to the order values the total_amount
 
-    final_order = dict(zip(order_items,order_values))  # creates new dict for final:order, with item as keys, and num. of items and final amount as values.
+    final_order = dict(zip(order_item_names,order_values))  # creates new dict for final_order, with item as keys, and num. of items as values. Includes final amount key:value
 
     print(f" Dear {user_name},\n\n Please review your present order before it is processed and sent to your email for due payment:\n\n")
     
@@ -518,25 +553,27 @@ def process_order(order):
         if value != '0': 
             print(f' {item:10} : {value}')
     
-    user_order_confirmation = input(" Press any key to CONFIRM ORDER, C to (CONTINUE ORDERING), or E to (EXIT) ").lower()
+    user_order_confirmation = input("\n Press any key to CONFIRM ORDER, C to (CONTINUE ORDERING), or E to (EXIT) ").lower()
 
     if user_order_confirmation == "c":
         list_keyword_item()
-        return False
+        # return False
     if user_order_confirmation == "e":
         exit_app()
-        return False
+        # return False
     if user_order_confirmation != "c" or user_order_confirmation != "e":
-        confirm_order()
+        sales_worksheet.append_row(order_values)
+        print(f"\n Your order has successfully been processed!\n\n You will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\n WARNING: Your order will be cancelled if your fail to proceed to payment after 24 hours.\n\n Thank you!")
+        send_email_to_user()
         return True
     
-    sales_worksheet.append_row(order_values)
+    return True
 
 
     
 def list_keyword_item():
 
-    print(f"\n Each {ticket_type} has a {code} associated in the system:\n")
+    print(f"\n Each {item_type} has a {code} associated in the system:\n")
     items = pricing_worksheet.col_values(2)[0:]
     item_keys = pricing_worksheet.col_values(4)[0:]
 
@@ -545,11 +582,13 @@ def list_keyword_item():
     for key, item in dict_item_keys.items(): #formats output of dict of KEY and ITEMS
         print(f' {key:8} : {item}')
         print('-' * 30) #adds ------- after each KEY : ITEM of the dict
-            
+
     order_inputs()
+       
+    
 
 
-def order():
+def generate_order():
     """
     Prompts user to start ordering, to return to welcome message, or to exit.
     """
@@ -574,7 +613,6 @@ def order():
         NEW_ORDER['invoice_no'] = invoice_no
         NEW_ORDER['order_date'] = DATE
 
-        list_keyword_item()
         return NEW_ORDER
     
     
@@ -586,7 +624,12 @@ def main():
     logo()
     print('\n{:^50}'.format(f'{welcome_msg_after_logo}'))
     print_inventory(pricing)
-  
-    
+    extra_info()
+    generate_order()
+    list_keyword_item()
+
 
 main()
+
+
+
