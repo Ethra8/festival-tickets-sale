@@ -24,6 +24,7 @@ settings_worksheet = SHEET.worksheet('settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 extra_info_worksheet = SHEET.worksheet('extra_info')
 sales_worksheet = SHEET.worksheet('sales')
+stock_worksheet = SHEET.worksheet('stock')
 
 
 item_sales_new_order = sales_worksheet.row_values(1) #gets key values to create NEW_ORDER dict
@@ -113,6 +114,17 @@ def logo():
     print(logo)
 
 
+def welcome():
+    print(f"\n\n {welcome_msg_before_logo}\n")
+    logo()
+    print('\n{:^50}'.format(f'{welcome_msg_after_logo}'))
+    go_to_pricing_list = input("\n\n Press ANY KEY to access\n").lower()
+
+    if go_to_pricing_list:
+        return True
+    return False
+
+
 
 def print_inventory(dct):
     """
@@ -121,13 +133,13 @@ def print_inventory(dct):
     e.g.: Adult 1 Day Access  75 €
           Child Full Access   90 €
     """
-    print("\nPRICING:\n")
+    print("\n PRICING:\n")
     for item, amount in dct.items(): 
-        print(f'{item:30}{amount} €')
+        print(f' {item:30}{amount} €')
     
     
 
-def pricing():
+def pricing_list():
     """
     Returns dict of item_names and ticket_prices
     taken from 'pricing' worksheet
@@ -140,7 +152,7 @@ def pricing():
     return price_per_ticket
 
 
-pricing = pricing() # dict of item_names & ticket_prices, returned by pricing()
+pricing = pricing_list() # dict of item_names & ticket_prices, returned by pricing_list()
 
 
 def exit_app():
@@ -163,17 +175,19 @@ def extra_info():
     formated to be human-friendly.
     """
     extra_info_message = settings_worksheet.col_values(5)[1]
-    print(f"\n{extra_info_message}\n")
+    print(f"\n {extra_info_message}:\n")
     
     full_info = extra_info_worksheet.get_all_values()[1:] #creates list of lists, starting at row 2 (one list per row)
     for i in full_info: # prints each row formated as follows
-        print(f"{i[1]} --> Includes: {i[2]}, {i[3]}, {i[4]}")
+        print(f" {i[1]} --> Includes: {i[2]}, {i[3]}, {i[4]}")
     print("\n")
     
 
 
 def continue_ordering():
-
+    """
+    Prompt user to continue order, to finalize or to exit app
+    """
     continue_ordering = input("\n Type any key to continue ordering, P to view PRICING LIST, or F to FINALIZE ORDER:\n").lower()
 
     if continue_ordering == "f":
@@ -186,6 +200,8 @@ def continue_ordering():
     if continue_ordering != "p" or continue_ordering != "f":
         list_keyword_item()
         return True
+
+
 
 def order_inputs():
     """
@@ -435,7 +451,7 @@ def order_inputs():
         
         if ORDER_ITEM != item1_code or ORDER_ITEM !=item2_code or ORDER_ITEM !=item3_code or ORDER_ITEM !=item4_code or ORDER_ITEM !=item5_code or ORDER_ITEM !=item6_code or ORDER_ITEM !=item7_code or ORDER_ITEM !=item8_code or ORDER_ITEM !=item9_code or ORDER_ITEM !=item10_code or ORDER_ITEM !=item11_code or ORDER_ITEM !=item12_code or ORDER_ITEM !=item13_code:
             raise ValueError( #ValueError is renamed as e in except, and goes in the {e} in final message
-                f" You must type a correct KEYWORD"
+                f" You must type a correct {code} (e.g.:{code_example})."
             )
 
         if ORDER_ITEM == "e":
@@ -456,16 +472,16 @@ def order_inputs():
 
 def send_email_to_user():
     """
-    Connects to smtp to send user an email
+    Connects to smtp to send email to user
     """
     sender = "sell.tickets.app@gmail.com"
     user_name = NEW_ORDER.get('user_name')
     user_email = NEW_ORDER.get('user_email')
     
-    message = f""" 
+    message = f"""From: From Edna <{sender}>
+    To: {user_name}, <{user_email}>
     Subject: SMTP test email
-        
-    Hi {user_name}
+    
     This is a test email message!
     """
 
@@ -473,7 +489,6 @@ def send_email_to_user():
     gmail_app_password = "hjamkshirdxecddq"
     receiver = user_email
     
-
     try:
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.ehlo()
@@ -481,15 +496,15 @@ def send_email_to_user():
         server.ehlo()
         server.sendmail(sender, receiver, message)
         server.close()
-
         print("\n Email sent.\n")
         logo()
         print(f'\n(c) {logo_name} 2023\n\n\n')
-
-
+        
     except Exception as exception:
         print("Error: %s!\n\n % Exception")
     
+    calculate_stock(NEW_ORDER, 'stock')
+
 
 
 def process_order(order):
@@ -519,7 +534,6 @@ def process_order(order):
     
     for x in order.values(): # takes only values from dict NEW_ORDER, and appends to new list order_values
         order_values.append(x)
-    # print(order_values)
 
     item_prices = pricing_worksheet.col_values(3)[1:] #list of strings of each item price from pricing worksheet
     
@@ -557,21 +571,22 @@ def process_order(order):
 
     if user_order_confirmation == "c":
         list_keyword_item()
-        # return False
+
     if user_order_confirmation == "e":
         exit_app()
-        # return False
+
     if user_order_confirmation != "c" or user_order_confirmation != "e":
         sales_worksheet.append_row(order_values)
-        print(f"\n Your order has successfully been processed!\n\n You will shortly receive an email with your pdf invoice to be paid in the following 2 business days.\n\n WARNING: Your order will be cancelled if your fail to proceed to payment after 24 hours.\n\n Thank you!")
+        print(f"\n Your order has successfully been processed!\n\n You will automatically receive an email with your pdf invoice to be paid in the following 2 business days.\n\n WARNING: Your order will be cancelled if your fail to proceed to payment after 24 hours.\n\n Thank you!")
         send_email_to_user()
         return True
     
-    return True
-
 
     
 def list_keyword_item():
+    """
+    Print list of items and codes, and runs order_inputs()
+    """
 
     print(f"\n Each {item_type} has a {code} associated in the system:\n")
     items = pricing_worksheet.col_values(2)[0:]
@@ -586,7 +601,6 @@ def list_keyword_item():
     order_inputs()
        
     
-
 
 def generate_order():
     """
@@ -614,15 +628,45 @@ def generate_order():
         NEW_ORDER['order_date'] = DATE
 
         return NEW_ORDER
+
+
+def calculate_stock(data, worksheet):
+    """
+    Update stock worksheet, add new row with result of sustracting the items in invoice to each item remaining stock.
+    """
+    order_values = [] # creates list from values out of NEW_ORDER dict
     
+    for x in data.values(): # takes only values from dict NEW_ORDER, and appends to new list order_values
+        order_values.append(x)
+    
+    stock_to_sustract = order_values[4:] # keep only qty of items in invoice - erases user data and invoice details
+    
+    stock_to_sustract_int = [] #creates new list of integers
+
+    for z in stock_to_sustract: #creates new list of integers: stock_to_sustract_int from number of each item in order
+        stock_to_sustract_int.append(int(z))
+
+    stock_to_sustract_int.pop() # erases last item in list = total amount
+
+    existing_stock = stock_worksheet.get_values()[-1] #gets values in last row of stock worksheet
+    
+    existing_stock_int = [] #creates new list of integers
+    
+    for y in existing_stock: #creates new list of integers: existing_stock_int from number of each item in stock
+        existing_stock_int.append(int(y))
+    
+    new_stock = [existing_stock_int[i] - stock_to_sustract_int[i] for i in range(len(existing_stock_int))] # sustracts number of each item type in order from number of each item type in stock
+    
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(new_stock) #includes each item's remaining stock to 1st empty row in stock worksheet
+
+
     
 def main():
     """
     Run all program functions
     """
-    print(f"\n\n {welcome_msg_before_logo}\n")
-    logo()
-    print('\n{:^50}'.format(f'{welcome_msg_after_logo}'))
+    welcome()
     print_inventory(pricing)
     extra_info()
     generate_order()
