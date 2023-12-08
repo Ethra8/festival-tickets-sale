@@ -4,9 +4,12 @@ from google.oauth2.service_account import Credentials  # noqa imports just speci
 from pprint import pprint  # noqa  --> must not be deployed. but very handy when coding and testing
 from datetime import datetime
 import math
-
 import smtplib
 import ssl
+import os
+if os.path.exists('env.py'):
+    import env
+
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -40,6 +43,7 @@ NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
 DATE = datetime.today().strftime('%Y-%m-%d')
 TIME = datetime.today().strftime('%H:%M')
 print(TIME)
+print("Loading ...")
 
 
 logo_name = settings_worksheet.col_values(1)[1]
@@ -73,34 +77,6 @@ item5_qty = 0
 item6_human = pricing_worksheet.col_values(2)[6]
 item6_code = pricing_worksheet.col_values(4)[6]
 item6_qty = 0
-
-# item7_human = pricing_worksheet.col_values(2)[7]
-# item7_code = pricing_worksheet.col_values(4)[7]
-# item7_qty = 0
-
-# item8_human = pricing_worksheet.col_values(2)[8]
-# item8_code = pricing_worksheet.col_values(4)[8]
-# item8_qty = 0
-
-# item9_human = pricing_worksheet.col_values(2)[9]
-# item9_code = pricing_worksheet.col_values(4)[9]
-# item9_qty = 0
-
-# item10_human = pricing_worksheet.col_values(2)[10]
-# item10_code = pricing_worksheet.col_values(4)[10]
-# item10_qty = 0
-
-# item11_human = pricing_worksheet.col_values(2)[11]
-# item11_code = pricing_worksheet.col_values(4)[11]
-# item11_qty = 0
-
-# item12_human = pricing_worksheet.col_values(2)[12]
-# item12_code = pricing_worksheet.col_values(4)[12]
-# item12_qty = 0
-
-# item13_human = pricing_worksheet.col_values(2)[13]
-# item13_code = pricing_worksheet.col_values(4)[13]
-# item13_qty = 0
 
 
 def logo():
@@ -336,131 +312,6 @@ def order_inputs():
             continue_ordering()
             return False
 
-        # if ORDER_ITEM == item7_code or ORDER_ITEM == item7_code.lower():  # noqa 7th item in pricing worksheet
-        #     try:
-        #         item7_qty = int(input(f"\n How many '{item7_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item7_qty < 1 or item7_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item7'] = item7_qty
-        #     print(f"\n Added to your order: {item7_qty} '{item7_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item8_code or ORDER_ITEM == item8_code.lower():  # noqa 8th item in pricing worksheet
-        #     try:
-        #         item8_qty = int(input(f"\n How many '{item8_human}' do you want to order? - Type a number from 1 - 30\n"))
-
-        #         if item8_qty < 1 or item8_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item8'] = item8_qty
-
-        #     print(f"\n Added to your order: {item8_qty} '{item8_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item9_code or ORDER_ITEM == item9_code.lower():  # noqa 9th item in pricing worksheet
-        #     try:
-        #         item9_qty = int(input(f"\n How many '{item9_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item9_qty < 1 or item9_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item9'] = item9_qty
-
-        #     print(f"\n Added to your order: {item9_qty} '{item9_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item10_code or ORDER_ITEM == item10_code.lower():  # noqa 10th item in pricing worksheet
-        #     try:
-        #         item10_qty = int(input(f"\n How many '{item10_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item10_qty < 1 or item10_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item10'] = item10_qty
-
-        #     print(f"\n Added to your order: {item10_qty} '{item10_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item11_code or ORDER_ITEM == item11_code.lower():  # noqa 1st item in pricing worksheet
-        #     try:
-        #         item11_qty = int(input(f"\nHow many '{item11_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item11_qty < 1 or item11_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item11'] = item11_qty
-
-        #     print(f"\n Added to your order: {item11_qty} '{item11_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item12_code or ORDER_ITEM == item12_code.lower():  # noqa 1st item in pricing worksheet
-        #     try:
-        #         item12_qty = int(input(f"\nHow many '{item12_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item12_qty < 1 or item12_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item12'] = item12_qty
-
-        #     print(f"\n Added to your order: {item12_qty} '{item12_human}'")
-        #     continue_ordering()
-        #     return False
-
-        # if ORDER_ITEM == item13_code or ORDER_ITEM == item13_code.lower():  # noqa 1st item in pricing worksheet
-        #     try:
-        #         item13_qty = int(input(f"\nHow many '{item13_human}' do you want to order?\n\t Type a number from 1 - 30\n"))
-
-        #         if item13_qty < 1 or item13_qty > 30:
-        #             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-        #             f" You must type a number from 1 to 30"
-        #             )
-        #     except ValueError as e:
-        #         print(f" Invalid data: {e}, please try again.")
-        #         order_inputs()
-
-        #     NEW_ORDER['item13'] = item13_qty
-
-        #     print(f"\n Added to your order: {item13_qty} '{item13_human}'")
-        #     continue_ordering()
-        #     return False
-
         if ORDER_ITEM != item1_code or ORDER_ITEM != item2_code or ORDER_ITEM != item3_code or ORDER_ITEM != item4_code or ORDER_ITEM != item5_code or ORDER_ITEM != item6_code:
             raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
                 f" You must type a correct {code} (e.g.:{code_example})."
@@ -488,37 +339,40 @@ def send_email_to_user():
     user_name = NEW_ORDER.get('user_name')
     user_email = NEW_ORDER.get('user_email')
 
+    # sender = 'sell.tickets.app@gmail.com'
+    # gmail_app_password = "hjamkshirdxecddq"
+
+    sender = os.environ.get("APP_EMAIL")
+    gmail_app_password = os.environ.get("EMAIL_APP_PASS")
+    # context = ssl.create_default_context()
+
+    port = 465  # SSL encrypted port
     message = """\
-    From: From Edna {}
+    From: Edna {}
     To: {}
     Subject: SMTP test email
 
     This is a test email message!
     """.format(sender, user_email)
 
-    sender = "sell.tickets.app@gmail.com"
-    gmail_app_password = "hjamkshirdxecddq"
-    context = ssl.create_default_context()
-
-    port = 465  # SSL encrypted port
-    smtp_server = "smtp.gmail.com"
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender, gmail_app_password)
-        print("It worked!")
-
-    # try:
-    #     server = smtplib.SMTP_SSL('smtp.gmail.com', port)
-    #     server.ehlo()
+    # smtp_server = "smtp.gmail.com"
+    # with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
     #     server.login(sender, gmail_app_password)
-    #     server.ehlo()
-    #     server.sendmail(sender, user_email, message)
-    #     server.close()
-    #     print("\n Email sent.\n")
-    #     logo()
-    #     print(f'\n(c) {logo_name} 2023\n\n\n')
+    #     print("It worked!")
 
-    # except Exception as exception:
-    #     print("Error: %s!\n\n % Exception")
+    try:
+        server = smtplib.SMTP_SSL('smtp.gmail.com', port)
+        server.ehlo()
+        server.login(sender, gmail_app_password)
+        server.ehlo()
+        server.sendmail(sender, user_email, message)
+        server.close()
+        print("\n Email sent.\n")
+        logo()
+        print(f'\n(c) {logo_name} 2023\n\n\n')
+
+    except Exception as exception:
+        print("Error: %s!\n\n % Exception")
 
     calculate_stock(NEW_ORDER, 'stock')
 
