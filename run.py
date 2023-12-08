@@ -9,7 +9,7 @@ import ssl
 import os
 if os.path.exists('env.py'):
     import env
-
+import re  # regex email validator
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -77,6 +77,10 @@ item5_qty = 0
 item6_human = pricing_worksheet.col_values(2)[6]
 item6_code = pricing_worksheet.col_values(4)[6]
 item6_qty = 0
+
+# Make a regular expression
+# for validating an Email
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 
 def logo():
@@ -171,8 +175,8 @@ def continue_ordering():
     continue_ordering = input(" F to (FINALIZE ORDER):\n").lower().strip()
 
     if continue_ordering == "f":
-        print(" Processing order ...")
-        process_order(NEW_ORDER)
+        print(" Finalizing order ...")
+        check()
         return False
     if continue_ordering == "p":
         print_inventory(pricing)
@@ -377,9 +381,28 @@ def send_email_to_user():
     calculate_stock(NEW_ORDER, 'stock')
 
 
+def check():
+    """
+    Regex email validation. If email pass validation,
+    """
+    print("\n Please, include your email so we can send")
+    print(" your pending invoice as a pdf file,")
+    user_email = input(" together with the payment link:\n").strip()  # noqa strip() method erases extra spaces before/after input data
+
+    if(re.fullmatch(regex, user_email)):
+        print("Valid Email")
+        NEW_ORDER['user_email'] = user_email  # noqa includes user_email input value to user_email key in dict NEW_ORDER
+        process_order(NEW_ORDER)
+        
+    else:
+        print("Invalid Email")
+        check()
+
+
 def process_order(order):
     """
-    Generates value list (order_values) from NEW_ORDER dict,
+    Generates list of values (order_values) from
+    NEW_ORDER dict,
     calculates the order's final amount
     by multiplying each item cost taken from pricing worksheet
     per number of items in order_values.
@@ -388,18 +411,16 @@ def process_order(order):
     If user confirms order, invoice full data is exported to sales worksheet.
     """
 
-    invoice = order.get('invoice_no')
-    print(f"\n Your order {invoice} is being generated...")
-
-    order_item_names = sales_worksheet.row_values(2)  # noqa takes list of items out of sales worksheet, in a user-friendly version
-
-    user_email = input("\n Please, include your email so we can send your pending invoice as a pdf file, together with the payment link\n").strip()  # noqa strip() method erases extra spaces before/after input data
-    NEW_ORDER['user_email'] = user_email  # noqa includes user_email input value to user_email key in dict NEW_ORDER
 
     user_name = input("\n Please, type in a user name to create your invoice\n").strip().title()  # noqa title() method capitalizes every word in input string
     NEW_ORDER['user_name'] = user_name
+    
+    invoice = order.get('invoice_no')
+    print(f"\n Your order {invoice} is being generated...")
 
     print(f"\n Hold on {user_name}, the total amount is being calculated...\n")
+
+    order_item_names = sales_worksheet.row_values(2)  # noqa takes list of items out of sales worksheet, in a user-friendly version
 
     order_values = []  # noqa creates list from values out of NEW_ORDER dict
 
@@ -488,11 +509,11 @@ def generate_order():
     if order != "e" or order != "r":
         print("\n Proceeding ...")
 
-        invoice = sales_worksheet.col_values(1)[-1]  # noqa takes last invoice_no from sales_worksheet e.g.: INV-10000
-        invoice_letters = invoice.split("-")[0]  # noqa takes innitial letter of last invoice_no before the '-' e.g: INV
-        invoice_no = invoice.split("-")[1]  # noqa takes numbers of last invoice_no after the '-' and returns string e.g.: '1000'
-        invoice_no = int(invoice_no) + 1  # noqa turns num string int integer, and adds 1 to invoice_no e.g.: 1001
-        invoice_no = f"{invoice_letters}-{invoice_no}"  # noqa creates new invoice_no with same format (letters-nums) e.g. INV-1001
+        invoice = sales_worksheet.col_values(1)[-1]  # noqa takes last invoice_no from sales_worksheet; default e.g.: INV-10000
+        invoice_letters = invoice.split("-")[0]  # noqa takes initial letter of last invoice_no before the '-' e.g: INV
+        invoice_no = invoice.split("-")[1]  # noqa takes numbers of last invoice_no after the '-' and returns string e.g.: '10000'
+        invoice_no = int(invoice_no) + 1  # noqa turns num string int integer, and adds 1 to invoice_no; e.g.: 1001
+        invoice_no = f"{invoice_letters}-{invoice_no}"  # noqa creates new invoice_no with same format (letters-nums) e.g. INV-10001
         # print(invoice_no)
         NEW_ORDER['invoice_no'] = invoice_no
         NEW_ORDER['order_date'] = DATE
