@@ -10,6 +10,7 @@ import os
 if os.path.exists('env.py'):
     import env
 import re  # regex email validator
+from email.message import EmailMessage
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -36,7 +37,6 @@ values_sales_new_order = sales_worksheet.row_values(3)  # noqa gets mock values 
 item_type = pricing_worksheet.col_values(1)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
-
 
 # noqa dict NEW_ORDER takes user inputs all along the app to create final invoice, also including total amount
 NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
@@ -343,26 +343,21 @@ def send_email_to_user():
     user_name = NEW_ORDER.get('user_name')
     user_email = NEW_ORDER.get('user_email')
 
-    # sender = 'sell.tickets.app@gmail.com'
-    # gmail_app_password = "hjamkshirdxecddq"
-
     sender = os.environ.get("APP_EMAIL")
     gmail_app_password = os.environ.get("EMAIL_APP_PASS")
     # context = ssl.create_default_context()
 
     port = 465  # SSL encrypted port
-    message = """\
-    From: Edna {}
+
+
+    message = """
+    From: {}
     To: {}
     Subject: SMTP test email
 
+    Hi {}
     This is a test email message!
-    """.format(sender, user_email)
-
-    # smtp_server = "smtp.gmail.com"
-    # with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-    #     server.login(sender, gmail_app_password)
-    #     print("It worked!")
+    """.format(sender, user_email, user_name)
 
     try:
         server = smtplib.SMTP_SSL('smtp.gmail.com', port)
