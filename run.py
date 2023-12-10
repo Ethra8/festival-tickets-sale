@@ -342,33 +342,42 @@ def send_email_to_user():
     """
     user_name = NEW_ORDER.get('user_name')
     user_email = NEW_ORDER.get('user_email')
+    order_number = NEW_ORDER.get('invoice_no')
 
     sender = os.environ.get("APP_EMAIL")
     gmail_app_password = os.environ.get("EMAIL_APP_PASS")
     # context = ssl.create_default_context()
 
-    port = 465  # SSL encrypted port
-
-
-    message = """
-    From: {}
-    To: {}
-    Subject: SMTP test email
-
-    Hi {}
-    This is a test email message!
-    """.format(sender, user_email, user_name)
-
+    # port = 465  # SSL encrypted port
     try:
-        server = smtplib.SMTP_SSL('smtp.gmail.com', port)
-        server.ehlo()
+        msg = EmailMessage()
+        msg['Subject'] = f"Invoice from {logo_name}"
+        msg['From'] = f'{logo_name}'
+        msg['To'] = user_email
+        msg.set_content(f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")
+
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender, gmail_app_password)
-        server.ehlo()
-        server.sendmail(sender, user_email, message)
-        server.close()
-        print("\n Email sent.\n")
-        logo()
-        print(f'\n(c) {logo_name} 2023\n\n\n')
+        server.send_message(msg)
+    # message = """
+    # From: {}
+    # To: {}
+    # Subject: SMTP test email
+
+    # Hi {}
+    # This is a test email message!
+    # """.format(sender, user_email, user_name)
+
+    # try:
+    #     server = smtplib.SMTP_SSL('smtp.gmail.com', port)
+    #     server.ehlo()
+    #     server.login(sender, gmail_app_password)
+    #     server.ehlo()
+    #     server.sendmail(sender, user_email, msg)
+    #     server.close()
+    #     print("\n Email sent.\n")
+    #     logo()
+    #     print(f'\n(c) {logo_name} 2023\n\n\n')
 
     except Exception as exception:
         print("Error: %s!\n\n % Exception")
