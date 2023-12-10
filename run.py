@@ -359,6 +359,8 @@ def send_email_to_user():
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender, gmail_app_password)
         server.send_message(msg)
+        server.quit()
+        print("Email sent!")
     # message = """
     # From: {}
     # To: {}
