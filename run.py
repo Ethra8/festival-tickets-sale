@@ -13,11 +13,16 @@ if os.path.exists('env.py'):
 import re  # regex email validator
 from email.message import EmailMessage
 
+
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
     ]
+
+
+
+
 
 def print_slow(str):
     for letter in str:
@@ -38,11 +43,13 @@ SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 settings_worksheet = SHEET.worksheet('settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 extra_info_worksheet = SHEET.worksheet('extra_info')
-sales_worksheet = SHEET.worksheet('sales')
+invoices_worksheet = SHEET.worksheet('invoices')
 stock_worksheet = SHEET.worksheet('stock')
+total_items_sold_worksheet = SHEET.worksheet('total_items_sold')
+total_sales_worksheet = SHEET.worksheet('total_sales')
 
-item_sales_new_order = sales_worksheet.row_values(1)  # noqa gets key values to create NEW_ORDER dict
-values_sales_new_order = sales_worksheet.row_values(3)  # noqa gets mock values for each key to create NEW_ORDER dict
+item_sales_new_order = invoices_worksheet.row_values(1)  # noqa gets key values to create NEW_ORDER dict
+values_sales_new_order = invoices_worksheet.row_values(3)  # noqa gets mock values for each key to create NEW_ORDER dict
 
 item_type = pricing_worksheet.col_values(1)[0]
 code = pricing_worksheet.col_values(4)[0]
@@ -174,7 +181,7 @@ def extra_info():
     for i in full_info:  # prints each row formated as follows
         print(f"\n {i[1]}:\n\t{i[2]}\n\t{i[3]}\n\t{i[4]}")
     
-    print_slow("\n Press ANY KEY to (START ORDER),\n")
+    print_slow("\n Press ANY KEY to (ORDER),\n")
     order = input(" or E (EXIT):\n").lower().strip()
 
     if order == "e":
@@ -276,15 +283,17 @@ def order_inputs():
                     raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
                     f" You must type a number from 1 to 30"
                     )
+                else:
+                    NEW_ORDER['item3'] = item3_qty
+                    print_slow(f"\n Added to your order: {item3_qty} '{item3_human}'\n")
+                    continue_ordering()
+                    return True
+                
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
+                NEW_ORDER['item3']
                 order_inputs()
-
-            NEW_ORDER['item3'] = item3_qty
-            print_slow(f"\n Added to your order: {item3_qty} '{item3_human}'\n")
-            continue_ordering()
-            return False
 
         if ORDER_ITEM == item4_code.lower():  # noqa 4th item in pricing worksheet
             try:
@@ -399,9 +408,8 @@ def check():
     """
     Regex email validation. If email pass validation,
     """
-    print_slow("\n Please, include your email so we can send\n")
-    print_slow(" your pending invoice as a pdf file,\n")
-    user_email = input(" together with the payment link:\n").strip()  # noqa strip() method erases extra spaces before/after input data
+    print_slow("\n Please, include your email to receive\n")
+    user_email = input(" your pending invoice and payment details:\n").strip()  # noqa strip() method erases extra spaces before/after input data
 
     if(re.fullmatch(regex, user_email)):
         print_slow("Valid Email")
@@ -432,7 +440,7 @@ def process_order(order):
     print_slow(f"\n Hold on {user_name},\n")
     print_slow(" the total amount is being calculated...\n")
 
-    order_item_names = sales_worksheet.row_values(2)  # noqa takes list of items out of sales worksheet, in a user-friendly version
+    order_item_names = invoices_worksheet.row_values(2)  # noqa takes list of items out of sales worksheet, in a user-friendly version
 
     order_values = []  # noqa creates list from values out of NEW_ORDER dict
 
@@ -472,7 +480,8 @@ def process_order(order):
         if value != '0':
             print(f' {item:10} : {value}')
 
-    print_slow("\n Press any key to (CONFIRM ORDER),\n")
+    print_slow("\n Press ANY KEY to (CONFIRM ORDER),\n")
+    print_slow(" U to (CHANGE) email or name\n")
     print_slow(" C to (CONTINUE ORDERING),\n")
     user_order_confirmation = input(" or E to (EXIT)\n").lower().strip()
 
@@ -482,13 +491,16 @@ def process_order(order):
     if user_order_confirmation == "e":
         exit_app()
         return False
+    if user_order_confirmation == "u":
+        check()
+        return False
     else:
-        sales_worksheet.append_row(order_values)
-        print_slow(f" Your order has successfully been processed!\n")
-        print_slow("\n You will automatically receive an email with your pdf invoice")
+        invoices_worksheet.append_row(order_values)
+        print_slow(f" Order confirmed!\n")
+        print_slow("\n You will automatically receive an email with your invoice")
         print_slow("\n to be paid in the following 2 business days.")
-        print_slow("\n\n WARNING: Your order will be cancelled if your fail to")
-        print_slow("\n proceed to payment after 24 hours.\n\n Thank you!\n")
+        print_slow("\n\n WARNING: Your order will be cancelled if you fail to")
+        print_slow("\n proceed to payment on due date.\n\n Thank you!\n")
         send_email_to_user()
         return True
 
@@ -534,10 +546,9 @@ def generate_order():
     invoice_no and current date are
     included in NEW_ORDER
     """
+    print_slow("Loading ...\n")
 
-    print_slow("Proceeding ...\n")
-
-    invoice = sales_worksheet.col_values(1)[-1]  # noqa takes last invoice_no from sales_worksheet; default e.g.: INV-10000
+    invoice = invoices_worksheet.col_values(1)[-1]  # noqa takes last invoice_no from invoices_worksheet; default e.g.: INV-10000
     invoice_letters = invoice.split("-")[0]  # noqa takes initial letter of last invoice_no before the '-' e.g: INV
     invoice_no = invoice.split("-")[1]  # noqa takes numbers of last invoice_no after the '-' and returns string e.g.: '10000'
     invoice_no = int(invoice_no) + 1  # noqa turns num string int integer, and adds 1 to invoice_no; e.g.: 1001
@@ -547,7 +558,101 @@ def generate_order():
     NEW_ORDER['order_date'] = DATE
     list_keyword_item()
     return NEW_ORDER
+
+
+def calculate_subtotals_sales():
     
+    items_sold = total_items_sold_worksheet.get_values()
+    # print(items_sold)
+    # items_soldId = '1046768896'
+
+    items_sold_by_itemnum = items_sold[0]
+    items_sold_by_nums = items_sold.pop()
+
+    items_sold_dict = dict(zip(items_sold_by_itemnum, items_sold_by_nums))
+    pprint(items_sold_dict)
+
+    items1_sold_list = invoices_worksheet.col_values(5)[2:]  # noqa creates list of str with all items1 sold in each order
+    items1_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    
+    for i in items1_sold_list:
+        items1_sold_int.append(int(i))
+
+    items1_sold = sum(items1_sold_int)
+    print(items1_sold)
+
+    items_sold_dict['item1'] = items1_sold
+
+    items2_sold_list = invoices_worksheet.col_values(6)[2:]  # noqa creates list of str with all items1 sold in each order
+    items2_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    for i in items2_sold_list:
+        items2_sold_int.append(int(i))
+
+    items2_sold = sum(items2_sold_int)
+    print(items2_sold)
+
+    items_sold_dict['item2'] = items2_sold
+
+    items3_sold_list = invoices_worksheet.col_values(7)[2:]  # noqa creates list of str with all items1 sold in each order
+    items3_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    for i in items3_sold_list:
+        items3_sold_int.append(int(i))
+
+    items3_sold = sum(items3_sold_int)
+    print(items3_sold)
+
+    items_sold_dict['item3'] = items3_sold
+
+    items4_sold_list = invoices_worksheet.col_values(8)[2:]  # noqa creates list of str with all items1 sold in each order
+    items4_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    for i in items4_sold_list:
+        items4_sold_int.append(int(i))
+
+    items4_sold = sum(items4_sold_int)
+    print(items4_sold)
+
+    items_sold_dict['item4'] = items4_sold
+
+    items5_sold_list = invoices_worksheet.col_values(9)[2:]  # noqa creates list of str with all items1 sold in each order
+    items5_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    for i in items5_sold_list:
+        items5_sold_int.append(int(i))
+
+    items5_sold = sum(items5_sold_int)
+    print(items5_sold)
+
+    items_sold_dict['item5'] = items5_sold
+
+    items6_sold_list = invoices_worksheet.col_values(10)[2:]  # noqa creates list of str with all items1 sold in each order
+    items6_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    for i in items6_sold_list:
+        items6_sold_int.append(int(i))
+
+    items6_sold = sum(items6_sold_int)
+    print(items6_sold)
+
+    items_sold_dict['item6'] = items6_sold
+
+    items_sold_values = []  # noqa creates list from values out of items_sold_dict dict.
+
+    for x in items_sold_dict.values():  # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+        items_sold_values.append(x)
+    list_of_lists = [[el] for el in items_sold_values]
+    pprint(list(list_of_lists))
+    
+    total_items_sold_worksheet.append_row(items_sold_values)
+    range_name = '2:3'  # A1 notation refers to all cells in row(s) x:x
+    total_items_sold_worksheet.update(range_name=range_name, values=list_of_lists,)
+    # total_items_sold_worksheet.update('A2:B4', [[42], [43]])
+    # total_items_sold_worksheet.update('B3:G3', items_sold_values)
+    # total_items1_sold_column = total_items_sold_worksheet.col_values(2)
+    # pprint(total_items1_sold_column)
+    # # total_items1_sold = total_items_sold_worksheet.col_values(2)[-1]
+    # total_items1_sold_column.pop()
+    # pprint(total_items1_sold_column)
+    # total_items1_sold_column_updated = total_items1_sold_column + items1_sold
+    # pprint(total_items1_sold_column_updated)
+
 
 def calculate_stock(data, worksheet):
     """
@@ -579,6 +684,7 @@ def calculate_stock(data, worksheet):
 
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(new_stock)  # noqa includes each item's remaining stock to 1st empty row in stock worksheet
+    calculate_subtotals_sales()
 
 
 def main():
