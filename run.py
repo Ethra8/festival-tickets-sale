@@ -642,8 +642,11 @@ def calculate_subtotals_sales():
     
     total_items_sold_worksheet.append_row(items_sold_values)
     range_name = '2:3'  # A1 notation refers to all cells in row(s) x:x
-    total_items_sold_worksheet.update(range_name=range_name, values=list_of_lists,)
-    # total_items_sold_worksheet.update('A2:B4', [[42], [43]])
+    
+    # total_items_sold_worksheet.update(range_name=range_name, values=list_of_lists,)
+    # total_items_sold_worksheet.update('A2:B4', [[42], [43]]) --> updates A1 downswards in col A
+    
+    
     # total_items_sold_worksheet.update('B3:G3', items_sold_values)
     # total_items1_sold_column = total_items_sold_worksheet.col_values(2)
     # pprint(total_items1_sold_column)
