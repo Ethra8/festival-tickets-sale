@@ -42,7 +42,7 @@ SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 
 settings_worksheet = SHEET.worksheet('settings')
 pricing_worksheet = SHEET.worksheet('pricing')
-extra_info_worksheet = SHEET.worksheet('extra_info')
+item_details_worksheet = SHEET.worksheet('item_details')
 invoices_worksheet = SHEET.worksheet('invoices')
 stock_worksheet = SHEET.worksheet('stock')
 total_items_sold_worksheet = SHEET.worksheet('total_items_sold')
@@ -51,7 +51,7 @@ total_sales_worksheet = SHEET.worksheet('total_sales')
 item_sales_new_order = invoices_worksheet.row_values(1)  # noqa gets key values to create NEW_ORDER dict
 values_sales_new_order = invoices_worksheet.row_values(3)  # noqa gets mock values for each key to create NEW_ORDER dict
 
-item_type = pricing_worksheet.col_values(1)[0]
+item_type = pricing_worksheet.col_values(2)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
 
@@ -169,15 +169,15 @@ def exit_app():
         print_inventory(pricing)
 
 
-def extra_info():
+def item_details():
     """
-    Returns printed list of items extra info taken from 'extra_info' worksheet,
+    Returns printed list of items extra info taken from 'item_details' worksheet,
     formated to be human-friendly.
     """
-    extra_info_message = settings_worksheet.col_values(5)[1]
-    print(f"\n {extra_info_message}:")
+    item_details_message = settings_worksheet.col_values(5)[1]
+    print(f"\n {item_details_message}:")
 
-    full_info = extra_info_worksheet.get_all_values()[1:]  # noqa creates list of lists, starting at row 2 (one list per row)
+    full_info = item_details_worksheet.get_all_values()[1:]  # noqa creates list of lists, starting at row 2 (one list per row)
     for i in full_info:  # prints each row formated as follows
         print(f"\n {i[1]}:\n\t{i[2]}\n\t{i[3]}\n\t{i[4]}")
     
@@ -528,7 +528,7 @@ def view_details_option():
     detailed_info = input(" E to (EXIT)\n").lower().strip()
 
     if detailed_info == "d":
-        extra_info()
+        item_details()
         return True
     if detailed_info == "e":
         exit_app()
@@ -560,139 +560,223 @@ def generate_order():
     return NEW_ORDER
 
 
+def calculate_total_sales():
+    """
+    Calculate total sales amount per item,
+    update value in total_sales_worksheet
+    """
+    # total_sales_row_to_update = total_sales_worksheet.row_values(3)
+    total_sales_items = total_items_sold_worksheet.row_values(3)[1:]
+    pprint(total_sales_items)
+
+    items_sold_int = []
+    # convert str to int
+    for i in total_sales_items:
+        items_sold_int.append(float(i))
+    pprint(items_sold_int)
+
+    item_prices = pricing_worksheet.col_values(3)[1:]
+
+    item_prices_int = []
+    for i in item_prices:
+        item_prices_int.append(float(i))
+
+    total_sales_list = [items_sold_int[i] * item_prices_int[i] for i in range(len(items_sold_int))]
+
+    # gpread method to clear range with old stock (clears row 4)
+    total_sales_worksheet.batch_clear(["A4:G4"])
+
+    range_to_update = 'B3:G3'
+    # add new calculated values of remaining stock
+    # to selected range
+    total_sales_worksheet.update('B3:G3', [total_sales_list])
+    # total_sales_worksheet.append_row(total_sales_list)
+
+    grand_total = sum(total_sales_list)
+    total_sales_worksheet.update_cell(6, 7, grand_total)
+    # total_sales_worksheet.update('G5:G5', [grand_total])
+    print("\n\n")
+    logo()
+    print(f"(c) {logo_name}\n\n")
+
+
 def calculate_subtotals_sales():
-    
-    items_sold = total_items_sold_worksheet.get_values()
-    # print(items_sold)
-    # items_soldId = '1046768896'
+    """
+    Calculate total of each item type sold,
+    Sums each item type sold by col in sales_worksheet.
+    including present sale.
+    Update total_items_sold_worksheet
+    """
+    # get type of item by number (e.g.: item1)
+    items_sold_by_itemnum = total_items_sold_worksheet.row_values(1)
 
-    items_sold_by_itemnum = items_sold[0]
-    items_sold_by_nums = items_sold.pop()
+    # get previous total units sold per type of item
+    items_sold = total_items_sold_worksheet.row_values(3)
 
-    items_sold_dict = dict(zip(items_sold_by_itemnum, items_sold_by_nums))
-    pprint(items_sold_dict)
+    # create dictionary to be updated
+    items_sold_dict = dict(zip(items_sold_by_itemnum, items_sold))
 
-    items1_sold_list = invoices_worksheet.col_values(5)[2:]  # noqa creates list of str with all items1 sold in each order
-    items1_sold_int = []  # noqa new list with items1_sold converted to int for further sum
-    
+    # creates list of str with all items1 sold in each order
+    items1_sold_list = invoices_worksheet.col_values(5)[2:]
+    # new list with items1 sold converted to int to be sum
+    items1_sold_int = []
+    # convert str to int
     for i in items1_sold_list:
         items1_sold_int.append(int(i))
-
+    # sum all item1 int.
     items1_sold = sum(items1_sold_int)
-    print(items1_sold)
-
+    # update dict. with sum of items1 sold
     items_sold_dict['item1'] = items1_sold
 
-    items2_sold_list = invoices_worksheet.col_values(6)[2:]  # noqa creates list of str with all items1 sold in each order
-    items2_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    # noqa creates list of str with all items2 sold in each order(invoices_worksheet)
+    items2_sold_list = invoices_worksheet.col_values(6)[2:]
+    # new list with items2 sold converted to int to be sum
+    items2_sold_int = []
+    # convert str to int
     for i in items2_sold_list:
         items2_sold_int.append(int(i))
-
+    # sum all item2 int.
     items2_sold = sum(items2_sold_int)
-    print(items2_sold)
-
+    # update dict. with sum of items2 sold
     items_sold_dict['item2'] = items2_sold
 
-    items3_sold_list = invoices_worksheet.col_values(7)[2:]  # noqa creates list of str with all items1 sold in each order
-    items3_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    # noqa creates list of str with all items3 sold in each order(invoices_worksheet)
+    items3_sold_list = invoices_worksheet.col_values(7)[2:]
+    # new list with items3 sold converted to int to be sum
+    items3_sold_int = []
+    # convert str to int
     for i in items3_sold_list:
         items3_sold_int.append(int(i))
-
+    # sum all item3 int.
     items3_sold = sum(items3_sold_int)
-    print(items3_sold)
-
+    # update dict. with sum of items3 sold
     items_sold_dict['item3'] = items3_sold
 
-    items4_sold_list = invoices_worksheet.col_values(8)[2:]  # noqa creates list of str with all items1 sold in each order
-    items4_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    # noqa creates list of str with all items4 sold in each order(invoices_worksheet)
+    items4_sold_list = invoices_worksheet.col_values(8)[2:]
+    # new list with items4 sold converted to int to be sum
+    items4_sold_int = []
+    # convert str to int
     for i in items4_sold_list:
         items4_sold_int.append(int(i))
-
+    # sum all item4 int.
     items4_sold = sum(items4_sold_int)
-    print(items4_sold)
-
+    # update dict. with sum of items3 sold
     items_sold_dict['item4'] = items4_sold
 
-    items5_sold_list = invoices_worksheet.col_values(9)[2:]  # noqa creates list of str with all items1 sold in each order
-    items5_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    # noqa creates list of str with all items5 sold in each order(invoices_worksheet)
+    items5_sold_list = invoices_worksheet.col_values(9)[2:]
+    # new list with items5 sold converted to int to be sum
+    items5_sold_int = []
+    # convert str to int
     for i in items5_sold_list:
         items5_sold_int.append(int(i))
-
+    # sum all item5 int.
     items5_sold = sum(items5_sold_int)
-    print(items5_sold)
-
+    # update dict. with sum of items5 sold
     items_sold_dict['item5'] = items5_sold
 
-    items6_sold_list = invoices_worksheet.col_values(10)[2:]  # noqa creates list of str with all items1 sold in each order
-    items6_sold_int = []  # noqa new list with items1_sold converted to int for further sum
+    # noqa creates list of str with all items6 sold in each order(invoices_worksheet)
+    items6_sold_list = invoices_worksheet.col_values(10)[2:]
+    # new list with items6 sold converted to int to be sum
+    items6_sold_int = []
+    # convert str to int
     for i in items6_sold_list:
         items6_sold_int.append(int(i))
-
+    # sum all item6 int.
     items6_sold = sum(items6_sold_int)
-    print(items6_sold)
-
+    # update dict. with sum of items6 sold
     items_sold_dict['item6'] = items6_sold
 
-    items_sold_values = []  # noqa creates list from values out of items_sold_dict dict.
-
-    for x in items_sold_dict.values():  # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+    # noqa creates list from values out of items_sold_dict dict.
+    items_sold_values = []
+    # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+    for x in items_sold_dict.values():
         items_sold_values.append(x)
-    list_of_lists = [[el] for el in items_sold_values]
-    pprint(list(list_of_lists))
-    
+
+    # gpread method to clear range with old totals (clears row 3)
+    total_items_sold_worksheet.batch_clear(["A3:G3"])
+
+    # add new calculated values of total sold (updates row 3)
     total_items_sold_worksheet.append_row(items_sold_values)
-    range_name = '2:3'  # A1 notation refers to all cells in row(s) x:x
-    
-    # total_items_sold_worksheet.update(range_name=range_name, values=list_of_lists,)
-    # total_items_sold_worksheet.update('A2:B4', [[42], [43]]) --> updates A1 downswards in col A
-    
-    
-    # total_items_sold_worksheet.update('B3:G3', items_sold_values)
-    # total_items1_sold_column = total_items_sold_worksheet.col_values(2)
-    # pprint(total_items1_sold_column)
-    # # total_items1_sold = total_items_sold_worksheet.col_values(2)[-1]
-    # total_items1_sold_column.pop()
-    # pprint(total_items1_sold_column)
-    # total_items1_sold_column_updated = total_items1_sold_column + items1_sold
-    # pprint(total_items1_sold_column_updated)
+
+    calculate_total_sales()
 
 
 def calculate_stock(data, worksheet):
     """
-    Update stock worksheet last empty row with result of sustracting the items
-    in invoice to each item remaining in stock.
+    Update last row in stock worksheet
+    with result of sustracting the items
+    in invoice from num. of items remaining in stock.
     """
-    order_values = []  # creates list from values out of NEW_ORDER dict
+    # get worksheet from function paramenter
+    worksheet_to_update = SHEET.worksheet(worksheet)
 
-    for x in data.values():  # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+    item_ids = worksheet_to_update.row_values(1)
+    remaining_stock = worksheet_to_update.row_values(4)
+
+    stock_dict = dict(zip(item_ids, remaining_stock))
+
+    # create list of values from NEW_ORDER dict
+    order_values = []
+    for x in data.values():
         order_values.append(x)
+    # keep only qty of items in invoice,
+    # erase user data and invoice details
+    stock_to_sustract = order_values[4:]
 
-    stock_to_sustract = order_values[4:]  # noqa keep only qty of items in invoice - erases user data and invoice details
-
-    stock_to_sustract_int = []  # noqa creates new list of integers
-
-    for z in stock_to_sustract:  # noqa creates new list of integers: stock_to_sustract_int from number of each item in order
+    # create new list of integers from
+    # stock_to_sustract
+    stock_to_sustract_int = []
+    for z in stock_to_sustract:
         stock_to_sustract_int.append(int(z))
 
-    stock_to_sustract_int.pop()  # erases last item in list = total amount
+    # erase last item in list = total amount
+    stock_to_sustract_int.pop()
 
-    existing_stock = stock_worksheet.get_values()[-1]  # noqa gets values in last row of stock worksheet
-
-    existing_stock_int = []  # creates new list of integers
-
-    for y in existing_stock:  # noqa creates new list of integers: existing_stock_int from number of each item in stock
+    # get values in last row of stock worksheet, eluding col 1
+    existing_stock = worksheet_to_update.row_values(4)[1:]
+    # creates new list of integers from existing_stock
+    existing_stock_int = []
+    for y in existing_stock:
         existing_stock_int.append(int(y))
 
-    new_stock = [existing_stock_int[i] - stock_to_sustract_int[i] for i in range(len(existing_stock_int))]  # noqa  sustracts number of each item type in order from number of each item type in stock
+    # subtract each item in present order (stock_to_sustract_int)
+    # from existing_stock with for loop
+    new_stock = [existing_stock_int[i] - stock_to_sustract_int[i] for i in range(len(existing_stock_int))]
 
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(new_stock)  # noqa includes each item's remaining stock to 1st empty row in stock worksheet
+    item1_new_stock = new_stock[0]
+    item2_new_stock = new_stock[1]
+    item3_new_stock = new_stock[2]
+    item4_new_stock = new_stock[3]
+    item5_new_stock = new_stock[4]
+    item6_new_stock = new_stock[5]
+
+    stock_dict['item1'] = item1_new_stock
+    stock_dict['item2'] = item2_new_stock
+    stock_dict['item3'] = item3_new_stock
+    stock_dict['item4'] = item4_new_stock
+    stock_dict['item5'] = item5_new_stock
+    stock_dict['item6'] = item6_new_stock
+
+    stock_dict_values = []
+    # takes only values from dict stock_dict,
+    # and appends to new list stock_dict_values
+    for x in stock_dict.values():
+        stock_dict_values.append(x)
+
+    # gpread method to clear range with old stock (clears row 4)
+    worksheet_to_update.batch_clear(["A4:G4"])
+
+    # add new calculated values of remaining stock (updates row 4)
+    worksheet_to_update.append_row(stock_dict_values)
+
     calculate_subtotals_sales()
 
 
 def main():
     """
-    Run program functions
+    Run starting program functions
     """
     welcome()
     print_inventory(pricing)
