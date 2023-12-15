@@ -3,7 +3,9 @@ import gspread  # noqa library first downloaded through terminal : pip3 install 
 from google.oauth2.service_account import Credentials  # noqa imports just specific Credentials function from library,no need to import complete library
 from pprint import pprint  # noqa  --> must not be deployed. but very handy when coding and testing
 from datetime import datetime
-import sys,time,random
+import sys
+import time
+import random
 import math
 import smtplib
 import ssl
@@ -19,9 +21,6 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
     ]
-
-
-
 
 
 def print_slow(str):
@@ -40,6 +39,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 
+# worksheet vars
 settings_worksheet = SHEET.worksheet('settings')
 pricing_worksheet = SHEET.worksheet('pricing')
 item_details_worksheet = SHEET.worksheet('item_details')
@@ -48,26 +48,32 @@ stock_worksheet = SHEET.worksheet('stock')
 total_items_sold_worksheet = SHEET.worksheet('total_items_sold')
 total_sales_worksheet = SHEET.worksheet('total_sales')
 
-item_sales_new_order = invoices_worksheet.row_values(1)  # noqa gets key values to create NEW_ORDER dict
-values_sales_new_order = invoices_worksheet.row_values(3)  # noqa gets mock values for each key to create NEW_ORDER dict
+# get key values to create NEW_ORDER dict
+item_sales_new_order = invoices_worksheet.row_values(1)
+# get mock values for each key to create NEW_ORDER dict
+values_sales_new_order = invoices_worksheet.row_values(3)
 
 item_type = pricing_worksheet.col_values(2)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
 
-# noqa dict NEW_ORDER takes user inputs all along the app to create final invoice, also including total amount
+# dict NEW_ORDER takes user inputs all along the app
+# to create final invoice with total amount
 NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
 DATE = datetime.today().strftime('%Y-%m-%d')
 TIME = datetime.today().strftime('%H:%M')
 
+# logo name and type of font retrieved from settings worksheet
 logo_name = settings_worksheet.col_values(1)[1]
 logo_font = settings_worksheet.col_values(2)[1]
 
-# takes welcome message before and after logo from settings worksheet
+# retrieve welcome message before and after logo from settings worksheet
 welcome_msg_before_logo = settings_worksheet.col_values(3)[1]
 welcome_msg_after_logo = settings_worksheet.col_values(4)[1]
 
-# noqa Create vars for every item in pricing worksheet (item_code) and user-friendly readable item name
+# create vars for every item in pricing worksheet:
+# (item_code) and user-friendly readable item name
+# set  default quatity to 0
 item1_human = pricing_worksheet.col_values(2)[1]
 item1_code = pricing_worksheet.col_values(4)[1]
 item1_qty = 0
@@ -151,7 +157,7 @@ pricing = pricing_list()  # noqa dict of item_names & ticket_prices, returned by
 
 def exit_app():
     """
-    Brings user to final question before exit point and goodbye message,
+    Bring user to final question before exit point and goodbye message,
     giving last chance to continue before order is lost.
     If user decides to continue, Pricing list is printed, and sale continues.
     """
@@ -171,7 +177,8 @@ def exit_app():
 
 def item_details():
     """
-    Returns printed list of items extra info taken from 'item_details' worksheet,
+    Return printed list of items extra info taken from
+    'item_details' worksheet,
     formated to be human-friendly.
     """
     item_details_message = settings_worksheet.col_values(5)[1]
@@ -180,7 +187,7 @@ def item_details():
     full_info = item_details_worksheet.get_all_values()[1:]  # noqa creates list of lists, starting at row 2 (one list per row)
     for i in full_info:  # prints each row formated as follows
         print(f"\n {i[1]}:\n\t{i[2]}\n\t{i[3]}\n\t{i[4]}")
-    
+
     print_slow("\n Press ANY KEY to (ORDER),\n")
     order = input(" or E (EXIT):\n").lower().strip()
 
@@ -235,15 +242,16 @@ def order_inputs():
             print_inventory(pricing)
             return False
 
-        if ORDER_ITEM == item1_code.lower():  # noqa 1st item in pricing worksheet
+        # item1 in pricing worksheet
+        if ORDER_ITEM == item1_code.lower():
             try:
                 print(f" How many '{item1_human}' do you want to order?\n")
                 item1_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item1_qty < 1 or item1_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
@@ -251,109 +259,127 @@ def order_inputs():
 
             NEW_ORDER[f'item1'] = item1_qty
 
-            print_slow(f"\n Added to your order: {item1_qty} '{item1_human}'\n")
+            print_slow(f"\n Added to your order:\n")
+            print_slow(f"{item1_qty} '{item1_human}'")
             continue_ordering()
             return False
 
-        if ORDER_ITEM == item2_code.lower():  # noqa 2nd item in pricing worksheet
+        # item2 in pricing worksheet
+        if ORDER_ITEM == item2_code.lower():
             try:
-                print_slow(f" How many '{item2_human}' do you want to order?\n")
+                print_slow(f" How many '{item2_human}'")
+                print_slow(" do you want to order?\n")
                 item2_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item2_qty < 1 or item2_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
                 order_inputs()
 
             NEW_ORDER['item2'] = item2_qty
-            print_slow(f"\n Added to your order: {item2_qty} '{item2_human}'\n")
+
+            print_slow(f"\n Added to your order:\n")
+            print_slow(f"{item2_qty} '{item2_human}'")
             continue_ordering()
             return False
 
-        if ORDER_ITEM == item3_code.lower():  # noqa 3rd item in pricing worksheet
+        if ORDER_ITEM == item3_code.lower():
             try:
-                print_slow(f" How many '{item3_human}' do you want to order?\n")
+                print_slow(f" How many '{item3_human}'")
+                print_slow(" do you want to order?\n")
                 item3_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item3_qty < 1 or item3_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
                 else:
                     NEW_ORDER['item3'] = item3_qty
-                    print_slow(f"\n Added to your order: {item3_qty} '{item3_human}'\n")
+
+                    print_slow(f"\n Added to your order:\n")
+                    print_slow(f"{item3_qty} '{item3_human}'")
                     continue_ordering()
                     return True
-                
+
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
                 NEW_ORDER['item3']
                 order_inputs()
 
-        if ORDER_ITEM == item4_code.lower():  # noqa 4th item in pricing worksheet
+        if ORDER_ITEM == item4_code.lower():
             try:
-                print_slow(f" How many '{item4_human}' do you want to order?\n")
+                print_slow(f" How many '{item4_human}'")
+                print_slow(" do you want to order?\n")
                 item4_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item4_qty < 1 or item4_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
                 order_inputs()
 
             NEW_ORDER['item4'] = item4_qty
-            print_slow(f"\n Added to your order: {item4_qty} '{item4_human}'\n")
+
+            print_slow(f"\n Added to your order:\n")
+            print_slow(f"{item4_qty} '{item4_human}'")
             continue_ordering()
             return False
 
-        if ORDER_ITEM == item5_code.lower():  # noqa 5th item in pricing worksheet
+        if ORDER_ITEM == item5_code.lower():
             try:
-                print_slow(f" How many '{item5_human}' do you want to order?\n")
+                print_slow(f" How many '{item5_human}'")
+                print_slow(" do you want to order?\n")
                 item5_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item5_qty < 1 or item5_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
                 order_inputs()
 
             NEW_ORDER['item5'] = item5_qty
-            print_slow(f"\n Added to your order: {item5_qty} '{item5_human}'\n")
+
+            print_slow(f"\n Added to your order:\n")
+            print_slow(f"{item5_qty} '{item5_human}'")
             continue_ordering()
             return False
 
-        if ORDER_ITEM == item6_code.lower():  # noqa 6th item in pricing worksheet
+        if ORDER_ITEM == item6_code.lower():
             try:
-                print_slow(f" How many '{item6_human}' do you want to order?\n")
+                print_slow(f" How many '{item6_human}'")
+                print_slow(" do you want to order?\n")
                 item6_qty = int(input(f" Type a number from 1 - 30:\n"))
 
+                # ValueError is renamed as e in except,
+                # and goes in the {e} in final message
                 if item6_qty < 1 or item6_qty > 30:
-                    raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
-                    f" You must type a number from 1 to 30"
-                    )
+                    raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
                 print_slow(" please try again.")
                 order_inputs()
 
             NEW_ORDER['item6'] = item6_qty
-            print_slow(f"\n Added to your order: {item6_qty} '{item6_human}'\n")
+            print_slow(f"\n Added to your order:\n")
+            print_slow(f"{item6_qty} '{item6_human}'")
             continue_ordering()
             return False
 
+            # ValueError is renamed as e in except,
+            # and goes in the {e} in final message
         if ORDER_ITEM != item1_code or ORDER_ITEM != item2_code or ORDER_ITEM != item3_code or ORDER_ITEM != item4_code or ORDER_ITEM != item5_code or ORDER_ITEM != item6_code:
-            raise ValueError(  # noqa ValueError is renamed as e in except, and goes in the {e} in final message
+            raise ValueError(
                 f" You must type a correct {code} (e.g.:{code_example})."
             )
 
@@ -390,7 +416,8 @@ def send_email_to_user():
         msg['Subject'] = f"Invoice from {logo_name}"
         msg['From'] = f'{logo_name}'
         msg['To'] = user_email
-        msg.set_content(f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")
+        msg.set_content(
+            f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")
 
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender, gmail_app_password)
@@ -411,11 +438,11 @@ def check():
     print_slow("\n Please, include your email to receive\n")
     user_email = input(" your pending invoice and payment details:\n").strip()  # noqa strip() method erases extra spaces before/after input data
 
-    if(re.fullmatch(regex, user_email)):
+    if (re.fullmatch(regex, user_email)):
         print_slow("Valid Email")
         NEW_ORDER['user_email'] = user_email  # noqa includes user_email input value to user_email key in dict NEW_ORDER
         process_order(NEW_ORDER)
-        
+
     else:
         print_slow("Invalid Email")
         check()
@@ -432,51 +459,72 @@ def process_order(order):
     User is given the option to confirm order, return to ordering, or exit app.
     If user confirms order, invoice full data is exported to sales worksheet.
     """
-    user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()  # noqa title() method capitalizes every word in input string
+    # title() method capitalizes every word in input string
+    user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()
     NEW_ORDER['user_name'] = user_name
-    
+
     invoice = order.get('invoice_no')
     print_slow(f"\n Your order {invoice} is being generated...\n")
     print_slow(f"\n Hold on {user_name},\n")
     print_slow(" the total amount is being calculated...\n")
+    # takes list of items out of sales worksheet, in a user-friendly version
+    order_item_names = invoices_worksheet.row_values(2)
 
-    order_item_names = invoices_worksheet.row_values(2)  # noqa takes list of items out of sales worksheet, in a user-friendly version
+    # create list only from values of NEW_ORDER dict
+    order_values = []
 
-    order_values = []  # noqa creates list from values out of NEW_ORDER dict
-
-    for x in order.values():  # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+    # take only values from dict NEW_ORDER,
+    # and appends to new list order_values
+    for x in order.values():
         order_values.append(x)
 
-    item_prices = pricing_worksheet.col_values(3)[1:]  # noqa list of strings of each item price from pricing worksheet
+    # list of strings of each item price from pricing worksheet
+    item_prices = pricing_worksheet.col_values(3)[1:]
 
-    item_prices_float_list = []  # noqa new list of floats made from list of strings item_prices
+    # new list of floats made from list of strings item_prices
+    item_prices_float_list = []
 
-    for i in item_prices:   # noqa converts item_prices to list of floats item_prices_float_list
+    # converts item_prices to list of floats item_prices_float_list
+    for i in item_prices:
         item_prices_float_list.append(float(i))
 
-    number_of_items_in_order_float = []  # noqa new list of floats made from list of strings number_of_items_in_order
+    # new list of floats made from list of strings number_of_items_in_order
+    number_of_items_in_order_float = []
 
-    number_of_items_in_order = order_values[4:]  # noqa takes number of items selected in the order, eluding user and invoice data until col4
+    # take number of items selected in order, without user/invoice data
+    number_of_items_in_order = order_values[4:]
 
-    for i in number_of_items_in_order:  # noqa loop iterates through number_of_items_in_order and converts values in strings to floats, include each float to  new list number_of_items_in_order_float
+    # loop iterates through number_of_items_in_order, converts values
+    # in strings of floats, then include each float
+    # to new list number_of_items_in_order_float
+    for i in number_of_items_in_order:
         number_of_items_in_order_float.append(float(i))
 
-    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]  # noqa multiplies number of items in the order with price of item
+    # multiply number of items in the order with price of item
+    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]
 
-    total_amount = sum(res_list)  # noqa sums all subtotals of items ordered, calculates total_amount to be paid
+    # sum all subtotals of items ordered, calculate invoice total_amount
+    total_amount = sum(res_list)
 
-    total_amount = round(total_amount, 2)  # noqa rounds total_amount to floor, and only 2 decimals
+    # rounds total_amount to floor, and only 2 decimals
+    total_amount = round(total_amount, 2)
 
-    order_values.pop()  # noqa takes out default 0 value for total_amount in NEW_ORDER dict, where values have been retrieved previously
+    # take out default 0 value for total_amount in NEW_ORDER dict,
+    # which is last value in dict
+    order_values.pop()
 
-    order_values.append(str(total_amount))  # noqa appends to the order values the total_amount
+    # appends to the order values the total_amount
+    order_values.append(str(total_amount))
 
-    final_order = dict(zip(order_item_names, order_values))  # noqa creates new dict for final_order, with item as keys, and num. of items as values. Includes final amount key:value
+    # create new dict for final_order, with item as keys,
+    # and num. of items as values. Includes final amount key:value
+    final_order = dict(zip(order_item_names, order_values))
 
     print_slow("\n Please review your order before")
-    print_slow("\n it is processed and sent to your email for due payment:\n\n")
+    print_slow("\n it is processed and sent to you for due payment:\n\n")
 
-    for item, value in final_order.items():  # noqa only prints items which value is not 0
+    # only print to user items which value is not 0
+    for item, value in final_order.items():
         if value != '0':
             print(f' {item:10} : {value}')
 
@@ -497,7 +545,7 @@ def process_order(order):
     else:
         invoices_worksheet.append_row(order_values)
         print_slow(f" Order confirmed!\n")
-        print_slow("\n You will automatically receive an email with your invoice")
+        print_slow("\n You will now receive an email with your invoice")
         print_slow("\n to be paid in the following 2 business days.")
         print_slow("\n\n WARNING: Your order will be cancelled if you fail to")
         print_slow("\n proceed to payment on due date.\n\n Thank you!\n")
@@ -509,13 +557,15 @@ def list_keyword_item():
     """
     Print list of items and codes, and runs order_inputs()
     """
-    print_slow(f"\n Each {item_type} has a {code} associated in the system:\n\n")
+    print_slow(f"\n Each {item_type} has a {code} associated:\n\n")
     items = pricing_worksheet.col_values(2)[0:]
     item_keys = pricing_worksheet.col_values(4)[0:]
 
-    dict_item_keys = dict(zip(item_keys, items))  # noqa creates dict merging each i from both lists
+    # create dict merging each i from both lists
+    dict_item_keys = dict(zip(item_keys, items))
 
-    for key, item in dict_item_keys.items():  # noqa formats output of dict of KEY and ITEMS
+    # format output of dict of KEY and ITEMS
+    for key, item in dict_item_keys.items():
         print(f' {key:5} : {item}')
         print('-' * 33)  # adds ---- after each KEY : ITEM of the dict
 
@@ -535,7 +585,7 @@ def view_details_option():
         return True
     else:
         generate_order()
-        # return True    
+        # return True
 
 
 def generate_order():
@@ -780,6 +830,6 @@ def main():
     """
     welcome()
     print_inventory(pricing)
-    
+
 
 main()
