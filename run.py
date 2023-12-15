@@ -254,7 +254,7 @@ def order_inputs():
                     raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 order_inputs()
 
             NEW_ORDER[f'item1'] = item1_qty
@@ -277,7 +277,7 @@ def order_inputs():
                     raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 order_inputs()
 
             NEW_ORDER['item2'] = item2_qty
@@ -307,7 +307,7 @@ def order_inputs():
 
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 NEW_ORDER['item3']
                 order_inputs()
 
@@ -323,7 +323,7 @@ def order_inputs():
                     raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 order_inputs()
 
             NEW_ORDER['item4'] = item4_qty
@@ -345,7 +345,7 @@ def order_inputs():
                     raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 order_inputs()
 
             NEW_ORDER['item5'] = item5_qty
@@ -367,7 +367,7 @@ def order_inputs():
                     raise ValueError(f" You must type a number from 1 to 30")
             except ValueError as e:
                 print_slow(f" Invalid data: {e},\n")
-                print_slow(" please try again.")
+                print_slow(" Please try again.")
                 order_inputs()
 
             NEW_ORDER['item6'] = item6_qty
@@ -459,8 +459,17 @@ def process_order(order):
     User is given the option to confirm order, return to ordering, or exit app.
     If user confirms order, invoice full data is exported to sales worksheet.
     """
+    
+    try:
     # title() method capitalizes every word in input string
-    user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()
+        user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()
+        if user_name == "":
+            raise ValueError(f" missing name")
+    except ValueError as e:
+        print_slow(f" Invalid data: {e},\n")
+        print_slow(" Please enter your name to create invoice.")
+        process_order(order)
+
     NEW_ORDER['user_name'] = user_name
 
     invoice = order.get('invoice_no')
@@ -636,15 +645,13 @@ def calculate_total_sales():
     # gpread method to clear range with old stock (clears row 4)
     total_sales_worksheet.batch_clear(["A4:G4"])
 
-    range_to_update = 'B3:G3'
     # add new calculated values of remaining stock
     # to selected range
     total_sales_worksheet.update('B3:G3', [total_sales_list])
-    # total_sales_worksheet.append_row(total_sales_list)
 
     grand_total = sum(total_sales_list)
     total_sales_worksheet.update_cell(6, 7, grand_total)
-    # total_sales_worksheet.update('G5:G5', [grand_total])
+
     print("\n\n")
     logo()
     print(f"(c) {logo_name}\n\n")
@@ -666,7 +673,7 @@ def calculate_subtotals_sales():
     # create dictionary to be updated
     items_sold_dict = dict(zip(items_sold_by_itemnum, items_sold))
 
-    # creates list of str with all items1 sold in each order
+    # create list of str with all items1 sold in each order
     items1_sold_list = invoices_worksheet.col_values(5)[2:]
     # new list with items1 sold converted to int to be sum
     items1_sold_int = []
@@ -678,7 +685,8 @@ def calculate_subtotals_sales():
     # update dict. with sum of items1 sold
     items_sold_dict['item1'] = items1_sold
 
-    # noqa creates list of str with all items2 sold in each order(invoices_worksheet)
+    # create list of str with all items2 sold
+    # in each order(invoices_worksheet)
     items2_sold_list = invoices_worksheet.col_values(6)[2:]
     # new list with items2 sold converted to int to be sum
     items2_sold_int = []
@@ -690,7 +698,8 @@ def calculate_subtotals_sales():
     # update dict. with sum of items2 sold
     items_sold_dict['item2'] = items2_sold
 
-    # noqa creates list of str with all items3 sold in each order(invoices_worksheet)
+    # create list of str with all items3 sold
+    # in each order(invoices_worksheet)
     items3_sold_list = invoices_worksheet.col_values(7)[2:]
     # new list with items3 sold converted to int to be sum
     items3_sold_int = []
@@ -702,7 +711,8 @@ def calculate_subtotals_sales():
     # update dict. with sum of items3 sold
     items_sold_dict['item3'] = items3_sold
 
-    # noqa creates list of str with all items4 sold in each order(invoices_worksheet)
+    # create list of str with all items4 sold
+    # in each order(invoices_worksheet)
     items4_sold_list = invoices_worksheet.col_values(8)[2:]
     # new list with items4 sold converted to int to be sum
     items4_sold_int = []
@@ -714,7 +724,8 @@ def calculate_subtotals_sales():
     # update dict. with sum of items3 sold
     items_sold_dict['item4'] = items4_sold
 
-    # noqa creates list of str with all items5 sold in each order(invoices_worksheet)
+    # create list of str with all items5
+    # sold in all orders (invoices_worksheet)
     items5_sold_list = invoices_worksheet.col_values(9)[2:]
     # new list with items5 sold converted to int to be sum
     items5_sold_int = []
@@ -726,7 +737,8 @@ def calculate_subtotals_sales():
     # update dict. with sum of items5 sold
     items_sold_dict['item5'] = items5_sold
 
-    # noqa creates list of str with all items6 sold in each order(invoices_worksheet)
+    # creates list of str with all items6
+    # sold in all orders(invoices_worksheet)
     items6_sold_list = invoices_worksheet.col_values(10)[2:]
     # new list with items6 sold converted to int to be sum
     items6_sold_int = []
@@ -738,9 +750,11 @@ def calculate_subtotals_sales():
     # update dict. with sum of items6 sold
     items_sold_dict['item6'] = items6_sold
 
-    # noqa creates list from values out of items_sold_dict dict.
+    # create list from values out of
+    # items_sold_dict dict.
     items_sold_values = []
-    # noqa takes only values from dict NEW_ORDER, and appends to new list order_values
+    # take only values from dict NEW_ORDER,
+    # and appends to new list order_values
     for x in items_sold_dict.values():
         items_sold_values.append(x)
 
