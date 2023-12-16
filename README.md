@@ -7,7 +7,7 @@ It could also sell any other items, such as the following examples:
 - Online courses
 - Online private lesson packs
 
-The app is linked to a Spreadsheet, which can be customized to change the following:
+The app is linked to a Spreadsheet, which can be customized to change the following values, which will be reflected on the app, **making the app fully reusable**:
 - Product names
 - Product codes
 - Products pricing
