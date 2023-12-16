@@ -1,5 +1,8 @@
 # FESTIVAL TICKETS SALE
 ## OVERVIEW
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c6cbf253-7d22-4774-adf4-3f891bf72a56)
+
 This app aims at being a useful sales point for selling access tickets for a festival, or any other event.  
 It could also sell any other items, such as the following examples:
 - Excusion packs
