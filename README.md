@@ -55,7 +55,7 @@ Edna Torres Munill
       * [Google Sheets Template](#google-sheets-template)
     + [Deploy to Gitpod](#deploy-to-gitpod)
       * [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
-      * [Install or Update Requirements.txt](#install-or-update-requirements-.-txt)
+      * [Install or Update Requirements.txt](#install-or-update-requirements.txt)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
