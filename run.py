@@ -462,9 +462,9 @@ def process_order(order):
     User is given the option to confirm order, return to ordering, or exit app.
     If user confirms order, invoice full data is exported to sales worksheet.
     """
-    
+
     try:
-    # title() method capitalizes every word in input string
+        # title() method capitalizes every word in input string
         user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()
         if user_name == "":
             raise ValueError(f" missing name")
