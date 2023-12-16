@@ -148,18 +148,18 @@ Enable the following APIs for this project:
 #### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
 1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
   - Your creds.json file including your credentials should look like that:  
-            {
-            "type": "service_account",
-            "project_id": "<YOUR_VALUE>",
-            "private_key_id": "<YOUR_VALUE>",
-            "private_key": "<YOUR_VALUE>",
-            "client_email": "<YOUR_VALUE>",
-            "client_id": "<YOUR_VALUE>",
-            "auth_uri": "https://accoutns.google.com/0/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cer_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "clien_x509_cert_url": "<YOUR_VALUE>"
-        }
+       {
+        "type": "service_account",
+        "project_id": "<YOUR_VALUE>",
+        "private_key_id": "<YOUR_VALUE>",
+        "private_key": "<YOUR_VALUE>",
+        "client_email": "<YOUR_VALUE>",
+        "client_id": "<YOUR_VALUE>",
+        "auth_uri": "https://accoutns.google.com/0/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cer_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "clien_x509_cert_url": "<YOUR_VALUE>"
+       }
 3. Open creds.json file, and copy **client_email** generated (without including the brackets)
 4. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.json file, so the project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
 5. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
