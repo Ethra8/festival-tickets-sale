@@ -53,6 +53,7 @@ Edna Torres Munill
       * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
         - [Enable APIs](#enable-apis)
         - [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
+    + [Google Sheets Template](#google-sheets-template)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
@@ -167,7 +168,10 @@ Enable the following APIs for this project:
 4. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.json file, so the project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
 5. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
-6. On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list, before committing to GitHub.
+6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.
+
+#### GOOGLE SHEETS TEMPLATE
+This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018)
 
 ### DEPLOY IN HEROKU    
 
