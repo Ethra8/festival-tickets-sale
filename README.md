@@ -52,8 +52,10 @@ Edna Torres Munill
     + [Requirements](#requirements)
       * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
         - [Enable APIs](#enable-apis)
-        - [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
       * [Google Sheets Template](#google-sheets-template)
+    + [Deploy to Gitpod](#deploy-to-gitpod)
+      * [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
+      * [Update Requirements.txt](#update-requirements.txt)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
@@ -147,28 +149,6 @@ Enable the following APIs for this project:
   - Go to ***'APIs and Services'*** > ***'Library'*** and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
-#### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
-1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
-  - Your creds.json file including your credentials should look like that:  
-```$python
-{
-    "type": "service_account",
-    "project_id": "<YOUR_VALUE>",
-    "private_key_id": "<YOUR_VALUE>",
-    "private_key": "<YOUR_VALUE>",
-    "client_email": "<YOUR_VALUE>",
-    "client_id": "<YOUR_VALUE>",
-    "auth_uri": "https://accoutns.google.com/0/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cer_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "clien_x509_cert_url": "<YOUR_VALUE>"
-}
-```
-3. Open creds.json file, and copy **client_email** generated (without including the brackets)
-4. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.json file, so the project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
-5. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
-   ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
-6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.
 
 #### GOOGLE SHEETS TEMPLATE
 This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018).  
@@ -252,8 +232,32 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a2e6f7ad-f1bb-4bd6-84d3-e37f142b3d83)
 
-#### REQUIREMENTS.TXT
-Before deploying the app, the requirements.txt file included in the project must be updated. On the terminal, type:  
+### DEPLOY TO GITPOD
+#### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
+1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
+  - Your creds.json file including your credentials should look like that:  
+```$python
+{
+    "type": "service_account",
+    "project_id": "<YOUR_VALUE>",
+    "private_key_id": "<YOUR_VALUE>",
+    "private_key": "<YOUR_VALUE>",
+    "client_email": "<YOUR_VALUE>",
+    "client_id": "<YOUR_VALUE>",
+    "auth_uri": "https://accoutns.google.com/0/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cer_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "clien_x509_cert_url": "<YOUR_VALUE>"
+}
+```
+3. Open creds.json file, and copy **client_email** generated (without including the brackets)
+4. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.json file, so the project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
+5. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
+   ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
+6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.  
+
+#### UPDATE REQUIREMENTS.TXT
+Before deploying the app, the requirements.txt file included in the project must be updated with the dependencies. On the terminal, type:  
 ```$python
 pip3 install -r requirements.txt
 ```
@@ -261,6 +265,8 @@ pip3 install -r requirements.txt
 ### DEPLOY IN HEROKU    
 
 ## CREDITS
+The app was coded using [Code Institute's P3 Template](https://github.com/Code-Institute-Org/p3-template), which includes all necessary features and files for it to run smoothly on Heroku, by creating a terminal, as this project does not have any front-end code.  
+  
 ### ACKNOWLEDGEMENTS
 - [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
 - [Email validation through Regex](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) at [Geeksforgeeks](www.geeksforgeeks.org)
