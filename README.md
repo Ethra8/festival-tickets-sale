@@ -16,8 +16,8 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
 - Initial stock
 - Invoice numering
 
-  
-![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c6cbf253-7d22-4774-adf4-3f891bf72a56)  
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/274c8f09-cb16-4c18-a7c7-791f87cc17c3)
+
 
 ## LIVE APP  
 Access App [HERE](https://festival-tickets-sale-1bab2955093f.herokuapp.com/)
