@@ -17,24 +17,95 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
 - Invoice numering
 
   
-![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c6cbf253-7d22-4774-adf4-3f891bf72a56)
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c6cbf253-7d22-4774-adf4-3f891bf72a56)  
 
-  
-Access App [HERE](https://festival-tickets-sale-1bab2955093f.herokuapp.com/) 
+## LIVE APP  
+Access App [HERE](https://festival-tickets-sale-1bab2955093f.herokuapp.com/)
+
+## REPOSITORY
+Check out the repository [HERE](https://github.com/Ethra8/festival-tickets-sale)
 
 ## AUTHOR
 Edna Torres Munill
+
+## TABLE OF CONTENTS
+
+- [Overview](#overview)
+- [Live App](#live-app)
+- [Repository](#repository)
+- [Author](#author)
+- [How to Use](#how-to-use)
+- [Features](#features)
+    + [Implemented Features](#implemented-features)
+    + [Future Features](#future-features)
+- [Flow Chart](#flow-chart)
+- [Data Model](#data-model)
+- [Libraries Used](#libraries-used)
+- [Testing](#testing)
+    + [Validation Testing](#validation-testing)
+    + [Manual Testing](#manual-testing)
+- [Defects](#defects)
+    + [Defects Tracking](#defects-tracking)
+    + [Defects of Note](#defects-of-note)
+    + [Outstanding Defects](#outstanding-defects)
+- [Deployment](#deployment)
+    + [Requirements](#requirements)
+      * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
+        - [Enable APIs](#enable-apis)
+        - [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
+    + [Deploy in Heroku](#deploy-in-heroku)
+
+
+## HOW TO USE
+
+
+## FEATURES
+
+### IMPLEMENTED FEATURES
+
+### FUTURE FEATURES
+
+## FLOW CHART
+
+## DATA MODEL
+
+## LIBRARIES USED
+- pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
+- google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
+- gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
+   + To install google-auth & gspread, type in terminal:  
+     pip3 install gspread google-auth  
+   + To upgrade pip in future for newer versions, type in terminal:  
+     python.exe -m pip install --upgrade pip
+- 
+
+## TESTING
+
+### VALIDATION TESTING
+
+### MANUAL TESTING
+
+## DEFECTS
+
+### DEFECTS TRACKING
+
+### DEFECTS OF NOTE
+
+### OUTSTANDING DEFECTS
+
+## DEPLOYMENT
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
   
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/9d5010e7-7697-49a4-96df-16a862efe005)
 
-- Enable the following APIs for this project:
-   + Google Drive API
-   + Google Sheets API
+#### ENABLE APIs
+Enable the following APIs for this project:
+- **Google Drive API**
+- **Google Sheets API**
 
-- **ENABLE GOOGLE DRIVE API**:  
+1. **ENABLE GOOGLE DRIVE API**:  
    1. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.
   
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
@@ -70,11 +141,11 @@ Edna Torres Munill
    10. Select JSON option. Once you click on 'Create', a file will automatically download to your 'downsloaded' folder on your device:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/692d119c-ccde-474d-b14a-6307f3ee2310)
 
-- **ENABLE GOOGLE SHEETS API** :
-   1. Go to 'APIs and Services' > 'Library' and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
+2. **ENABLE GOOGLE SHEETS API** :
+  - Go to ***'APIs and Services'*** > ***'Library'*** and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
-### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
+#### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
 1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
 2. Open creds.json file, and copy **client_email** generated (without including the brackets)
 3. Go to our **Google SpreadSheet** and click on 'Share' to share SpreadSheet with client_email from creds.jason file, so our project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
@@ -82,20 +153,7 @@ Edna Torres Munill
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
 5. On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list, before committing to GitHub.
 
-    
-
-### TECHNOLOGIES USED
-
-
-### PYTHON MODULES INSTALLED
-- pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
-- google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
-- gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
-   + To install google-auth & gspread, type in terminal:  
-     pip3 install gspread google-auth  
-   + To upgrade pip in future for newer versions, type in terminal:  
-     python.exe -m pip install --upgrade pip
-- 
+### DEPLOY IN HEROKU    
 
 
 ## ACKNOWLEDGEMENTS
