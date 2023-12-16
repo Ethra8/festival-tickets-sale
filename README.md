@@ -176,7 +176,13 @@ As the project has been built in order to be as reusable as possible, you can ma
 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/3c4b5231-1261-4d64-910b-67f99660d37b)
 
-After cloning the repository, updating the credentials (creds.json file), and making sure the app is linked to your own Google account, you can update the copy made of the SpreadSheet to fit your needs. Find below the data included in each Worksheet, and which one you could update to fit your needs:  
+After cloning the repository, updating the credentials (creds.json file), and making sure the app is linked to your own Google account, you can update your copy made of the SpreadSheet to fit your needs.  
+**IMPORTANT**: Rename your copy exactly the same as it is inicually named - **festival-tickets-sale**  
+The SpreadSheet also contains a **README** Worksheet to remind you of the main instructions to avoid system breakdown, also reviewed in more detail below.  
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/2f66a82d-bc07-4a88-8a32-5140b96cfdd2)  
+
+Find below the data included in each Worksheet, and which one can be to fit your needs:  
 **IMPORTANT**: You may ***ONLY*** change values that are in cells with a ***green background***, but ***DO NOT change values in CELLS with a red background***, to avoid system crash.
 
 ##### SETTINGS WORKSHEET
