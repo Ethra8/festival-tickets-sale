@@ -103,7 +103,7 @@ def print_slow(str):
         time.sleep(0.05)
 
 
-print_slow("Loading ...")
+print_slow(" Loading ...")
 
 
 def logo():
