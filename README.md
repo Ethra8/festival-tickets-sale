@@ -254,7 +254,7 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
 
 #### REQUIREMENTS.TXT
 Before deploying the app, the requirements.txt file included in the project must be updated. On the terminal, type:  
-       pip3 freeze > requirements.txt
+     pip3 freeze > requirements.txt  
 
 ### DEPLOY IN HEROKU    
 
