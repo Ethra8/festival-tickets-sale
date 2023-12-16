@@ -1,6 +1,6 @@
 import pyfiglet
-import gspread  # noqa library first downloaded through terminal : pip3 install gspread google-auth
-from google.oauth2.service_account import Credentials  # noqa imports just specific Credentials function from library,no need to import complete library
+import gspread
+from google.oauth2.service_account import Credentials
 from datetime import datetime
 import sys
 import time
@@ -9,7 +9,8 @@ import ssl
 import os
 if os.path.exists('env.py'):
     import env
-import re  # regex email validator
+# regex email validator
+import re
 from email.message import EmailMessage
 
 
@@ -93,6 +94,9 @@ regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 
 def print_slow(str):
+    """
+    Print str as if it's typed
+    """
     for letter in str:
         sys.stdout.write(letter)
         sys.stdout.flush()
@@ -108,12 +112,20 @@ def logo():
     in settings_worksheet worksheet, to be set as the logo
     in the console welcome message
     """
-    logo = pyfiglet.figlet_format(logo_name, logo_font)  # noqa pyfiglet method to create Festival Name as Logo, then printed in welcome message in main()
+    # pyfiglet method to create Festival Name as Logo, 
+    # then printed in welcome message in main()
+    logo = pyfiglet.figlet_format(logo_name, logo_font)
 
     print(logo)
 
 
 def welcome():
+    """
+    Print welcome_msg_before_logo retrieved from custumizable message in
+    settings_worksheet, then logo, the welcome_msg_after_logo which
+    is also retrieved from customizble message in settings_worksheet.
+    Prompts user to access app by pressing ENTER key.
+    """
     print_slow('\n\n{:^50}'.format(f'{welcome_msg_before_logo}'))
     print("\n")
     logo()
@@ -378,7 +390,7 @@ def order_inputs():
 
             # ValueError is renamed as e in except,
             # and goes in the {e} in final message
-        if ORDER_ITEM != item1_code or ORDER_ITEM != item2_code or ORDER_ITEM != item3_code or ORDER_ITEM != item4_code or ORDER_ITEM != item5_code or ORDER_ITEM != item6_code:
+        if ORDER_ITEM != item1_code or ORDER_ITEM != item2_code or ORDER_ITEM != item3_code or ORDER_ITEM != item4_code or ORDER_ITEM != item5_code or ORDER_ITEM != item6_code:  # noqa E501
             raise ValueError(
                 f" You must type a correct {code} (e.g.:{code_example})."
             )
@@ -417,7 +429,7 @@ def send_email_to_user():
         msg['From'] = f'{logo_name}'
         msg['To'] = user_email
         msg.set_content(
-            f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")
+            f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")  # noqa E501
 
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender, gmail_app_password)
@@ -515,7 +527,7 @@ def process_order(order):
         number_of_items_in_order_float.append(float(i))
 
     # multiply number of items in the order with price of item
-    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]
+    res_list = [item_prices_float_list[i] * number_of_items_in_order_float[i] for i in range(len(item_prices_float_list))]  # noqa E501
 
     # sum all subtotals of items ordered, calculate invoice total_amount
     total_amount = sum(res_list)
@@ -587,6 +599,14 @@ def list_keyword_item():
 
 
 def view_details_option():
+    """
+    User is given option to skip detail list,
+    see items' detail list, or exit program.
+    If user wants to see items' details,
+    each items' details included in
+    item_details worksheet are printed in a list, with
+    each detail indented as a sub-list.
+    """
     print_slow("\n Type ANY KEY or press ENTER to (ORDER),\n")
     print_slow(" D to see (DETAILS),\n")
     detailed_info = input(" E to (EXIT)\n").lower().strip()
@@ -643,7 +663,7 @@ def calculate_total_sales():
     for i in item_prices:
         item_prices_int.append(float(i))
 
-    total_sales_list = [items_sold_int[i] * item_prices_int[i] for i in range(len(items_sold_int))]
+    total_sales_list = [items_sold_int[i] * item_prices_int[i] for i in range(len(items_sold_int))]  # noqa E501
 
     # gpread method to clear range with old stock (clears row 4)
     total_sales_worksheet.batch_clear(["A4:G4"])
@@ -815,7 +835,7 @@ def calculate_stock(data, worksheet):
 
     # subtract each item in present order (stock_to_sustract_int)
     # from existing_stock with for loop
-    new_stock = [existing_stock_int[i] - stock_to_sustract_int[i] for i in range(len(existing_stock_int))]
+    new_stock = [existing_stock_int[i] - stock_to_sustract_int[i] for i in range(len(existing_stock_int))]  # noqa E501
 
     item1_new_stock = new_stock[0]
     item2_new_stock = new_stock[1]
