@@ -22,6 +22,8 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
   
 Access App [HERE](https://festival-tickets-sale-1bab2955093f.herokuapp.com/) 
 
+## AUTHOR
+Edna Torres Munill
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
