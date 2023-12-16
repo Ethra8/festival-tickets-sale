@@ -171,7 +171,68 @@ Enable the following APIs for this project:
 6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.
 
 #### GOOGLE SHEETS TEMPLATE
-This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018)
+This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018).  
+As the project has been built in order to be as reusable as possible, you can make a copy of it:  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/3c4b5231-1261-4d64-910b-67f99660d37b)
+
+After cloning the repository, updating the credentials (creds.json file), and making sure the app is linked to your own Google account, you can update the copy made of the SpreadSheet to fit your needs. Find below the data included in each Worksheet, and which one you could update to fit your needs:  
+**IMPORTANT**: You may ***ONLY*** change values that are in cells with a ***green background***, but ***DO NOT change values in CELLS with a red background***, to avoid system crash.
+
+##### SETTINGS WORKSHEET
+This Worksheet, as its name suggests includes general settings to be customized as follows:  
+1. Logo/ company name
+2. Logo/ title font
+3. Welcome message before logo
+4. Welcome message after logo
+5. Title of the item details (if you have some items that have extra detail info, suck as packs or bonus, here you can update the title the user will see when the user chooses to access the item details)  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/b089fd71-425c-4e57-a343-28c321e51da9)
+
+
+##### PRICING WORKSHEET
+This Worksheet, as its name suggests, includes a list of the items to be sold, and their related values, as follows:  
+1. **ITEM TYPE**: You can change the type of items you are selling. E.g.: If you are selling lesson packs, you should change *TICKETS* by *PACKS*.
+2. **ITEM NAMES**: Update the names of the items you are selling. E.g.: *10 lessons pack* instead of *Adult Day 1 Access*, and so on with each item.
+3. **PRICE**: Change the prices of each item. ***IMPORTANT***: Use a dot '**.**' for decimal values, NOT COMMAS, as the app system does not recognize commas for decimals.
+4. **CODE**: Each item has to have a unique code that will be displayed next to the item in a list. The user will have to type the code of the item to be included in the order. It is recommended to include 2 value codes to make it easy for the user to type the desired item's code.  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5fa01a97-c7bf-42db-ac9b-f218e1d7981a)
+
+
+##### ITEM DETAILS
+This Worksheet is meant to include the items' details to be shown to the user when the user requests to see items' details after the pricing list os displayed: 
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/767ffd5c-59d4-4b6b-aa22-04ad85783cc8)  
+
+
+**IMPORTANT**: You ***MUST*** include at least one item with at least one 'extra_info' to avoid system crash.  
+You can customize the following:  
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/67659655-a976-4fbf-b67e-d7ce94aa8e5f)
+
+1. **item_type**: For your own record, as this will not be displayed to the client (app user)
+2. **item_display_name**: This will be displayed to the client, and shouldbe the same af the ***item name*** introduced in the pricing worksheet.
+3. **extra_info**: You can include until 4 different features for each item, each if which will be displayed to the client that requests to see details as the example below:
+    
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a24dd189-6656-4f3f-af19-65c671e114b1)
+
+
+##### INVOICES
+This Worksheet, as its name suggests, shows all the invoices (orders), and should NOT be updated, unless when you make a coy of the SpreadSheet, or if a customer cancels an order. **The item names** are automatically retrieved from the Pricing Worksheet, and **Total Amount** is also automatically calculated also with the prices included in the Pricing Worksheet. 
+The only data to be updated before your first invoice is generated id the original dafault invoice value ***INV-100000*** placed in a ***cell with a green background***. All other values placed in ***cells with red background should not be changed*** to avoid system breakdown.  
+**IMPORTANT**: Your default invoice should contain the following format : ***letter(s)-nums*** (at least 1 letter BEFORE a mandatory **-** , and then as many **0** as numbers as your invoice numbering system requires.  
+
+In the following screenshot, you can see two test invoices created:
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/ad7983ae-4c48-4798-bce0-791f48c89d3a)
+
+
+##### TOTAL ITEMS SOLD
+
+##### STOCK
+
+##### TOTAL SALES
 
 ### DEPLOY IN HEROKU    
 
