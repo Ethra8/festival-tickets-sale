@@ -7,7 +7,7 @@ It could also sell any other items, such as the following examples:
 - Online courses
 - Online private lesson packs
 
-The app is linked to a Spreadsheet, which can be customized to change the following:
+The app is linked to a Spreadsheet, which can be customized to change the following values, which will be reflected on the app, **making the app fully reusable**:
 - Product names
 - Product codes
 - Products pricing
@@ -49,13 +49,14 @@ Edna Torres Munill
     + [Defects of Note](#defects-of-note)
     + [Outstanding Defects](#outstanding-defects)
 - [Deployment](#deployment)
-    + [Requirements](#requirements)
+    + [Prerequisites](#prerequisites)
       * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
-        - [Enable APIs](#enable-apis)
+      * [Enable APIs](#enable-apis)
+      * [Connect to APIs Through Python](#connect-to-apis-though-python)
       * [Google Sheets Template](#google-sheets-template)
     + [Deploy to Gitpod](#deploy-to-gitpod)
       * [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
-      * [Update Requirements.txt](#update-requirements.txt)
+      * [Install or Update Requirements txt File](#install-or-update-requirements-txt-file)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
@@ -66,27 +67,39 @@ Edna Torres Munill
 ## FEATURES
 ### IMPLEMENTED FEATURES
 This app contains the following features and functionalities:
-1. Displays list of items with their correspondent prices
-2. Displays optional list of items' details
-3. Displays list of items with their correspondent codes
-4. Takes user's input of item's code to be included in order
-5. Takes user's input of quantity of items selected to be included in order
-6. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
-7. User can exit app anytime
-8. User can finalize order anytime
-9. Input for user to include email to where the order will be sent
-10. Input for user to include name
-11. Send email to user with all the order data
-12. Includes invoice with order in 'invoice worksheet'
-13. Update stock in 'stock worksheet'
-14. Update items sold in 'total_items_sold worksheet'
-15. Update total sales income per item, and a grans total in 'total_sales worksheet'
-16. Informs the user at all times of the actions and processes of the app
+1. **REUSABLE CODE** : The most distinctive feature is that values are not hard-coded, and are all retrieved from the SpreadSheet, meaning that whoever wants to reuse the code, can easily customize the app to fit needs. These are the custmizable values:
+   1. App name (logo name)
+   2. Logo font
+   3. Welcome message (before, and after logo)
+   4. Items to sell
+   5. Price of items to sell
+   6. Item details
+   7. Title of items details list printed to user
+   8. Inicial stock
+   9. Final 'copyright' message includes customizable logo name
+
+3. Displays list of items with their correspondent prices
+4. Displays optional list of items' details
+5. Displays list of items with their correspondent codes
+6. Takes user's input of item's code to be included in order
+7. Takes user's input of quantity of items selected to be included in order
+8. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
+9. User can exit app anytime
+10. User can finalize order anytime
+11. Input for user to include email to where the order will be sent
+12. Input for user to include name
+13. Send email to user with all the order data
+14. Includes invoice with order in 'invoice worksheet'
+15. Update stock in 'stock worksheet'
+16. Update items sold in 'total_items_sold worksheet'
+17. Update total sales income per item, and a grans total in 'total_sales worksheet'
+18. Informs the user at all times of the actions and processes of the app
     
 ### FUTURE FEATURES
-The following features are to be implemented in a near future:
-1. Create user and order classes to improve code
+The following features are hopefully to be implemented in a near future:
+1. Create user and order classes to improve code, although everything works perfectly fine as it is.
 2. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
+3. Automatically cancel order if user does not proceed to payment on due date.
    
 ## FLOW CHART
 
@@ -127,12 +140,20 @@ This app has been carefully tested, as detailed below.
 ## DEFECTS
 
 ### DEFECTS TRACKING
+I have created ***issues*** in GitHub in order to track the most relevant issues encountered, all successfully fixed:  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5f429574-4f06-43a2-b628-7d87dbf5cfe9)
+
 
 ### DEFECTS OF NOTE
+**All the defects tracked as GitHub issues have been successfully fixed**, and none remain.
+
 
 ### OUTSTANDING DEFECTS
+No outstanding defects have been found
 
 ## DEPLOYMENT
+### PREREQUISITES
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
@@ -184,7 +205,7 @@ Enable the following APIs for this project:
   - Go to ***'APIs and Services'*** > ***'Library'*** and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
-3. **CONNECT TO APIs THROUGH PYTHON**
+### CONNECT TO APIs THROUGH PYTHON
   - Include the SCOPE constant variable to the run.py file (no need to change it when reusing the code, just leave it as it is):
 ```$python
 SCOPE = [
@@ -202,13 +223,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 ```
-#### GOOGLE SHEETS TEMPLATE
+
+### GOOGLE SHEETS TEMPLATE
 This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018).  
 As the project has been built in order to be as reusable as possible, you can make a copy of it:  
 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/3c4b5231-1261-4d64-910b-67f99660d37b)
 
-After cloning the repository, updating the credentials (creds.json file), and making sure the app is linked to your own Google account, you can update your copy made of the SpreadSheet to fit your needs.  
+After cloning the repository, updating the credentials (creds.json file), the env.py file with your own sensible data, and making sure the app is linked to your own Google account, you can update your copy made of the SpreadSheet to fit your needs.  
 **IMPORTANT**: Rename your copy exactly the same as it is inicually named - **festival-tickets-sale**  
 The SpreadSheet also contains a **README** Worksheet to remind you of the main instructions to avoid system breakdown, also reviewed in more detail below.  
 
@@ -217,7 +239,7 @@ The SpreadSheet also contains a **README** Worksheet to remind you of the main i
 Find below the data included in each Worksheet, and which one can be to fit your needs:  
 **IMPORTANT**: You may ***ONLY*** change values that are in cells with a ***green background***, but ***DO NOT change values in CELLS with a red background***, to avoid system crash.
 
-##### SETTINGS WORKSHEET
+#### 1. SETTINGS WORKSHEET
 This Worksheet, as its name suggests includes general settings to be customized as follows:  
 1. Logo/ company name
 2. Logo/ title font
@@ -228,7 +250,7 @@ This Worksheet, as its name suggests includes general settings to be customized 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/b089fd71-425c-4e57-a343-28c321e51da9)
 
 
-##### PRICING WORKSHEET
+#### 2. PRICING WORKSHEET
 This Worksheet, as its name suggests, includes a list of the items to be sold, and their related values, as follows:  
 1. **ITEM TYPE**: You can change the type of items you are selling. E.g.: If you are selling lesson packs, you should change *TICKETS* by *PACKS*.
 2. **ITEM NAMES**: Update the names of the items you are selling. E.g.: *10 lessons pack* instead of *Adult Day 1 Access*, and so on with each item.
@@ -238,7 +260,7 @@ This Worksheet, as its name suggests, includes a list of the items to be sold, a
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5fa01a97-c7bf-42db-ac9b-f218e1d7981a)
 
 
-##### ITEM DETAILS WORKSHEET
+#### 3. ITEM DETAILS WORKSHEET
 This Worksheet is meant to include the items' details to be shown to the user when the user requests to see items' details after the pricing list os displayed: 
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/767ffd5c-59d4-4b6b-aa22-04ad85783cc8)  
@@ -256,7 +278,7 @@ You can customize the following:
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a24dd189-6656-4f3f-af19-65c671e114b1)
 
 
-##### INVOICES WORKSHEET
+#### 4. INVOICES WORKSHEET
 This Worksheet, as its name suggests, shows all the invoices (orders), and should NOT be updated, unless when you make a coy of the SpreadSheet, or if a customer cancels an order. **The item names** are automatically retrieved from the Pricing Worksheet, and **Total Amount** is also automatically calculated also with the prices included in the Pricing Worksheet. 
 The only data to be updated before your first invoice is generated id the original dafault invoice value ***INV-100000*** placed in a ***cell with a green background***. All other values placed in ***cells with red background should not be changed*** to avoid system breakdown.  
 **IMPORTANT**: Your default invoice should contain the following format : ***letter(s)-nums*** (at least 1 letter BEFORE a mandatory **-** , and then as many **0** as your invoice numbering system requires.  
@@ -266,20 +288,20 @@ In the following screenshot, you can see two test invoices created:
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/ad7983ae-4c48-4798-bce0-791f48c89d3a)
 
 
-##### TOTAL ITEMS SOLD WORKSHEET
+#### 5. TOTAL ITEMS SOLD WORKSHEET
 As its name suggests, this Worksheet shows how many items have been sold (by item type). The amount is automatically calculated by the code, by summing each item type from all orders, and the item names are also automatically retrieved from the pricing worksheet, so **NO NEED TO MANUALLY UPDATE ANYTHING**. Find an example below:  
   
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/f6999d62-6948-40f7-86c5-8be3c1b0c381)  
   
   
-##### STOCK WORKSHEET
+#### 6. STOCK WORKSHEET
 As its name suggests, this Worksheet shows the remaining stock per item type. The item names are automatically retrieved from the Pricing Worksheet, and the total remaining stock per item is automatically calculated every time the code is run. **The only values to be updated are to INITIAL STOCK per item**, values in ***cells with a green background***, from which the sold items will be sustracted.  
 **IMPORTANT**: The row of 'REMAINING STOCK' should also manually be set only the 1st time, to  match the initial stock values, and then it will be automatically updated after each sale.  
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c596855a-9c07-4730-b40b-bbe56dfdc4b0)  
 
 
-##### TOTAL SALES WORKSHEET
+#### 7. TOTAL SALES WORKSHEET
 As its name suggests, this Worksheet shows the total sales per item, as well as the total income generated by selling each and every item. The item names are retrieved from the Princing Worksheet, and the total amounts automatically calculated, so it shouldn't be updated manually. See an example below:  
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a2e6f7ad-f1bb-4bd6-84d3-e37f142b3d83)
@@ -308,10 +330,14 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
 6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.  
 
-#### UPDATE REQUIREMENTS.TXT
-Before deploying the app, the requirements.txt file included in the project must be updated with the dependencies. On the terminal, type:  
+#### INSTALL OR UPDATE REQUIREMENTS txt FILE
+Before deploying the app, the requirements.txt file included in the project must be installed with the dependencies. On the terminal, type:  
 ```$python
 pip3 install -r requirements.txt
+```
+In case you install further modules or libraries, then the requirements.txt file must be updated by typing in the terminal the following command:
+```$python
+pip3 freeze > requirements.txt
 ```
 
 ### DEPLOY IN HEROKU    
