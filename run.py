@@ -118,7 +118,8 @@ def welcome():
     print("\n")
     logo()
     print_slow('{:^50}'.format(f'{welcome_msg_after_logo}'))
-    go_to_pricing_list = input("\n\n Type ANY KEY or press ENTER to access\n").lower()
+    print_slow("\n\n Type ANY KEY or ")
+    go_to_pricing_list = input(" press ENTER to access\n").lower()
 
     if go_to_pricing_list:
         return True
@@ -163,7 +164,7 @@ def exit_app():
     print_slow("\n Are you sure you want to exit program?\n")
     print_slow(" In case you have a pending order, it will get lost.\n")
     print_slow(" Type E (EXIT) to close program,\n")
-    print_slow(" or any other key or PRESS ENTER to continue with your order:\n")
+    print_slow(" or any other key or PRESS ENTER to continue order:\n")
     exit_confirmation = input("\n").lower().strip()
 
     if exit_confirmation == "e":
@@ -204,7 +205,7 @@ def continue_ordering():
     """
     Prompt user to continue order, to finalize or to exit app
     """
-    print_slow("\n Type ANY KEY or press ENTER (CONTINUE ORDERING)\n")
+    print_slow("\n\n Type ANY KEY or press ENTER (CONTINUE ORDERING)\n")
     print_slow(" P to return to (PRICING LIST)\n")
     continue_ordering = input(" F to (FINALIZE ORDER):\n").lower().strip()
 
@@ -465,7 +466,8 @@ def process_order(order):
 
     try:
         # title() method capitalizes every word in input string
-        user_name = input("\n\n Please, type in a user name to create your invoice\n").strip().title()
+        print_slow("\n\n Please, type in a user name")
+        user_name = input(" to create your invoice\n").strip().title()
         if user_name == "":
             raise ValueError(f" missing name")
     except ValueError as e:
@@ -647,8 +649,13 @@ def calculate_total_sales():
     total_sales_worksheet.batch_clear(["A4:G4"])
 
     # add new calculated values of remaining stock
-    # to selected range
-    total_sales_worksheet.update('B3:G3', [total_sales_list])
+    # to selected cells to update total_sales worksheet
+    total_sales_worksheet.update_cell(3, 2, total_sales_list[0])
+    total_sales_worksheet.update_cell(3, 3, total_sales_list[1])
+    total_sales_worksheet.update_cell(3, 4, total_sales_list[2])
+    total_sales_worksheet.update_cell(3, 5, total_sales_list[3])
+    total_sales_worksheet.update_cell(3, 6, total_sales_list[4])
+    total_sales_worksheet.update_cell(3, 7, total_sales_list[5])
 
     grand_total = sum(total_sales_list)
     total_sales_worksheet.update_cell(6, 7, grand_total)
