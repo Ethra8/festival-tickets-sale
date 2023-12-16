@@ -112,7 +112,7 @@ def logo():
     in settings_worksheet worksheet, to be set as the logo
     in the console welcome message
     """
-    # pyfiglet method to create Festival Name as Logo, 
+    # pyfiglet method to create Festival Name as Logo,
     # then printed in welcome message in main()
     logo = pyfiglet.figlet_format(logo_name, logo_font)
 
