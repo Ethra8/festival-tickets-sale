@@ -1,12 +1,9 @@
 import pyfiglet
 import gspread  # noqa library first downloaded through terminal : pip3 install gspread google-auth
 from google.oauth2.service_account import Credentials  # noqa imports just specific Credentials function from library,no need to import complete library
-from pprint import pprint  # noqa  --> must not be deployed. but very handy when coding and testing
 from datetime import datetime
 import sys
 import time
-import random
-import math
 import smtplib
 import ssl
 import os
@@ -53,6 +50,7 @@ item_sales_new_order = invoices_worksheet.row_values(1)
 # get mock values for each key to create NEW_ORDER dict
 values_sales_new_order = invoices_worksheet.row_values(3)
 
+# item identification vars retrieved from pricing worksheet
 item_type = pricing_worksheet.col_values(2)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
@@ -118,8 +116,8 @@ def welcome():
     print_slow('\n\n{:^50}'.format(f'{welcome_msg_before_logo}'))
     print("\n")
     logo()
-    # print_slow('{:^50}'.format(f'{welcome_msg_after_logo}'))
-    go_to_pricing_list = input(" Press ANY KEY to access\n").lower()
+    print_slow('{:^50}'.format(f'{welcome_msg_after_logo}'))
+    go_to_pricing_list = input("\n\n Type ANY KEY or press ENTER to access\n").lower()
 
     if go_to_pricing_list:
         return True
@@ -164,7 +162,7 @@ def exit_app():
     print_slow("\n Are you sure you want to exit program?\n")
     print_slow(" In case you have a pending order, it will get lost.\n")
     print_slow(" Type E (EXIT) to close program,\n")
-    print_slow(" or any other key to continue with your order:\n")
+    print_slow(" or any other key or PRESS ENTER to continue with your order:\n")
     exit_confirmation = input("\n").lower().strip()
 
     if exit_confirmation == "e":
@@ -188,7 +186,7 @@ def item_details():
     for i in full_info:  # prints each row formated as follows
         print(f"\n {i[1]}:\n\t{i[2]}\n\t{i[3]}\n\t{i[4]}")
 
-    print_slow("\n Press ANY KEY to (ORDER),\n")
+    print_slow("\n Type ANY KEY or press ENTER to (ORDER),\n")
     order = input(" or E (EXIT):\n").lower().strip()
 
     if order == "e":
@@ -205,7 +203,7 @@ def continue_ordering():
     """
     Prompt user to continue order, to finalize or to exit app
     """
-    print_slow("\n Type ANY KEY to (CONTINUE ORDERING)\n")
+    print_slow("\n Type ANY KEY or press ENTER (CONTINUE ORDERING)\n")
     print_slow(" P to return to (PRICING LIST)\n")
     continue_ordering = input(" F to (FINALIZE ORDER):\n").lower().strip()
 
@@ -434,6 +432,10 @@ def send_email_to_user():
 def check():
     """
     Regex email validation. If email pass validation,
+    print 'email validated' and
+    run process_order(NEW_ORDER).
+    If validation fails, print 'invalid email' and
+    prompt user to include email
     """
     print_slow("\n Please, include your email to receive\n")
     user_email = input(" your pending invoice and payment details:\n").strip()  # noqa strip() method erases extra spaces before/after input data
@@ -537,7 +539,7 @@ def process_order(order):
         if value != '0':
             print(f' {item:10} : {value}')
 
-    print_slow("\n Press ANY KEY to (CONFIRM ORDER),\n")
+    print_slow("\n Type ANY KEY or press ENTER to (CONFIRM ORDER),\n")
     print_slow(" U to (CHANGE) email or name\n")
     print_slow(" C to (CONTINUE ORDERING),\n")
     user_order_confirmation = input(" or E to (EXIT)\n").lower().strip()
@@ -582,7 +584,7 @@ def list_keyword_item():
 
 
 def view_details_option():
-    print_slow("\n Press ANY KEY to (ORDER),\n")
+    print_slow("\n Type ANY KEY or press ENTER to (ORDER),\n")
     print_slow(" D to see (DETAILS),\n")
     detailed_info = input(" E to (EXIT)\n").lower().strip()
 
@@ -626,13 +628,11 @@ def calculate_total_sales():
     """
     # total_sales_row_to_update = total_sales_worksheet.row_values(3)
     total_sales_items = total_items_sold_worksheet.row_values(3)[1:]
-    pprint(total_sales_items)
 
     items_sold_int = []
     # convert str to int
     for i in total_sales_items:
         items_sold_int.append(float(i))
-    pprint(items_sold_int)
 
     item_prices = pricing_worksheet.col_values(3)[1:]
 
