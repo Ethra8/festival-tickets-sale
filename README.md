@@ -64,11 +64,30 @@ Edna Torres Munill
 
 
 ## FEATURES
-
 ### IMPLEMENTED FEATURES
-
+This app contains the following features and functionalities:
+1. Displays list of items with their correspondent prices
+2. Displays optional list of items' details
+3. Displays list of items with their correspondent codes
+4. Takes user's input of item's code to be included in order
+5. Takes user's input of quantity of items selected to be included in order
+6. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
+7. User can exit app anytime
+8. User can finalize order anytime
+9. Input for user to include email to where the order will be sent
+10. Input for user to include name
+11. Send email to user with all the order data
+12. Includes invoice with order in 'invoice worksheet'
+13. Update stock in 'stock worksheet'
+14. Update items sold in 'total_items_sold worksheet'
+15. Update total sales income per item, and a grans total in 'total_sales worksheet'
+16. Informs the user at all times of the actions and processes of the app
+    
 ### FUTURE FEATURES
-
+The following features are to be implemented in a near future:
+1. Create user and order classes to improve code
+2. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
+   
 ## FLOW CHART
 
 ## DATA MODEL
