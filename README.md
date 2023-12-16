@@ -78,10 +78,13 @@ Edna Torres Munill
 - google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
 - gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
    + To install google-auth & gspread, type in terminal:  
-     pip3 install gspread google-auth  
+```$python
+pip3 install gspread google-auth
+```  
    + To upgrade pip in future for newer versions, type in terminal:  
-     python.exe -m pip install --upgrade pip
-- 
+```$python
+python.exe -m pip install --upgrade pip
+```
 
 ## TESTING
 
