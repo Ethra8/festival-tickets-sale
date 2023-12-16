@@ -74,9 +74,9 @@ Edna Torres Munill
 ## DATA MODEL
 
 ## LIBRARIES USED
-- pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
-- google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
-- gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
+- **pyfiglet** : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
+- **google-auth** : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
+- **gspread** : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
    + To install google-auth & gspread, type in terminal:  
 ```$python
 pip3 install gspread google-auth
@@ -85,6 +85,14 @@ pip3 install gspread google-auth
 ```$python
 python.exe -m pip install --upgrade pip
 ```
+- **datetime** : To get current date and time, for invoicing purposes. Full documentation [here](https://docs.python.org/3/library/datetime.html)
+- **sys** : This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter. Allows sensitible data stored in system variables stored in ***env.py*** to be accessed in our main run.py file. Full documentation [here](https://docs.python.org/3/library/sys.html)
+- **os** : This module provides a portable way of using operating system dependent functionality. Full documenttion [here](https://docs.python.org/3/library/os.html).
+- **time** : This module provides various time-related functions. Full documentation [here](https://docs.python.org/3/library/time.html)
+- **smtplib** : This module defines an SMTP client session object that can be used to ***send mail*** to any internet machine with an SMTP or ESMTP listener daemon. Full documentation [here](https://docs.python.org/3/library/smtplib.html)
+- **ssl** : This module provides access to Transport Layer Security (often known as “Secure Sockets Layer”) encryption and peer authentication facilities for network sockets, both client-side and server-side. This module uses the OpenSSL library. It is available on all modern Unix systems, Windows, macOS, and probably additional platforms, as long as OpenSSL is installed on that platform. Full documentation [here](https://docs.python.org/3/library/ssl.html)
+- **re** : Regex module, to validate email input by user. Full documentation [here](https://docs.python.org/3/library/re.html)
+- **email.message** : Import ***EmailMessage*** class from the ***email*** package, to send emails. Full documentation [here](https://docs.python.org/3/library/email.examples.html)
 
 ## TESTING
 
