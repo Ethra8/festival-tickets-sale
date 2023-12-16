@@ -1,35 +1,20 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# FESTIVAL TICKETS SALE
+## OVERVIEW
+This app aims at being a useful sales point for selling access tickets for a festival, or any other event.  
+It could also sell any other items, such as the following examples:
+- Excusion packs
+- Online courses
+- Online private lesson packs
 
-Welcome,
+The app is linked to a Spreadsheet, which can be customized to change the following:
+- Product names
+- Product codes
+- Products pricing
+- Company/App name (logo name)
+- Logo fonts
+- Initial stock
+- Invoice numering
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
-
-## Reminders
-
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
-
-## Creating the Heroku app
-
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
-
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
-
-Happy coding!
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':  
@@ -93,15 +78,18 @@ Happy coding!
 
 ### PYTHON MODULES INSTALLED
 - pyfiglet : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
-- google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for our project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
+- google-auth : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
 - gspread : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
    + To install google-auth & gspread, type in terminal:  
      pip3 install gspread google-auth  
    + To upgrade pip in future for newer versions, type in terminal:  
      python.exe -m pip install --upgrade pip
+- 
 
 
 ## ACKNOWLEDGEMENTS
 - [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
+- [Email validation through Regex](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) at [Geeksforgeeks](www.geeksforgeeks.org)
+- [How To Send Email In Python via smtplib](https://www.youtube.com/watch?v=cjd9kEIxKHM&list=PL6flErFppaj0SbhDPvzC6hXFzRiP-it6i&index=8) Youtube video by [Mukesh otwani](https://www.youtube.com/@Mukeshotwani)
 - 
 
