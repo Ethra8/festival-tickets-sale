@@ -67,22 +67,33 @@ Edna Torres Munill
 ## FEATURES
 ### IMPLEMENTED FEATURES
 This app contains the following features and functionalities:
-1. Displays list of items with their correspondent prices
-2. Displays optional list of items' details
-3. Displays list of items with their correspondent codes
-4. Takes user's input of item's code to be included in order
-5. Takes user's input of quantity of items selected to be included in order
-6. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
-7. User can exit app anytime
-8. User can finalize order anytime
-9. Input for user to include email to where the order will be sent
-10. Input for user to include name
-11. Send email to user with all the order data
-12. Includes invoice with order in 'invoice worksheet'
-13. Update stock in 'stock worksheet'
-14. Update items sold in 'total_items_sold worksheet'
-15. Update total sales income per item, and a grans total in 'total_sales worksheet'
-16. Informs the user at all times of the actions and processes of the app
+1. **REUSABLE CODE** : The most distinctive feature is that values are not hard-coded, and are all retrieved from the SpreadSheet, meaning that whoever wants to reuse the code, can easily customize the app to fit needs. These are the custmizable values:
+   1. App name (logo name)
+   2. Logo font
+   3. Welcome message (before, and after logo)
+   4. Items to sell
+   5. Price of items to sell
+   6. Item details
+   7. Title of items details list printed to user
+   8. Inicial stock
+   9. Final 'copyright' message includes customizable logo name
+
+3. Displays list of items with their correspondent prices
+4. Displays optional list of items' details
+5. Displays list of items with their correspondent codes
+6. Takes user's input of item's code to be included in order
+7. Takes user's input of quantity of items selected to be included in order
+8. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
+9. User can exit app anytime
+10. User can finalize order anytime
+11. Input for user to include email to where the order will be sent
+12. Input for user to include name
+13. Send email to user with all the order data
+14. Includes invoice with order in 'invoice worksheet'
+15. Update stock in 'stock worksheet'
+16. Update items sold in 'total_items_sold worksheet'
+17. Update total sales income per item, and a grans total in 'total_sales worksheet'
+18. Informs the user at all times of the actions and processes of the app
     
 ### FUTURE FEATURES
 The following features are hopefully to be implemented in a near future:
