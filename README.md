@@ -94,7 +94,7 @@ From a user (customer) side, the app has been designed to be user-friendly and i
     3. Type C to CONTINUE ORDERING : Shows Item list with correspondent CODES (repeat from step 4 onwards)
     4. Type E to EXIT the app : Cancels the order, and you are then asked to confirm that you want to exit the app, and uppon confirmation, the logo shows with a copyright notice.
 14. You are informed that the order has been confirmed, that an email has been sent, warns you that the order will be cancelled in case you fail to proceed to payment on due date.
-15. COnfirmes that email has been sent:
+15. Confirms that email has been sent:
     
     ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5ef501dd-567b-4530-b66f-74efc1fc6319)
 
