@@ -117,7 +117,12 @@ python.exe -m pip install --upgrade pip
 This app has been carefully tested, as detailed below.  
 
 ### VALIDATION TESTING
-[CI Python Linter by Code Institute](https://pep8ci.herokuapp.com/) has been used to validate the code, and resulted in no errors.
+[CI Python Linter by Code Institute](https://pep8ci.herokuapp.com/) has been used to validate the code, and resulted as follows:  
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/6f838764-5e58-4cab-9aea-a979ad1a3eb1)
+
+The above mentioned lines are "too long", but they are all lines including code that cannot be separated in various lines.
+
 
 ### MANUAL TESTING
 
