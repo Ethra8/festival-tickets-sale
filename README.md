@@ -3,7 +3,7 @@
 
 This app aims at being a useful sales point for selling access tickets for a festival, or any other event.  
 It could also sell any other items, such as the following examples:
-- Excusion packs
+- Excursion packs
 - Online courses
 - Online private lesson packs
 
