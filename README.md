@@ -56,7 +56,7 @@ Edna Torres Munill
       * [Google Sheets Template](#google-sheets-template)
     + [Deploy to Gitpod](#deploy-to-gitpod)
       * [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
-      * [Install or Update Requirements.txt](#install-or-update-requirements.txt)
+      * [Install or Update Requirements txt File](#install-or-update-requirements-txt-file)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
@@ -319,7 +319,7 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
 6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.  
 
-#### INSTALL OR UPDATE REQUIREMENTS.TXT
+#### INSTALL OR UPDATE REQUIREMENTS txt FILE
 Before deploying the app, the requirements.txt file included in the project must be installed with the dependencies. On the terminal, type:  
 ```$python
 pip3 install -r requirements.txt
