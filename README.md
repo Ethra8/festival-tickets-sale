@@ -127,6 +127,10 @@ This app has been carefully tested, as detailed below.
 ## DEFECTS
 
 ### DEFECTS TRACKING
+I have created ***issues*** in GitHub in order to track the most relevant issues encountered, all successfully fixed:  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/2b1411fc-bb78-48f5-b5de-df8bf2b4c333)
+
 
 ### DEFECTS OF NOTE
 **All the below mentioned defects have been successfully fixed**, and none remain:
