@@ -114,8 +114,10 @@ python.exe -m pip install --upgrade pip
 - **email.message** : Import ***EmailMessage*** class from the ***email*** package, to send emails. Full documentation [here](https://docs.python.org/3/library/email.examples.html)
 
 ## TESTING
+This app has been carefully tested, as detailed below.  
 
 ### VALIDATION TESTING
+[CI Python Linter by Code Institute](https://pep8ci.herokuapp.com/) has been used to validate the code, and resulted in no errors.
 
 ### MANUAL TESTING
 
