@@ -130,7 +130,7 @@ def welcome():
     print("\n")
     logo()
     print_slow('{:^50}'.format(f'{welcome_msg_after_logo}'))
-    print_slow("\n\n Type ANY KEY or ")
+    print_slow("\n\n Type ANY KEY or")
     go_to_pricing_list = input(" press ENTER to access\n").lower()
 
     if go_to_pricing_list:
@@ -435,7 +435,7 @@ def send_email_to_user():
         server.login(sender, gmail_app_password)
         server.send_message(msg)
         server.quit()
-        print_slow("Email sent!")
+        print_slow(" Email sent!")
 
     except Exception as exception:
         print("Error: %s!\n\n % Exception")
