@@ -53,7 +53,7 @@ Edna Torres Munill
       * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
         - [Enable APIs](#enable-apis)
         - [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
-    + [Google Sheets Template](#google-sheets-template)
+      * [Google Sheets Template](#google-sheets-template)
     + [Deploy in Heroku](#deploy-in-heroku)
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
@@ -252,6 +252,9 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a2e6f7ad-f1bb-4bd6-84d3-e37f142b3d83)
 
+#### REQUIREMENTS.TXT
+Before deploying the app, the requirements.txt file included in the project must be updated. On the terminal, type:  
+       pip3 freeze > requirements.txt
 
 ### DEPLOY IN HEROKU    
 
