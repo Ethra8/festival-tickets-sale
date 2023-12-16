@@ -160,7 +160,24 @@ Enable the following APIs for this project:
   - Go to ***'APIs and Services'*** > ***'Library'*** and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
-
+3. **CONNECT TO APIs THROUGH PYTHON**
+  - Include the SCOPE constant variable to the run.py file (no need to change it when reusing the code, just leave it as it is):
+```$python
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+```
+  - The following constant variables allows the code to access our SpreadSheet:
+```$python
+# CREDS constant variable, takes creds from file creds.json
+# Allows code to access SpreadSheet
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
+```
 #### GOOGLE SHEETS TEMPLATE
 This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018).  
 As the project has been built in order to be as reusable as possible, you can make a copy of it:  
