@@ -62,7 +62,44 @@ Edna Torres Munill
     + [Acknowledgements](#acknowledgements)
 
 ## HOW TO USE
+### CUSTOMER SIDE
+From a user (customer) side, the app has been designed to be user-friendly and informs at all times of the actions that are being undertaken, or options that are available.
+1. After the logo and the welcome messages appear, click ENTER to access the Pricing List
+2. The Pricing List shows each item next to its price per unit
+3. You are then given the following options:
+   1. Type any key or pres ENTER to create a new order : A new list is shown including each item's CODE (refer to next step 4)
+   2. Type D (or d) to see items' details : The items' details are listed, each item with its details indented in a sub-list
+   3. Type E (EXIT): You are then asked to confirm that you want to exit the app, and if confirmed, the logo shows with a copyright notice.
+4. You see the items list, each next to their unique item CODE
+5. You are asked to introduce the CODE related to the item you want to order (e.g.: A1)
+6. You are then asked ***'How many 'Adult Day 1 Access' do you want to include to your order?*** (referring to the item related to the code given as an example)
+7. You input the number of the selected item to be included in your order (e.g.: 2)
+8. You get a notification stating ***"Added to your order: 2 'Adult Day 1 Access'"***
+9. You are then given the following options:
+    1. Type any key or press ENTER to continue order : Points 4 - 9 are repeated all over to add new item quantity to your order
+    2. Type P to return to Pricing List : Shows pricing list and follows flow since above-mentioned step 2
+    3. Type F to FINALIZE order
+10. Once you FINALIZE order, you are prompted to include your email, so that the invoice can be sent for due payment
+11. You are then asked to include a user name to include in your invoice
+12. The order is shown with the following information:
+    1. Invoice number
+    2. Invoice date
+    3. User name
+    4. User email
+    5. Items ordered, showing each item's ordered units, and total price per items ordered
+    6. Order's total amount
+13. You are asked review order, and you are given the following options:
+    1. Type any key or press enter to CONFIRM order : Go to next step 14
+    2. Type U to change email or user name : YOu are asked to type your email, then to type your user name (repeat from step 11 onwards)
+    3. Type C to CONTINUE ORDERING : Shows Item list with correspondent CODES (repeat from step 4 onwards)
+    4. Type E to EXIT the app : Cancels the order, and you are then asked to confirm that you want to exit the app, and uppon confirmation, the logo shows with a copyright notice.
+14. You are informed that the order has been confirmed, that an email has been sent, warns you that the order will be cancelled in case you fail to proceed to payment on due date.
+15. COnfirmes that email has been sent:
+    
+    ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5ef501dd-567b-4530-b66f-74efc1fc6319)
 
+
+### SELLER SIDE
 
 ## FEATURES
 ### IMPLEMENTED FEATURES
