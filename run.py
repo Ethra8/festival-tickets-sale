@@ -20,17 +20,8 @@ SCOPE = [
     ]
 
 
-def print_slow(str):
-    for letter in str:
-        sys.stdout.write(letter)
-        sys.stdout.flush()
-        time.sleep(0.05)
-
-
-print_slow("Loading ...")
-
-
 # CREDS constant variable, takes creds from file creds.json
+# Allows code to access SpreadSheet
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
@@ -99,6 +90,16 @@ item6_qty = 0
 # Make a regular expression
 # for validating an Email with regex
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+
+def print_slow(str):
+    for letter in str:
+        sys.stdout.write(letter)
+        sys.stdout.flush()
+        time.sleep(0.05)
+
+
+print_slow("Loading ...")
 
 
 def logo():
