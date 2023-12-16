@@ -28,7 +28,7 @@ Check out the repository [HERE](https://github.com/Ethra8/festival-tickets-sale)
 ## AUTHOR
 Edna Torres Munill
 
-## TABLE OF CONTENTS
+# TABLE OF CONTENTS
 
 - [Overview](#overview)
 - [Live App](#live-app)
@@ -61,8 +61,8 @@ Edna Torres Munill
 - [Credits](#credits)
     + [Acknowledgements](#acknowledgements)
 
-## HOW TO USE
-### CUSTOMER SIDE
+# HOW TO USE
+## CUSTOMER SIDE
 From a user (customer) side, the app has been designed to be user-friendly and informs at all times of the actions that are being undertaken, or options that are available.
 1. After the logo and the welcome messages appear, click ENTER to access the Pricing List
 2. The Pricing List shows each item next to its price per unit
@@ -99,10 +99,10 @@ From a user (customer) side, the app has been designed to be user-friendly and i
     ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5ef501dd-567b-4530-b66f-74efc1fc6319)
 
 
-### SELLER SIDE
+## SELLER SIDE
 
-## FEATURES
-### IMPLEMENTED FEATURES
+# FEATURES
+## IMPLEMENTED FEATURES
 This app contains the following features and functionalities:
 1. **REUSABLE CODE** : The most distinctive feature is that values are not hard-coded, and are all retrieved from the SpreadSheet, meaning that whoever wants to reuse the code, can easily customize the app to fit needs. These are the custmizable values:
    1. App name (logo name)
@@ -132,17 +132,17 @@ This app contains the following features and functionalities:
 17. Update total sales income per item, and a grans total in 'total_sales worksheet'
 18. Informs the user at all times of the actions and processes of the app
     
-### FUTURE FEATURES
+## FUTURE FEATURES
 The following features are hopefully to be implemented in a near future:
 1. Create user and order classes to improve code, although everything works perfectly fine as it is.
 2. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
 3. Automatically cancel order if user does not proceed to payment on due date.
    
-## FLOW CHART
+# FLOW CHART
 
-## DATA MODEL
+# DATA MODEL
 
-## LIBRARIES USED
+# LIBRARIES USED
 - **pyfiglet** : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
 - **google-auth** : To give access to GoogleSheets API. Will use our creds.json file to set authentication for the project. Full documentation [here](https://google-auth.readthedocs.io/en/master/).
 - **gspread** : To access and update data in SpreadSheet. Full documentation [here](https://docs.gspread.org/en/latest/)
@@ -163,46 +163,46 @@ python.exe -m pip install --upgrade pip
 - **re** : Regex module, to validate email input by user. Full documentation [here](https://docs.python.org/3/library/re.html)
 - **email.message** : Import ***EmailMessage*** class from the ***email*** package, to send emails. Full documentation [here](https://docs.python.org/3/library/email.examples.html)
 
-## TESTING
+# TESTING
 This app has been carefully tested, as detailed below.  
 
-### VALIDATION TESTING
+## VALIDATION TESTING
 [CI Python Linter by Code Institute](https://pep8ci.herokuapp.com/) has been used to validate the code, and no errors were found:  
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/0b8b5c31-3e85-4219-b0d2-9f82e60eb9a7)
 
 
-### MANUAL TESTING
+## MANUAL TESTING
 
-## DEFECTS
+# DEFECTS
 
-### DEFECTS TRACKING
+## DEFECTS TRACKING
 I have created ***issues*** in GitHub in order to track the most relevant issues encountered, all successfully fixed:  
 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5f429574-4f06-43a2-b628-7d87dbf5cfe9)
 
 
-### DEFECTS OF NOTE
+## DEFECTS OF NOTE
 **All the defects tracked as GitHub issues have been successfully fixed**, and none remain.
 
 
-### OUTSTANDING DEFECTS
+## OUTSTANDING DEFECTS
 No outstanding defects have been found
 
-## DEPLOYMENT
-### PREREQUISITES
+# DEPLOYMENT
+## PREREQUISITES
 
-### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
+## CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
   
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/9d5010e7-7697-49a4-96df-16a862efe005)
 
-#### ENABLE APIs
+## ENABLE APIs
 Enable the following APIs for this project:
 - **Google Drive API**
 - **Google Sheets API**
 
-1. **ENABLE GOOGLE DRIVE API**:  
+**1. ENABLE GOOGLE DRIVE API**:  
    1. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.
   
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
@@ -238,11 +238,11 @@ Enable the following APIs for this project:
    10. Select JSON option. Once you click on 'Create', a file will automatically download to your 'downsloaded' folder on your device:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/692d119c-ccde-474d-b14a-6307f3ee2310)
 
-2. **ENABLE GOOGLE SHEETS API** :
+**2. ENABLE GOOGLE SHEETS API** :
   - Go to ***'APIs and Services'*** > ***'Library'*** and type 'Google Sheets API' on the search bar. Click on it, and 'Enable'. ***No need to give credentials again, as the credentials given to Google Drive include Google Sheets***:  
       ![image](https://github.com/Ethra8/music-festival/assets/80659091/99bba5cc-8c84-4a53-a904-3bfc4a4b68ef)
 
-### CONNECT TO APIs THROUGH PYTHON
+## CONNECT TO APIs THROUGH PYTHON
   - Include the SCOPE constant variable to the run.py file (no need to change it when reusing the code, just leave it as it is):
 ```$python
 SCOPE = [
@@ -261,7 +261,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
 ```
 
-### GOOGLE SHEETS TEMPLATE
+## GOOGLE SHEETS TEMPLATE
 This project has a Google Sheet linked to it: [festival_tickets_sales](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1072696018).  
 As the project has been built in order to be as reusable as possible, you can make a copy of it:  
 
@@ -276,7 +276,7 @@ The SpreadSheet also contains a **README** Worksheet to remind you of the main i
 Find below the data included in each Worksheet, and which one can be to fit your needs:  
 **IMPORTANT**: You may ***ONLY*** change values that are in cells with a ***green background***, but ***DO NOT change values in CELLS with a red background***, to avoid system crash.
 
-#### 1. SETTINGS WORKSHEET
+### 1. SETTINGS WORKSHEET
 This Worksheet, as its name suggests includes general settings to be customized as follows:  
 1. Logo/ company name
 2. Logo/ title font
@@ -287,7 +287,7 @@ This Worksheet, as its name suggests includes general settings to be customized 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/b089fd71-425c-4e57-a343-28c321e51da9)
 
 
-#### 2. PRICING WORKSHEET
+### 2. PRICING WORKSHEET
 This Worksheet, as its name suggests, includes a list of the items to be sold, and their related values, as follows:  
 1. **ITEM TYPE**: You can change the type of items you are selling. E.g.: If you are selling lesson packs, you should change *TICKETS* by *PACKS*.
 2. **ITEM NAMES**: Update the names of the items you are selling. E.g.: *10 lessons pack* instead of *Adult Day 1 Access*, and so on with each item.
@@ -297,7 +297,7 @@ This Worksheet, as its name suggests, includes a list of the items to be sold, a
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/5fa01a97-c7bf-42db-ac9b-f218e1d7981a)
 
 
-#### 3. ITEM DETAILS WORKSHEET
+### 3. ITEM DETAILS WORKSHEET
 This Worksheet is meant to include the items' details to be shown to the user when the user requests to see items' details after the pricing list os displayed: 
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/767ffd5c-59d4-4b6b-aa22-04ad85783cc8)  
@@ -315,7 +315,7 @@ You can customize the following:
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a24dd189-6656-4f3f-af19-65c671e114b1)
 
 
-#### 4. INVOICES WORKSHEET
+### 4. INVOICES WORKSHEET
 This Worksheet, as its name suggests, shows all the invoices (orders), and should NOT be updated, unless when you make a coy of the SpreadSheet, or if a customer cancels an order. **The item names** are automatically retrieved from the Pricing Worksheet, and **Total Amount** is also automatically calculated also with the prices included in the Pricing Worksheet. 
 The only data to be updated before your first invoice is generated id the original dafault invoice value ***INV-100000*** placed in a ***cell with a green background***. All other values placed in ***cells with red background should not be changed*** to avoid system breakdown.  
 **IMPORTANT**: Your default invoice should contain the following format : ***letter(s)-nums*** (at least 1 letter BEFORE a mandatory **-** , and then as many **0** as your invoice numbering system requires.  
@@ -325,26 +325,26 @@ In the following screenshot, you can see two test invoices created:
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/ad7983ae-4c48-4798-bce0-791f48c89d3a)
 
 
-#### 5. TOTAL ITEMS SOLD WORKSHEET
+### 5. TOTAL ITEMS SOLD WORKSHEET
 As its name suggests, this Worksheet shows how many items have been sold (by item type). The amount is automatically calculated by the code, by summing each item type from all orders, and the item names are also automatically retrieved from the pricing worksheet, so **NO NEED TO MANUALLY UPDATE ANYTHING**. Find an example below:  
   
   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/f6999d62-6948-40f7-86c5-8be3c1b0c381)  
   
   
-#### 6. STOCK WORKSHEET
+### 6. STOCK WORKSHEET
 As its name suggests, this Worksheet shows the remaining stock per item type. The item names are automatically retrieved from the Pricing Worksheet, and the total remaining stock per item is automatically calculated every time the code is run. **The only values to be updated are to INITIAL STOCK per item**, values in ***cells with a green background***, from which the sold items will be sustracted.  
 **IMPORTANT**: The row of 'REMAINING STOCK' should also manually be set only the 1st time, to  match the initial stock values, and then it will be automatically updated after each sale.  
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c596855a-9c07-4730-b40b-bbe56dfdc4b0)  
 
 
-#### 7. TOTAL SALES WORKSHEET
+### 7. TOTAL SALES WORKSHEET
 As its name suggests, this Worksheet shows the total sales per item, as well as the total income generated by selling each and every item. The item names are retrieved from the Princing Worksheet, and the total amounts automatically calculated, so it shouldn't be updated manually. See an example below:  
   
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/a2e6f7ad-f1bb-4bd6-84d3-e37f142b3d83)
 
-### DEPLOY TO GITPOD
-#### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
+## DEPLOY TO GITPOD
+### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
 1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
   - Your creds.json file including your credentials should look like that:  
 ```$python
@@ -367,7 +367,7 @@ As its name suggests, this Worksheet shows the total sales per item, as well as 
    ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
 6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.  
 
-#### INSTALL OR UPDATE REQUIREMENTS txt FILE
+### INSTALL OR UPDATE REQUIREMENTS txt FILE
 Before deploying the app, the requirements.txt file included in the project must be installed with the dependencies. On the terminal, type:  
 ```$python
 pip3 install -r requirements.txt
@@ -377,12 +377,12 @@ In case you install further modules or libraries, then the requirements.txt file
 pip3 freeze > requirements.txt
 ```
 
-### DEPLOY IN HEROKU    
+## DEPLOY IN HEROKU    
 
-## CREDITS
+# CREDITS
 The app was coded using [Code Institute's P3 Template](https://github.com/Code-Institute-Org/p3-template), which includes all necessary features and files for it to run smoothly on Heroku, by creating a terminal, as this project does not have any front-end code.  
   
-### ACKNOWLEDGEMENTS
+## ACKNOWLEDGEMENTS
 - [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
 - [Email validation through Regex](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) at [Geeksforgeeks](www.geeksforgeeks.org)
 - [How To Send Email In Python via smtplib](https://www.youtube.com/watch?v=cjd9kEIxKHM&list=PL6flErFppaj0SbhDPvzC6hXFzRiP-it6i&index=8) Youtube video by [Mukesh otwani](https://www.youtube.com/@Mukeshotwani)
