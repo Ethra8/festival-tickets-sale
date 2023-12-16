@@ -129,8 +129,19 @@ This app has been carefully tested, as detailed below.
 ### DEFECTS TRACKING
 
 ### DEFECTS OF NOTE
+**All the below mentioned defects have been successfully fixed**, and none remain:
+1. Inicially deploying sensible data to GitHub:
+   - This important issue was solved by deleting that inicial Apppassword, and creating another one, which was kept in variables stored in an env.py file which has been included in .gitignore, so it wasn't pushed to GitHub after changing the sensible data.
+   - os module was installed so that sensible data variables stored in the env.py file were accessible in my run.py main file.
+2. Validating email:
+   - Inicially, users could input an invalid email format when requested to input their email.
+   - This issue was fixed by importing the re library, to validate email format throught regex, creating function check() for this purpose.
+3. Validating unser name input:
+   - Inicially, when prompted to include a user name, the user could just press enter, and elude typing anything, meaning that a blank value was accepted.
+   - This issue was solved with a try/except statement, where an error statement is printed when user does not include any value as a user name, and asks user to include a user name until user does type some value. I decided to accept any value as valid for a user name, as the important value in this app is the email where th einvoice will be sent. If a user wants to be called U12 for instance, as this value only affects how we salute them, it is accepted to give the user more freedom and privacy.
 
 ### OUTSTANDING DEFECTS
+No outstanding defects have been found
 
 ## DEPLOYMENT
 
