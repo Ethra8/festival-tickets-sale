@@ -3,6 +3,9 @@
 
 ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/c6cbf253-7d22-4774-adf4-3f891bf72a56)
 
+
+Access App [HERE](https://festival-tickets-sale-1bab2955093f.herokuapp.com/) 
+
 This app aims at being a useful sales point for selling access tickets for a festival, or any other event.  
 It could also sell any other items, such as the following examples:
 - Excusion packs
@@ -20,7 +23,8 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
 
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
-- Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':  
+- Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
+  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/9d5010e7-7697-49a4-96df-16a862efe005)
 
 - Enable the following APIs for this project:
@@ -28,7 +32,8 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
    + Google Sheets API
 
 - **ENABLE GOOGLE DRIVE API**:  
-   1. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.   
+   1. On the project page, to enable APIs and services: Click on 'more products' dropdown, and select 'APIs and Services', then 'Library', and type 'Google Drive API' on the search bar, and enable it.
+  
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/ff6e9511-3646-4446-ab42-3b926e1e9d67)
 
 ![image](https://github.com/Ethra8/music-festival/assets/80659091/1a841a3a-6075-42c3-8aad-5801c7c6766c)
@@ -94,5 +99,7 @@ The app is linked to a Spreadsheet, which can be customized to change the follow
 - [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
 - [Email validation through Regex](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) at [Geeksforgeeks](www.geeksforgeeks.org)
 - [How To Send Email In Python via smtplib](https://www.youtube.com/watch?v=cjd9kEIxKHM&list=PL6flErFppaj0SbhDPvzC6hXFzRiP-it6i&index=8) Youtube video by [Mukesh otwani](https://www.youtube.com/@Mukeshotwani)
+- [Printing slowly (Simulate typing)](https://stackoverflow.com/questions/4099422/printing-slowly-simulate-typing) on Stackoverflow.com
+- [Fancy fonts for titles/logo using pyfiglet](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/) at [Geeksforgeeks](www.geeksforgeeks.org)
 - 
 
