@@ -54,7 +54,8 @@ Edna Torres Munill
         - [Enable APIs](#enable-apis)
         - [Include Google Cloud Credentials in Project](#include-google-cloud-credentials-in-project)
     + [Deploy in Heroku](#deploy-in-heroku)
-
+- [Credits](#credits)
+    + [Acknowledgements](#acknowledgements)
 
 ## HOW TO USE
 
@@ -170,12 +171,12 @@ Enable the following APIs for this project:
 
 ### DEPLOY IN HEROKU    
 
-
-## ACKNOWLEDGEMENTS
+## CREDITS
+### ACKNOWLEDGEMENTS
 - [Center-aligning text on console in Python](https://stackoverflow.com/questions/8907236/center-aligning-text-on-console-in-python) on Stackoverflow.com
 - [Email validation through Regex](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) at [Geeksforgeeks](www.geeksforgeeks.org)
 - [How To Send Email In Python via smtplib](https://www.youtube.com/watch?v=cjd9kEIxKHM&list=PL6flErFppaj0SbhDPvzC6hXFzRiP-it6i&index=8) Youtube video by [Mukesh otwani](https://www.youtube.com/@Mukeshotwani)
 - [Printing slowly (Simulate typing)](https://stackoverflow.com/questions/4099422/printing-slowly-simulate-typing) on Stackoverflow.com
 - [Fancy fonts for titles/logo using pyfiglet](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/) at [Geeksforgeeks](www.geeksforgeeks.org)
-- 
+- My mentor [Malia Havlicek](https://github.com/maliahavlicek) for all her meaningful insights.
 
