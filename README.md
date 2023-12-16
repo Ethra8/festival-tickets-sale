@@ -147,7 +147,7 @@ Enable the following APIs for this project:
 
 #### INCLUDE GOOGLE CLOUD CREDENTIALS IN PROJECT
 1. Copy .json credential file previously downloaded from Google Cloud Platform to our project folder, and rename it as 'creds.json' for simplicity sake.
-  - Your creds.json file including your credentials should look like that:
+  - Your creds.json file including your credentials should look like that:  
             {
             "type": "service_account",
             "project_id": "<YOUR_VALUE>",
