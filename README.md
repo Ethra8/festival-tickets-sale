@@ -49,7 +49,7 @@ Edna Torres Munill
     + [Defects of Note](#defects-of-note)
     + [Outstanding Defects](#outstanding-defects)
 - [Deployment](#deployment)
-    + [Requirements](#requirements)
+    + [Prerequisites](#prerequisites)
       * [Create Project in Google Cloud Platform](#create-project-in-google-cloud-platform)
         - [Enable APIs](#enable-apis)
       * [Google Sheets Template](#google-sheets-template)
@@ -141,6 +141,7 @@ I have created ***issues*** in GitHub in order to track the most relevant issues
 No outstanding defects have been found
 
 ## DEPLOYMENT
+### PREREQUISITES
 
 ### CREATE PROJECT IN GOOGLE CLOUD PLATFORM
 - Go to [Google Cloud platform](https://console.cloud.google.com/). To create new project, click on 'New Project':
