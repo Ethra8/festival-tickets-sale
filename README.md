@@ -108,6 +108,59 @@ https://github.com/Ethra8/festival-tickets-sale/assets/80659091/28265965-3251-4a
 
 
 ## SELLER SIDE
+From the seller's side, this app is fully customizable to fit the seller's needs. Please refer to the [README worksheet](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=404608901) included in the SpreadSheet for more details:  
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/73a21298-0e0a-450c-898b-34baebee9956)
+
+1. The following can be customized **directly on the SpreadSheet**, easily finding the customizable values as they are placed in **cells with a green background**:
+  **1. App name** (logo name)
+  **2. Logo font**
+  **3. Welcome message** (before, and after logo)
+  **4. Items to sell**
+  **5. Price of items to sell**
+  **6. Item codes**
+  **7. Item details**
+  **8. Title of items details list printed to user**
+  **9. Inicial stock**
+  **10. Final 'copyright' message includes customizable logo name**
+
+2. Every order generates an invoice, which is included in the last empty row of the invoices worksheet:  
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/123d8f8f-fb86-4e09-b741-82ac3d53fe4c)  
+
+3. The items sold are then included in the [total_items_sold Worksheet](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=1046768896):  
+  
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/97307086-91c0-435f-9809-cf79c9f5fb96)  
+  
+4. The remaining stock is updated through python code, and the initial stock can be manually updated to fit the seller tru stock per item:  
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/47ce04d1-42b3-4f26-96ed-efbdade8644b)
+
+5. The revenue per item is also automatically calculated after each order through python code, as well as the grand total revenue, and updated to the [total_sales Worksheet](https://docs.google.com/spreadsheets/d/1ImaSd4bEFAWuswu8Sxa2yYcjWl9oec_cPdpYVZ_sVik/edit?pli=1#gid=817408163):  
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/0682ec5b-9c09-416a-80b1-5503e28459fb)
+
+**WATCH THIS VIDEO WHERE I HAVE CHANGED ALL CUSOTMIZABLE VALUES DIRECTLY ON THE SPREADSHEET TO CREATE A NEW CUSTOMIZED APP !!**  
+- Changed values in ***settings worksheet***:
+
+   ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/e0991726-8067-42ac-9f0d-e3d44e3843b5)  
+  
+- Changed values in ***pricing worksheet***:
+  
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/083e03c2-292d-4cae-9945-02bbb13119a2)
+
+- Changes values in ***item_details worksheet***:
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/4e0515e8-7a4b-49a7-b243-ef2ec131be9d)  
+
+- **WATCH THE MAGIC**:  
+
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/84abcd50-6a8e-4a44-9100-f26c08bdc172
+
+- ALthough there were previous invoices generated with the original **ROCK FEST** settings, the items on the invoice have updated to match the items included on the Pricing Worksheet, so all is ready!:
+
+  ![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/13498246-3391-4a2b-b059-fc2e735d587f)
+
 
 # FEATURES
 ## IMPLEMENTED FEATURES
@@ -123,6 +176,11 @@ This app contains the following features and functionalities:
    **8. Title of items details list printed to user**
    **9. Inicial stock**
    **10. Final 'copyright' message includes customizable logo name**
+
+
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/0a7f0d96-9cc1-4496-b8d8-e7025d174317
+
+
 3. All data input by the user is ***trimmed***, so any white space is dismissed
 4. When user is prompted to type a key, the input is ***case unsensitive***, so whether the user includes upper case or lower case letters, it will not affect the flow.
 5. User can ***exit app anytime***
