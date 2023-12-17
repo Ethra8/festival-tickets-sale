@@ -41,17 +41,17 @@ total_sales_worksheet = SHEET.worksheet('total_sales')
 item_sales_new_order = invoices_worksheet.row_values(1)
 # get mock values for each key to create NEW_ORDER dict
 values_sales_new_order = invoices_worksheet.row_values(3)
+# dict NEW_ORDER takes user inputs all along the app
+# to create final invoice with total amount
+NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
+
+DATE = datetime.today().strftime('%Y-%m-%d')
+TIME = datetime.today().strftime('%H:%M')
 
 # item identification vars retrieved from pricing worksheet
 item_type = pricing_worksheet.col_values(2)[0]
 code = pricing_worksheet.col_values(4)[0]
 code_example = pricing_worksheet.col_values(4)[1]
-
-# dict NEW_ORDER takes user inputs all along the app
-# to create final invoice with total amount
-NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
-DATE = datetime.today().strftime('%Y-%m-%d')
-TIME = datetime.today().strftime('%H:%M')
 
 # logo name and type of font retrieved from settings worksheet
 logo_name = settings_worksheet.col_values(1)[1]
@@ -410,39 +410,6 @@ def order_inputs():
     return True
 
 
-def send_email_to_user():
-    """
-    Connects to smtp to send email to user
-    """
-    user_name = NEW_ORDER.get('user_name')
-    user_email = NEW_ORDER.get('user_email')
-    order_number = NEW_ORDER.get('invoice_no')
-
-    sender = os.environ.get("APP_EMAIL")
-    gmail_app_password = os.environ.get("EMAIL_APP_PASS")
-    # context = ssl.create_default_context()
-
-    # port = 465  # SSL encrypted port
-    try:
-        msg = EmailMessage()
-        msg['Subject'] = f"Invoice from {logo_name}"
-        msg['From'] = f'{logo_name}'
-        msg['To'] = user_email
-        msg.set_content(
-            f"Hi {user_name},\nPlease find attached the invoice of your order {order_number}.")  # noqa E501
-
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        server.login(sender, gmail_app_password)
-        server.send_message(msg)
-        server.quit()
-        print_slow(" Email sent!")
-
-    except Exception as exception:
-        print("Error: %s!\n\n % Exception")
-
-    calculate_stock(NEW_ORDER, 'stock')
-
-
 def check():
     """
     Regex email validation. If email pass validation,
@@ -464,36 +431,8 @@ def check():
         check()
 
 
-def process_order(order):
-    """
-    Generates list of values (order_values) from
-    NEW_ORDER dict,
-    calculates the order's final amount
-    by multiplying each item cost taken from pricing worksheet
-    per number of items in order_values.
-    It appends final amount to NEW_ORDER and prints invoice to user.
-    User is given the option to confirm order, return to ordering, or exit app.
-    If user confirms order, invoice full data is exported to sales worksheet.
-    """
-
-    try:
-        # title() method capitalizes every word in input string
-        print_slow("\n\n Please, type in a user name")
-        user_name = input(" to create your invoice\n").strip().title()
-        if user_name == "":
-            raise ValueError(f" missing name")
-    except ValueError as e:
-        print_slow(f" Invalid data: {e},\n")
-        print_slow(" Please enter your name to create invoice.")
-        process_order(order)
-
-    NEW_ORDER['user_name'] = user_name
-
-    invoice = order.get('invoice_no')
-    print_slow(f"\n Your order {invoice} is being generated...\n")
-    print_slow(f"\n Hold on {user_name},\n")
-    print_slow(" the total amount is being calculated...\n")
-    # takes list of items out of sales worksheet, in a user-friendly version
+def calculate_order_amount(order):
+ # takes list of items out of sales worksheet, in a user-friendly version
     order_item_names = invoices_worksheet.row_values(2)
 
     # create list only from values of NEW_ORDER dict
@@ -544,10 +483,52 @@ def process_order(order):
 
     # create new dict for final_order, with item as keys,
     # and num. of items as values. Includes final amount key:value
-    final_order = dict(zip(order_item_names, order_values))
+    final_order = dict(zip(order_item_names, order_values))    
+    return final_order
+
+
+def process_order(order):
+    """
+    Generates list of values (order_values) from
+    NEW_ORDER dict,
+    calculates the order's final amount
+    by multiplying each item cost taken from pricing worksheet
+    per number of items in order_values.
+    It appends final amount to NEW_ORDER and prints invoice to user.
+    User is given the option to confirm order, return to ordering, or exit app.
+    If user confirms order, invoice full data is exported to sales worksheet.
+    """
+
+    try:
+        # title() method capitalizes every word in input string
+        print_slow("\n\n Please, type in a user name")
+        user_name = input(" to create your invoice\n").strip().title()
+        if user_name == "":
+            raise ValueError(f" missing name")
+    except ValueError as e:
+        print_slow(f" Invalid data: {e},\n")
+        print_slow(" Please enter your name to create invoice.")
+        process_order(order)
+
+    NEW_ORDER['user_name'] = user_name
+
+    invoice = order.get('invoice_no')
+    print_slow(f"\n Your order {invoice} is being generated...\n")
+    print_slow(f"\n Hold on {user_name},\n")
+    print_slow(" The total amount is being calculated...\n")
+
+    final_order = calculate_order_amount(order)
 
     print_slow("\n Please review your order before")
-    print_slow("\n it is processed and sent to you for due payment:\n\n")
+    print_slow("\n it is processed and sent for due payment:\n\n")
+
+    # create list only from values of NEW_ORDER dict
+    order_values = []
+
+    # take only values from dict NEW_ORDER,
+    # and appends to new list order_values
+    for x in final_order.values():
+        order_values.append(x)
 
     # only print to user items which value is not 0
     for item, value in final_order.items():
@@ -579,6 +560,61 @@ def process_order(order):
         return True
 
 
+def send_email_to_user():
+    """
+    Connects to smtp to send email to user
+    """
+    user_name = NEW_ORDER.get('user_name')
+    user_email = NEW_ORDER.get('user_email')
+    invoice_no = NEW_ORDER.get('invoice_no')
+
+    final_order = calculate_order_amount(NEW_ORDER)
+    total_amount = final_order.get('TOTAL AMOUNT')
+    email_order = {}
+
+    for item, value in final_order.items():
+        if value != '0':
+            email_order[item] = value
+
+    email_order_values  = []
+    for x in email_order.values():
+        email_order_values.append(x)
+    # take off last value: total amount
+    email_order_values.pop()
+
+    email_order_keys = []
+    for x in email_order.keys():
+        email_order_keys.append(x)
+    #take off last key: total amount
+    email_order_keys.pop()
+
+    email_order_retrieved_values = email_order_values[4:]
+    email_order_retrieved_keys = email_order_keys[4:]
+
+    email_dict = dict(zip(email_order_retrieved_keys, email_order_retrieved_values))
+    sender = os.environ.get("APP_EMAIL")
+    gmail_app_password = os.environ.get("EMAIL_APP_PASS")
+
+    try:
+        msg = EmailMessage()
+        msg['Subject'] = f"Invoice from {logo_name}"
+        msg['From'] = f'{logo_name}'
+        msg['To'] = user_email
+        msg.set_content(
+            f"Hi {user_name},\n\nThank you for your order. Here are the details of your invoice:\n\nInvoice number: {invoice_no}\nCustomer Name: {user_name}\nTotal amount: {total_amount} €\n\nItems ordered: {email_dict}\n\n\nAccess the payment platform through the following link during the next 2 following business days:\n\nhttps://stripe.com/payment_link/sell_tickets_app\n\n\nThank you, and enjoy!\n\n\n The {logo_name} Admin Team")  # noqa E501
+
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server.login(sender, gmail_app_password)
+        server.send_message(msg)
+        server.quit()
+        print_slow(" Email sent!")
+
+    except Exception as exception:
+        print("Error: %s!\n\n % Exception")
+
+    calculate_stock(NEW_ORDER, 'stock')
+
+
 def list_keyword_item():
     """
     Print list of items and codes, and runs order_inputs()
@@ -596,6 +632,36 @@ def list_keyword_item():
         print('-' * 33)  # adds ---- after each KEY : ITEM of the dict
 
     order_inputs()
+
+
+def generate_order():
+    """
+    New order is generated.
+    New sequencial invoice_no is generated from previous invoice no.
+    in invoices_worksheet, and current date
+    are included in NEW_ORDER dictionary
+    """
+    print_slow("Loading ...\n")
+    # takes last invoice_no from invoices_worksheet;
+    # default e.g.: INV-10000
+    invoice = invoices_worksheet.col_values(1)[-1]
+    # takes initial letter of last invoice_no
+    # before the '-' e.g: INV
+    invoice_letters = invoice.split("-")[0]
+    # takes numbers of last invoice_no after 
+    # the '-' and returns string e.g.: '10000'
+    invoice_no = invoice.split("-")[1]
+    # turns num string to integer,
+    # and adds 1 to invoice_no; e.g.: 10001
+    invoice_no = int(invoice_no) + 1
+    # creates new invoice_no with same format 
+    # (letters-nums) e.g. INV-10001
+    invoice_no = f"{invoice_letters}-{invoice_no}"
+
+    NEW_ORDER['invoice_no'] = invoice_no
+    NEW_ORDER['order_date'] = DATE
+    list_keyword_item()
+    return NEW_ORDER
 
 
 def view_details_option():
@@ -620,28 +686,6 @@ def view_details_option():
     else:
         generate_order()
         # return True
-
-
-def generate_order():
-    """
-    Prompts user to start ordering,
-    to return to welcome message, or to exit.
-    If user starts order, new sequencial
-    invoice_no and current date are
-    included in NEW_ORDER
-    """
-    print_slow("Loading ...\n")
-
-    invoice = invoices_worksheet.col_values(1)[-1]  # noqa takes last invoice_no from invoices_worksheet; default e.g.: INV-10000
-    invoice_letters = invoice.split("-")[0]  # noqa takes initial letter of last invoice_no before the '-' e.g: INV
-    invoice_no = invoice.split("-")[1]  # noqa takes numbers of last invoice_no after the '-' and returns string e.g.: '10000'
-    invoice_no = int(invoice_no) + 1  # noqa turns num string int integer, and adds 1 to invoice_no; e.g.: 1001
-    invoice_no = f"{invoice_letters}-{invoice_no}"  # noqa creates new invoice_no with same format (letters-nums) e.g. INV-10001
-
-    NEW_ORDER['invoice_no'] = invoice_no
-    NEW_ORDER['order_date'] = DATE
-    list_keyword_item()
-    return NEW_ORDER
 
 
 def calculate_total_sales():
