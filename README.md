@@ -504,7 +504,7 @@ Enable the following APIs for this project:
 
    14. Click on the 'Add Key' dropdown and select 'Create New Key'.  
      
-   15. Select JSON option. Once you click on 'Create', a file will automatically download to your 'downsloaded' folder on your device. This file will normally be downloaded to your 'downsloads' file, and will typically be named as your project name, being a .json type document:  
+   15. Select JSON option. Once you click on 'Create', a file will automatically download to your 'downsloaded' folder on your device. This file will normally be downloaded to your 'downloads' folder, and will typically be named as your project name, being a .json type document:  
 
         ![image](https://github.com/Ethra8/music-festival/assets/80659091/692d119c-ccde-474d-b14a-6307f3ee2310)
 
