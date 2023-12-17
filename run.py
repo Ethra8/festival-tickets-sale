@@ -46,7 +46,6 @@ values_sales_new_order = invoices_worksheet.row_values(3)
 NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
 
 DATE = datetime.today().strftime('%Y-%m-%d')
-TIME = datetime.today().strftime('%H:%M')
 
 # item identification vars retrieved from pricing worksheet
 item_type = pricing_worksheet.col_values(2)[0]
@@ -567,7 +566,7 @@ def send_email_to_user():
     user_name = NEW_ORDER.get('user_name')
     user_email = NEW_ORDER.get('user_email')
     invoice_no = NEW_ORDER.get('invoice_no')
-
+    order_time = datetime.today().strftime('%H:%M')
     final_order = calculate_order_amount(NEW_ORDER)
     total_amount = final_order.get('TOTAL AMOUNT')
     email_order = {}
@@ -601,7 +600,7 @@ def send_email_to_user():
         msg['From'] = f'{logo_name}'
         msg['To'] = user_email
         msg.set_content(
-            f"Hi {user_name},\n\nThank you for your order. Here are the details of your invoice:\n\nInvoice number: {invoice_no}\nCustomer Name: {user_name}\nTotal amount: {total_amount} €\n\nItems ordered: {email_dict}\n\n\nAccess the payment platform through the following link during the next 2 following business days:\n\nhttps://stripe.com/payment_link/sell_tickets_app\n\n\nThank you, and enjoy!\n\n\n The {logo_name} Admin Team")  # noqa E501
+            f"Hi {user_name},\n\nThank you for your order. Here are the details of your invoice:\n\nInvoice number: {invoice_no}\nOrder date: {DATE}\nOrder time: {order_time}\nCustomer Name: {user_name}\nTotal amount: {total_amount} €\n\nItems ordered: {email_dict}\n\n\nAccess the payment platform through the following link during the next 2 following business days:\n\nhttps://stripe.com/payment_link/sell_tickets_app\n\n\nThank you, and enjoy!\n\n\n The {logo_name} Admin Team")  # noqa E501
 
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender, gmail_app_password)
