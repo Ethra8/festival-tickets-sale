@@ -300,23 +300,43 @@ This app has been carefully tested, as detailed below.
 - [X] User can change email address and user name after reviewing, in case an error was made while typing, without loosing the order (VIDEO 3 below)
 - [X] User can continue ordering even after final order is printed on the terminal, and new items are added, or quantity updated.
 - [X] Data successfully updates in all the Worksheets in the SpreadSheet (invoices, items_sold, stock, total_sales) (IMAGES 1,2,3,4 below)
-- [X] ***User receives email*** (IMAGE 5 below)
-- [X] Email received contains ***subject*** (IMAGE 5 below)
-- [X] Email received contains ***sender*** (IMAGE 5 below)
-- [X] Email received contains the invoice data related to the user's order (IMAGE 5 below)
+- [X] ***User receives email*** (IMAGE 5, 6 below)
+- [X] Email received contains ***subject*** (IMAGE 5, 6 below)
+- [X] Email received contains ***sender*** (IMAGE 5, 6 below)
+- [X] Email received contains the invoice data related to the user's order (IMAGE 6 below)
+- [X] Email includes payment link (default link) (IMAGE 6 below)
 
 - **VIDEO 1**  
-
-https://github.com/Ethra8/festival-tickets-sale/assets/80659091/1989230c-03dc-49f0-83ce-0bc3006cdfe1  
-
-- **VIDEO 2**  
   
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/1989230c-03dc-49f0-83ce-0bc3006cdfe1  
+  
+- **VIDEO 2**  
+   
 https://github.com/Ethra8/festival-tickets-sale/assets/80659091/196a3dd1-7878-4b5c-a053-4ed71a77b3f6
+  
+- **VIDEO 3**  
+   
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/70d602e0-c2e8-4be8-a05e-e79c84ea21b1
 
-- **VIDEO 3**
+- **IMAGES 1,2,3,4 - UPDATED WORKSHEETS**  
+  
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/18ebab27-fce8-4cb3-afba-f4ec981cfa8d)  
 
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/ffb76a00-3ecd-435b-8cb4-f5ebfe886465)  
 
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/0d12b12a-9775-4d65-a2f9-902391ed69d7)  
 
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/62699dd7-edb3-4ec1-ba4b-4895069e11a1)  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/441c62f2-0522-46e4-b9ec-268814f6aa10)  
+
+- **IMAGE 5, 6 - EMAIL**
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/b106da45-33f4-4858-8fe2-4fab6bb7b9b1)  
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/ea226fcc-12b5-46b2-b869-e82fa4ac7119)  
+
+  
 # DEFECTS
 
 ## DEFECTS TRACKING
