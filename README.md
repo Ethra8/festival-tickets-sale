@@ -550,21 +550,8 @@ SHEET = GSPREAD_CLIENT.open('festival_tickets_sale')
     "clien_x509_cert_url": "<YOUR_VALUE>"
 }
 ```
-3. Open creds.json file, and copy **client_email** generated (without including the brackets)
-4. Go to the copied yu have previously made of the **Google SpreadSheet: festival_tickets_sale** and click on 'Share' to share SpreadSheet with client_email from creds.json file, so the project can access and edit the SpreadSheet. Make sure 'editor' is selected and untick 'notify people'.
-5. **IMPORTANT: Avoid the creds.json file to be uploaded to GitHub**, as it contains sensible information. To do that, open ***.gitignore*** file in project, and include our creds.json file. ***Don't forget to CTR+S***:
-   ![image](https://github.com/Ethra8/music-festival/assets/80659091/41d61007-2cb4-4d60-9fb6-7e8e4b26cb95)
-6. **BEFORE COMMITING TO GITHUB*** : On the terminal, type 'git add .', then 'git status' and make sure the creds.json file is not in the list. Once you are reasured that it is not in the list to be commited, commit.  
 
-### INSTALL OR UPDATE REQUIREMENTS txt FILE
-Before deploying the app, the requirements.txt file included in the project must be installed with the dependencies. On the terminal, type:  
-```$python
-pip3 install -r requirements.txt
-```
-In case you install further modules or libraries, then the requirements.txt file must be updated by typing in the terminal the following command:
-```$python
-pip3 freeze > requirements.txt
-```
+
 ## DEPLOY LOCALLY IN YOUR IDE
 ### SECRETS
  **IMPORTANT: Avoid secrets from being uploaded to GitHub**, open ***.gitignore*** file in project, and insure to include  creds.json and env.py ***Don't forget to CTR+S***:
@@ -605,6 +592,10 @@ gmail_app_password = os.environ.get("EMAIL_APP_PASS")
 Before deploying the app, the requirements.txt file needs to be executed to get the dependencies installed. On the terminal, type:  
 ```$python
 pip3 install -r requirements.txt
+```
+- In case you install further modules or libraries, then the requirements.txt file must be updated by typing in the terminal the following command:
+```$python
+pip3 freeze > requirements.txt
 ```
 ### RUN THE SERVER
 to run locally, type on the terminal:  
