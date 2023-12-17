@@ -66,6 +66,12 @@ Edna Torres Munill
 # HOW TO USE
 ## CUSTOMER SIDE
 From a user (customer) side, the app has been designed to be user-friendly and informs at all times of the actions that are being undertaken, or options that are available.
+
+
+
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/28265965-3251-4a44-ad10-ba01065a8b85
+
+
 1. After the logo and the welcome messages appear, click ENTER to access the Pricing List
 2. The Pricing List shows each item next to its price per unit
 3. You are then given the following options:
@@ -133,7 +139,8 @@ This app contains the following features and functionalities:
 16. ***Updates items sold in 'total_items_sold worksheet'***
 17. ***Calculates total sales income per item*** after each order, and ***updates values in 'total_sales worksheet'***
 18. ***Calculates grand total of sales, and updates value in 'total_sales worksheet'***
-    
+
+
 ## FUTURE FEATURES
 The following features are to be implemented in a near future:
 1. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
