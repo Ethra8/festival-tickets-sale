@@ -188,15 +188,16 @@ https://github.com/Ethra8/festival-tickets-sale/assets/80659091/0a7f0d96-9cc1-44
 7. User can ***return to pricing list at any time*** during the order
 8. User is ***informed at all times*** of each *step*, and its *output*
 9. Takes ***user's inputs*** (item to order, quantity, options after each step, email, user name, etc.)
-10. ***Email validation*** (gives error if user doesn't include valid format example@email.vv)
-11. ***Name validation*** (gives error if input is left blank)
-12. ***Repeats ordering process*** as many times as the user demands, and updates order accordingly
-13. ***Sends email to user with all the order data***
-14. ***Includes new invoice generated from order in 'invoice worksheet'***
-15. ***Updates remaining stock in 'stock worksheet'***
-16. ***Updates items sold in 'total_items_sold worksheet'***
-17. ***Calculates total sales income per item*** after each order, and ***updates values in 'total_sales worksheet'***
-18. ***Calculates grand total of sales, and updates value in 'total_sales worksheet'***
+10. User can't type other than an integer from 1-30 as a quantity of item to be included in order, if not, receives *ValueError*
+11. ***Email validation*** (gives *ValueError* if user doesn't include valid format example@email.vv)
+12. ***Name validation*** (gives *ValueError* if input is left blank)
+13. ***Repeats ordering process*** as many times as the user demands, and updates order accordingly
+14. ***Sends email to user with all the order data***
+15. ***Includes new invoice generated from order in 'invoice worksheet'***
+16. ***Updates remaining stock in 'stock worksheet'***
+17. ***Updates items sold in 'total_items_sold worksheet'***
+18. ***Calculates total sales income per item*** after each order, and ***updates values in 'total_sales worksheet'***
+19. ***Calculates grand total of sales, and updates value in 'total_sales worksheet'***
 
 
 ## FUTURE FEATURES
@@ -286,6 +287,35 @@ This app has been carefully tested, as detailed below.
 
 
 ## MANUAL TESTING
+
+- [X] User can exit app when given the oportunity all through the app (VIDEO 1 below)
+- [X] User can view item details, and return to order (VIDEO 2 below)
+- [X] User can view pricing list and return to order afterwards (VIDEO 2 below)
+- [X] User gets *ValueError* if other that an item code is typed when requested to include an item code to order (VIDEO 3 below)
+- [X] User gets *ValueError* if inputs other than an integer when requested to input the quantity of the selected item to order (VIDEO 3 below)
+- [X] User can confinue ordering after including items in order (VIDEO 3 below)
+- [X] If user types any space before or after the requested input, it does not give error, as it is trimmed (VIDEO 3 below)
+- [X] User gets ValueError is other that an email format is typed when requested to include email address (VIDEO 3 below)
+- [X] User gets ValueError if he accidentally or intentionally leaves the user name input blank whe requested to input a user name, must at least include a character (VIDEO 3 below)
+- [X] User can change email address and user name after reviewing, in case an error was made while typing, without loosing the order (VIDEO 3 below)
+- [X] User can continue ordering even after final order is printed on the terminal, and new items are added, or quantity updated.
+- [X] Data successfully updates in all the Worksheets in the SpreadSheet (invoices, items_sold, stock, total_sales) (IMAGES 1,2,3,4 below)
+- [X] ***User receives email*** (IMAGE 5 below)
+- [X] Email received contains ***subject*** (IMAGE 5 below)
+- [X] Email received contains ***sender*** (IMAGE 5 below)
+- [X] Email received contains the invoice data related to the user's order (IMAGE 5 below)
+
+- **VIDEO 1**  
+
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/1989230c-03dc-49f0-83ce-0bc3006cdfe1  
+
+- **VIDEO 2**  
+  
+https://github.com/Ethra8/festival-tickets-sale/assets/80659091/196a3dd1-7878-4b5c-a053-4ed71a77b3f6
+
+- **VIDEO 3**
+
+
 
 # DEFECTS
 
