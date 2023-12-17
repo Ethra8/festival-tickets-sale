@@ -8,9 +8,11 @@ It could also sell any other items, such as the following examples:
 - Online private lesson packs
 
 The app is linked to a Spreadsheet, which can be customized to change the following values, which will be reflected on the app, **making the app fully reusable**:
-- Product names
-- Product codes
-- Products pricing
+- Items' names
+- Items' codes
+- Items' pricing
+- Items' details
+- Title of items' details' list printed to user
 - Company/App name (logo name)
 - Logo fonts
 - Initial stock
@@ -104,43 +106,89 @@ From a user (customer) side, the app has been designed to be user-friendly and i
 # FEATURES
 ## IMPLEMENTED FEATURES
 This app contains the following features and functionalities:
-1. **REUSABLE CODE** : The most distinctive feature is that values are not hard-coded, and are all retrieved from the SpreadSheet, meaning that whoever wants to reuse the code, can easily customize the app to fit needs. These are the custmizable values:
-   1. App name (logo name)
-   2. Logo font
-   3. Welcome message (before, and after logo)
-   4. Items to sell
-   5. Price of items to sell
-   6. Item details
-   7. Title of items details list printed to user
-   8. Inicial stock
-   9. Final 'copyright' message includes customizable logo name
-
-3. Displays list of items with their correspondent prices
-4. Displays optional list of items' details
-5. Displays list of items with their correspondent codes
-6. Takes user's input of item's code to be included in order
-7. Takes user's input of quantity of items selected to be included in order
-8. Repeats ordering process as many times as the user demands to continue ordering more items, and updates order accordingly
-9. User can exit app anytime
-10. User can finalize order anytime
-11. Input for user to include email to where the order will be sent
-12. Input for user to include name
-13. Send email to user with all the order data
-14. Includes invoice with order in 'invoice worksheet'
-15. Update stock in 'stock worksheet'
-16. Update items sold in 'total_items_sold worksheet'
-17. Update total sales income per item, and a grans total in 'total_sales worksheet'
-18. Informs the user at all times of the actions and processes of the app
+1. **REUSABLE CODE** : The most distinctive feature is that values are not hard-coded, and are all retrieved from the SpreadSheet, meaning that whoever wants to reuse the code, can easily customize the app to fit needs. These are the ***customizable app values***:
+   **1. App name** (logo name)
+   **2. Logo font**
+   **3. Welcome message** (before, and after logo)
+   **4. Items to sell**
+   **5. Price of items to sell**
+   **6. Item codes**
+   **7. Item details**
+   **8. Title of items details list printed to user**
+   **9. Inicial stock**
+   **10. Final 'copyright' message includes customizable logo name**
+3. All data input by the user is ***trimmed***, so any white space is dismissed
+4. When user is prompted to type a key, the input is ***case unsensitive***, so whether the user includes upper case or lower case letters, it will not affect the flow.
+5. User can ***exit app anytime***
+6. User is given ***several options***, as for instance, to view item details' list or not
+7. User can ***return to pricing list at any time*** during the order
+8. User is ***informed at all times*** of each *step*, and its *output*
+9. Takes ***user's inputs*** (item to order, quantity, options after each step, email, user name, etc.)
+10. ***Email validation*** (gives error if user doesn't include valid format example@email.vv)
+11. ***Name validation*** (gives error if input is left blank)
+12. ***Repeats ordering process*** as many times as the user demands, and updates order accordingly
+13. ***Sends email to user with all the order data***
+14. ***Includes new invoice generated from order in 'invoice worksheet'***
+15. ***Updates remaining stock in 'stock worksheet'***
+16. ***Updates items sold in 'total_items_sold worksheet'***
+17. ***Calculates total sales income per item*** after each order, and ***updates values in 'total_sales worksheet'***
+18. ***Calculates grand total of sales, and updates value in 'total_sales worksheet'***
     
 ## FUTURE FEATURES
-The following features are hopefully to be implemented in a near future:
-1. Create user and order classes to improve code, although everything works perfectly fine as it is.
-2. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
-3. Automatically cancel order if user does not proceed to payment on due date.
+The following features are to be implemented in a near future:
+1. Create PDF using python, to be included in the email sent to the user, instead of writing the details of the order in the email body.
+2. Automatically cancel order if user does not proceed to payment on due date.
    
 # FLOW CHART
 
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/bb2a78b5-39d3-4087-9fb2-e563c2574ac4)  
+
+
 # DATA MODEL
+
+## NEW_ORDER DICTIONARY
+1. After viewing Pricing List, when user selects option to Start, the invoice is generated by the generate_order() function. Updates NEW_ORDER dictionary with new invoice_no value, and current date:
+```$python
+# get key values to create NEW_ORDER dict
+item_sales_new_order = invoices_worksheet.row_values(1)
+# get mock values for each key to create NEW_ORDER dict
+values_sales_new_order = invoices_worksheet.row_values(3)
+# dict NEW_ORDER takes user inputs all along the app
+# to create final invoice with total amount
+NEW_ORDER = dict(zip(item_sales_new_order, values_sales_new_order))
+
+def generate_order():
+    """
+    New order is generated.
+    New sequencial invoice_no is generated from previous invoice no.
+    in invoices_worksheet, and current date
+    are included in NEW_ORDER dictionary
+    """
+    print_slow("Loading ...\n")
+    # takes last invoice_no from invoices_worksheet;
+    # default e.g.: INV-10000
+    invoice = invoices_worksheet.col_values(1)[-1]
+    # takes initial letter of last invoice_no
+    # before the '-' e.g: INV
+    invoice_letters = invoice.split("-")[0]
+    # takes numbers of last invoice_no after 
+    # the '-' and returns string e.g.: '10000'
+    invoice_no = invoice.split("-")[1]
+    # turns num string to integer,
+    # and adds 1 to invoice_no; e.g.: 10001
+    invoice_no = int(invoice_no) + 1
+    # creates new invoice_no with same format 
+    # (letters-nums) e.g. INV-10001
+    invoice_no = f"{invoice_letters}-{invoice_no}"
+
+    NEW_ORDER['invoice_no'] = invoice_no
+    NEW_ORDER['order_date'] = DATE
+    list_keyword_item()
+    return NEW_ORDER
+```
+
+![image](https://github.com/Ethra8/festival-tickets-sale/assets/80659091/b4c05a69-f9c8-4836-aefa-775002ee1c34)  
+
 
 # LIBRARIES USED
 - **pyfiglet** : To style logo in welcome message. Documentation taken from [geeksforgeeks](https://www.geeksforgeeks.org/python-ascii-art-using-pyfiglet-module/)
