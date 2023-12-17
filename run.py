@@ -431,7 +431,7 @@ def check():
 
 
 def calculate_order_amount(order):
- # takes list of items out of sales worksheet, in a user-friendly version
+    # takes list of items out of sales worksheet, in a user-friendly version
     order_item_names = invoices_worksheet.row_values(2)
 
     # create list only from values of NEW_ORDER dict
@@ -482,7 +482,7 @@ def calculate_order_amount(order):
 
     # create new dict for final_order, with item as keys,
     # and num. of items as values. Includes final amount key:value
-    final_order = dict(zip(order_item_names, order_values))    
+    final_order = dict(zip(order_item_names, order_values))
     return final_order
 
 
@@ -575,7 +575,7 @@ def send_email_to_user():
         if value != '0':
             email_order[item] = value
 
-    email_order_values  = []
+    email_order_values = []
     for x in email_order.values():
         email_order_values.append(x)
     # take off last value: total amount
@@ -584,13 +584,13 @@ def send_email_to_user():
     email_order_keys = []
     for x in email_order.keys():
         email_order_keys.append(x)
-    #take off last key: total amount
+    # take off last key: total amount
     email_order_keys.pop()
 
     email_order_retrieved_values = email_order_values[4:]
     email_order_retrieved_keys = email_order_keys[4:]
 
-    email_dict = dict(zip(email_order_retrieved_keys, email_order_retrieved_values))
+    email_dict = dict(zip(email_order_retrieved_keys, email_order_retrieved_values))  # noqa E501
     sender = os.environ.get("APP_EMAIL")
     gmail_app_password = os.environ.get("EMAIL_APP_PASS")
 
@@ -647,13 +647,13 @@ def generate_order():
     # takes initial letter of last invoice_no
     # before the '-' e.g: INV
     invoice_letters = invoice.split("-")[0]
-    # takes numbers of last invoice_no after 
+    # takes numbers of last invoice_no after
     # the '-' and returns string e.g.: '10000'
     invoice_no = invoice.split("-")[1]
     # turns num string to integer,
     # and adds 1 to invoice_no; e.g.: 10001
     invoice_no = int(invoice_no) + 1
-    # creates new invoice_no with same format 
+    # creates new invoice_no with same format
     # (letters-nums) e.g. INV-10001
     invoice_no = f"{invoice_letters}-{invoice_no}"
 
